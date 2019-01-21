@@ -1,0 +1,152 @@
+homeassistant:
+    # Name of the location where Home Assistant is running
+    name: !secret home_title
+    # Location required to calculate the time the sun rises and sets
+    latitude: !secret home_latitude
+    longitude: !secret home_longitude
+    # Impacts weather/sunrise data (altitude above sea level in meters)
+    elevation: !secret home_elevation
+    # metric for Metric, imperial for Imperial
+    unit_system: metric
+    # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    time_zone: !secret home_timezone
+    # Customization file
+    customize: !include customize.yaml
+    packages: !include_dir_named packages
+
+http:
+    ssl_certificate: /ssl/fullchain.cer
+    ssl_key: /ssl/privkey.key
+    base_url: !secret base_ha_url
+
+auth:
+
+# Enables the frontend
+frontend:
+    javascript_version: latest
+
+# Enables configuration UI
+config:
+
+shell_command:
+    cert_update: /config/shell_scripts/cert_update
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+lovelace:
+    mode: yaml
+
+custom_updater:
+  card_urls:
+    - https://raw.githubusercontent.com/kalkih/mini-media-player/master/tracker.json
+    - https://raw.githubusercontent.com/kalkih/mini-graph-card/master/tracker.json
+
+# Discover some devices automatically
+discovery:
+
+mqtt:
+  broker: localhost
+  discovery: true
+
+# Record events
+recorder:
+#  purge_interval: 1
+#  purge_keep_days: 5
+
+# Enables a map showing the location of tracked devices
+map:
+
+# Track the sun
+sun:
+
+# Text to speech
+tts:
+  - platform: google
+
+# UPNP device tracker
+upnp:
+
+# OwnTracks device tracker
+owntracks:
+
+# Device Trackers
+device_tracker:
+  - platform: owntracks
+  - platform: nmap_tracker
+    hosts: 192.168.1.0/24
+    scan_options: "-sn -T5 -n"
+    home_interval: 3
+    exclude:
+      - 192.168.1.1    # Gateway Router
+      - 192.168.1.2    # TOR-proxy
+      - 192.168.1.3    # Home Assistant server
+      - 192.168.1.120  # NAS server
+      - 192.168.1.129  # Gogs server
+      - 192.168.1.146  # OpenVPN server
+      - 192.168.1.171  # Syncthing server
+      - 192.168.1.218  # Emby server
+      - 192.168.1.234  # Transmission server
+      - 192.168.1.239  # Sonarr & Jackett servers
+      - 192.168.1.254  # Wi-Fi Access Point
+      #
+      - 192.168.1.124  # Intercom
+      - 192.168.1.138  # Kitchen speaker
+    new_device_defaults:
+      track_new_devices: true
+      hide_if_away: true
+#  - platform: google_maps
+#    username: !secret google_location_username
+#    password: !secret google_location_password
+#    max_gps_accuracy: 150
+
+python_script:
+
+ffmpeg:
+    ffmpeg_bin: /usr/bin/ffmpeg
+
+wake_on_lan:
+
+api:
+
+weather:
+  - platform: openweathermap
+    api_key: !secret openweathermap_apikey
+
+media_player:
+#  - platform: emby
+#    host: emby.lan
+#    api_key: 7790b3e866a74a05a4f24041f932aade
+#    auto_hide: true
+  - platform: linkplay
+    name: Колонки на кухне
+    host: 192.168.1.138
+ 
+#google:
+#  client_id: !secret google_client_id
+#  client_secret: !secret google_client_secret
+
+
+
+logbook: !include logbook.yaml  # View all events in a logbook
+notify: !include notify.yaml
+zone: !include zones.yaml
+binary_sensor: !include binary_sensors.yaml
+sensor: !include sensors.yaml
+input_select: !include input_selects.yaml
+# input_text: !include input_texts.yaml
+# input_datetime: !include input_datetimes.yaml
+input_boolean: !include input_booleans.yaml
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+# alert: !include alerts.yaml
+history: !include history.yaml  # Enables support for tracking state changes over time
+camera: !include cameras.yaml
+scene: !include_dir_list scenes/

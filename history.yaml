@@ -1,0 +1,9 @@
+use_include_order: True
+include:
+    entities:
+        - sensor.house_mode
+        - sensor.owm_temperature
+        - sensor.owm_pressure_mmhg
+    domains:
+        - device_tracker
+        - group

@@ -1,0 +1,12 @@
+guests_present:
+  name: У нас гости
+  icon: mdi:account-alert
+goodnight_switch:
+  name: Спокойной ночи
+  icon: mdi:home
+goodmorning_switch:
+  name: Доброе утро
+  icon: mdi:home
+vacation_mode:
+  name: Режим Отпуска
+  icon: mdi:sunglasses

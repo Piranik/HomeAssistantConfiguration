@@ -1,0 +1,15 @@
+house_mode:
+    name: Mode
+    icon: mdi:home
+    options:
+        - Home
+        - Away
+        - Night
+        - Extended Away
+
+security_system:
+    name: Security System
+    options:
+        - Disarmed
+        - Armed (Home)
+        - Armed (Away)

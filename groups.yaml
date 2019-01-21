@@ -1,0 +1,24 @@
+# Only for Primary People
+presence_primary:
+  name: "Primary People at Home"
+  icon: mdi:account-multiple
+  view: no
+  entities:
+    - binary_sensor.limych_at_home
+
+# Add guests devices here who are staying over
+presence_guests:
+  name: "Guests at Home"
+  icon: mdi:account-multiple
+  view: no
+  entities:
+    - input_boolean.guests_present
+
+# Add guests devices here who are staying over
+presence:
+  name: "People at Home"
+  icon: mdi:account-multiple
+  view: no
+  entities:
+    - group.presence_primary
+    - group.presence_guests

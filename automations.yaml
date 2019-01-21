@@ -1,0 +1,69 @@
+# Update SSL certificates from NAS
+- id: ssl_update
+  alias: Update SSL certificates
+  initial_state: True
+  trigger:
+      platform: time
+      at: '00:00:00'
+  action:
+      service: shell_command.cert_update
+
+##########################################
+## Setting House Mode based on Presence ##
+##########################################
+- alias: Home Mode - Leaving
+  trigger:
+  - platform: state
+    entity_id: group.presence
+    to: 'off'
+    for:
+      seconds: 15
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.ha_runtime_in_minutes
+    above: 1
+  - condition: state
+    entity_id: input_select.house_mode
+    state: 'Home'
+  action:
+  - service: input_select.select_option
+    entity_id: input_select.house_mode
+    data:
+      option: 'Away'
+  - service: input_select.select_option
+    entity_id: input_select.security_system
+    data:
+      option: 'Armed (Away)'
+
+- alias: Home Mode - Arriving
+  trigger:
+  - platform: state
+    entity_id: group.presence
+    to: 'on'
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.ha_runtime_in_minutes
+    above: 1
+  - condition: state
+    entity_id: input_select.house_mode
+    state: 'Away'
+  action:
+  - service: input_select.select_option
+    entity_id: input_select.house_mode
+    data:
+      option: 'Home'
+  - service: input_select.select_option
+    entity_id: input_select.security_system
+    data:
+      option: 'Disarmed'
+
+- alias: Mark house as Vacation Mode
+  trigger:
+  - platform: state
+    entity_id: group.presence
+    to: 'off'
+    for:
+      hours: 24
+  action:
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.vacation_mode
