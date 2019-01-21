@@ -1,0 +1,12 @@
+#!/bin/sh
+
+DOMAIN=nest.ddns.khrolenok.ru
+HOST=nas.lan
+SSH_CERT=/config/cert/id_rsa
+
+KEYFILE=$HOST:/mnt/pool1/Certs/$DOMAIN/$DOMAIN.key
+CERTFILE=$HOST:/mnt/pool1/Certs/$DOMAIN/fullchain.cer
+
+# copy certs to store
+scp -i $SSH_CERT $KEYFILE '/ssl/privkey.key'
+scp -i $SSH_CERT $CERTFILE '/ssl/fullchain.cer'
