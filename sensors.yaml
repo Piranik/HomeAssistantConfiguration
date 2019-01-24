@@ -4,13 +4,6 @@
 
   - platform: dnsip
 
-# Network speed test
-  - platform: speedtest
-    monitored_conditions:
-      - ping
-      - download
-      - upload
-
 # Time-Date Sensor
   - platform: time_date
     display_options:
@@ -46,22 +39,6 @@
             friendly_name: "OWM Pressure"
             value_template: "{{ (states('sensor.owm_pressure') | float / 1.33322) | round(0) }}"
 
-  - platform: template
-    sensors:
-        house_mode:
-            value_template: '{{ states.input_select.house_mode.state }}'
-            friendly_name: 'Режим дома'
-            icon_template: >
-                {%- if is_state('input_select.house_mode', 'Home') -%}
-                    mdi:home-account
-                {%- elif is_state('input_select.house_mode', 'Away') -%}
-                    mdi:run-fast
-                {%- elif is_state('input_select.house_mode', 'Night') -%}
-                    mdi:weather-night
-                {%- else -%}
-                    mdi:help
-                {%- endif -%}
-
 # Torrents
   - platform: transmission
     host: 192.168.1.234
@@ -75,7 +52,7 @@
 # Sonarr
   - platform: sonarr
     host: 192.168.1.239
-    api_key: 60121d2ce5f24dc78095f97a404021ee
+    api_key: !secret sonarr_apikey
     days: 3
 
 # 17track packages tracker

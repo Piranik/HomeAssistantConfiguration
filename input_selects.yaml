@@ -1,5 +1,5 @@
 house_mode:
-    name: Mode
+    name: "Режим Дома"
     icon: mdi:home
     options:
         - Home
@@ -8,8 +8,8 @@ house_mode:
         - Extended Away
 
 security_system:
-    name: Security System
+    name: "Система Безопасности"
+    icon: mdi:shield-home
     options:
         - Disarmed
-        - Armed (Home)
-        - Armed (Away)
+        - Armed

@@ -1,9 +1,12 @@
 use_include_order: True
 include:
     entities:
-        - sensor.house_mode
+        - input_select.house_mode
+        - input_select.security_system
         - sensor.owm_temperature
         - sensor.owm_pressure_mmhg
     domains:
         - device_tracker
+        - binary_sensor
         - group
+        - media_player
