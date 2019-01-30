@@ -1,12 +1,23 @@
+# Ignore all, except specified files
 *
+!.gitignore
+!.gitkeep
+!*.yaml
+!*.md
+!git_update.sh
+
+# Ignore folders.
+.storage
+.cloud
+.google.token
 !custom_components/
 !packages/
 !python_scripts/
 !scenes/
 !shell_scripts/
-!.gitignore
-!.gitkeep
-!*.yaml
+
+# Ensure these YAML files are ignored, otherwise your secret data/credentials will leak.
+ip_bans.yaml
 secrets.yaml
 known_devices.yaml
 zones.yaml

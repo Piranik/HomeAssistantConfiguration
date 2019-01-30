@@ -126,7 +126,7 @@
     data:
       option: 'Home'
 
-- alias: Mark house as Vacation Mode
+- alias: Home Mode - Vacation
   trigger:
   - platform: state
     entity_id: binary_sensor.presence

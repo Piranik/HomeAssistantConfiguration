@@ -83,22 +83,25 @@ wake_on_lan:
 
 api:
 
-upnp:
-  port_mapping: true
-  sensors: false
+#upnp:
+#  port_mapping: true
+#  sensors: false
 
 weather:
-  - platform: openweathermap
-    api_key: !secret openweathermap_apikey
+#  - platform: openweathermap
+#    api_key: !secret openweathermap_apikey
+  - platform: yandex
+    api_key: !secret yandex_apikey
+  - platform: gismeteo
 
 media_player:
 #  - platform: emby
 #    host: emby.lan
 #    api_key: 7790b3e866a74a05a4f24041f932aade
 #    auto_hide: true
-  - platform: linkplay
-    name: Колонки на кухне
-    host: 192.168.1.138
+#  - platform: linkplay
+#    name: Колонки на кухне
+#    host: 192.168.1.138
  
 #google:
 #  client_id: !secret google_client_id
