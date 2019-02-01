@@ -1,0 +1,12 @@
+- alias: Home Mode - Vacation
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.presence
+      to: 'off'
+      for:
+        hours: 24
+  action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.vacation_mode
+  

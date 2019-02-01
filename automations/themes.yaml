@@ -1,0 +1,31 @@
+- alias: 'Set light theme for the day'
+  initial_state: true
+  trigger:
+    - platform: homeassistant
+      event: start
+    - platform: state
+      entity_id: binary_sensor.dark_outside
+  condition:
+    - condition: state
+      entity_id: binary_sensor.dark_outside
+      state: 'off'
+  action:
+    - service: frontend.set_theme
+      data:
+        name: default
+  
+- alias: 'Set dark theme for the night'
+  initial_state: true
+  trigger:
+    - platform: homeassistant
+      event: start
+    - platform: state
+      entity_id: binary_sensor.dark_outside
+  condition:
+    - condition: state
+      entity_id: binary_sensor.dark_outside
+      state: 'on'
+  action:
+    - service: frontend.set_theme
+      data:
+        name: midnight

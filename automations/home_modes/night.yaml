@@ -1,0 +1,10 @@
+- alias: Home Mode - Night
+  initial_state: true
+  trigger: 
+    - platform: state
+      entity_id: input_select.house_mode
+      to: 'Night'
+  action:
+    - service: media_player.media_pause
+#    entity_id: ...  # Default to All
+  

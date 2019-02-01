@@ -1,0 +1,28 @@
+- alias: Security - Arming
+  initial_state: true
+  trigger: 
+    - platform: state
+      entity_id: input_select.house_mode
+      from: 'Home'
+  action:
+    - service: input_select.select_option
+      entity_id: input_select.security_system
+      data:
+        option: 'Armed'
+  
+- alias: Security - Disarming
+  initial_state: true
+  trigger: 
+    - platform: state
+      entity_id: input_select.house_mode
+      to: 'Home'
+  condition:
+    - condition: state
+      entity_id: binary_sensor.presence
+      state: 'on'
+  action:
+    - service: input_select.select_option
+      entity_id: input_select.security_system
+      data:
+        option: 'Disarmed'
+  

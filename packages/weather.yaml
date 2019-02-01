@@ -1,0 +1,19 @@
+weather:
+  - platform: openweathermap
+    api_key: !secret openweathermap_apikey
+#  - platform: yandex
+#    api_key: !secret yandex_apikey
+#  - platform: gismeteo
+
+sensor:
+#  - platform: command_line
+#    name: "Forecast Stockholm"
+#    icon: alert-outline
+#    command: "bash /config/scripts/check-weather-sthlm.sh"
+#    scan_interval: 180
+
+camera:
+  - platform: generic
+    name: "Moscow meteogram"
+    still_image_url: https://www.yr.no/place/Russia/Moscow/Moscow/meteogram.svg
+    content_type: 'image/svg+xml'

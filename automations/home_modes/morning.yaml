@@ -1,0 +1,11 @@
+- alias: Home Mode - Morning
+  initial_state: true
+  trigger: 
+    - platform: state
+      entity_id: input_select.house_mode
+      from: 'Night'
+      to: 'Home'
+  action:
+    - service: media_player.media_play
+#    entity_id: ...  # Default to All
+  

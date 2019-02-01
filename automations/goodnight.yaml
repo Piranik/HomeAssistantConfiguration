@@ -1,0 +1,26 @@
+- alias: Good Night - On
+  initial_state: true
+  trigger: 
+    - platform: state
+      entity_id: input_boolean.goodnight_switch
+      to: 'on'
+  action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.goodnight_switch
+    - service: input_select.select_option
+      entity_id: input_select.house_mode
+      data:
+        option: 'Night'
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.goodmorning_switch
+  
+- alias: Good Night - Off
+  initial_state: true
+  trigger: 
+    - platform: state
+      entity_id: binary_sensor.dark_outside
+      to: 'off'
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.goodnight_switch
+  

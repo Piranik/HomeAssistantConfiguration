@@ -1,12 +1,12 @@
   - platform: owntracks
   - platform: nmap_tracker
-    hosts: 192.168.1.0/24
+    hosts: !secret nmap_tracker_hosts
     scan_options: "-sn -T5 -n"
     home_interval: 3
     exclude:
+      - !secret hass_host_ip
       - 192.168.1.1    # Gateway Router
       - 192.168.1.2    # TOR-proxy
-      - 192.168.1.3    # Home Assistant server
       - 192.168.1.120  # NAS server
       - 192.168.1.129  # Gogs server
       - 192.168.1.146  # OpenVPN server

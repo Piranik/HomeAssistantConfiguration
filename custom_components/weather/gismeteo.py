@@ -1,5 +1,9 @@
+#
+#  Copyright (c) 2019, Andrey "Limych" Khrolenok <andrey@khrolenok.ru>
+#  GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+#
 """
-Support for GisMeteo.
+Support for Gismeteo.
 
 For more details about this platform, please refer to the documentation at
 https://home-assistant.io/components/weather.gismeteo/
@@ -18,39 +22,47 @@ from homeassistant.const import (
     CONF_API_KEY, TEMP_CELSIUS, CONF_LATITUDE, CONF_LONGITUDE, CONF_NAME,
     STATE_UNKNOWN)
 from homeassistant.helpers import config_validation as cv
-from homeassistant.util import Throttle
 
 REQUIREMENTS = []
 
 _LOGGER = logging.getLogger(__name__)
 
-ATTRIBUTION = 'Data provided by GisMeteo'
-
-DEFAULT_NAME = 'GisMeteo'
+ATTRIBUTION = 'Data provided by Gismeteo'
 
 # API limit is 50 req/day
 MIN_TIME_BETWEEN_UPDATES = timedelta(minutes=40)
 
 CONDITION_CLASSES = {
-    "cloudy": [""],
-    "clear-night": [""],
-    "cloudy": [""],
-    "fog": [""],
-    "lightning": [""],
-    "lightning-rainy": [""],
-    "partlycloudy": [""],
-    "pouring": [""],
-    "rainy": [""],
-    "snowy": [""],
-    "snowy-rainy": [""],
-    "sunny": [""],
-    "windy": [""],
-    "windy-variant": [""],
+    "clear-night":  # Clear night
+    [],
+    "cloudy":  # Many clouds
+    [],
+    "fog":  # Fog
+    [],
+    "lightning":  # Lightning/ thunderstorms
+    [],
+    "lightning-rainy":  # Lightning/ thunderstorms and rain
+    [],
+    "partlycloudy":  # A few clouds
+    [],
+    "pouring":  # Pouring rain
+    [],
+    "rainy":  # Rain
+    [],
+    "snowy":  # Snow
+    [],
+    "snowy-rainy":  # Snow and Rain
+    [],
+    "sunny":  # Sunshine
+    [],
+    "windy":  # Wind
+    [],
+    "windy-variant":  # Wind and clouds
+    [],
 }
 
-
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
-#    vol.Required(CONF_API_KEY): cv.string,
+    # vol.Required(CONF_API_KEY): cv.string,
     vol.Optional(CONF_NAME): cv.string,
     vol.Optional(CONF_LATITUDE): cv.latitude,
     vol.Optional(CONF_LONGITUDE): cv.longitude,
@@ -58,7 +70,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
-    """Set up the GisMeteo weather platform."""
+    """Set up the Gismeteo weather platform."""
     from .lib import gismeteo
 
     longitude = config.get(CONF_LONGITUDE, round(hass.config.longitude, 6))
@@ -74,12 +86,12 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     if name is None:
         name = city.get("name")
 
-    add_entities([GisMeteoWeather(
+    add_entities([GismeteoWeather(
         name, gm, city.get("id"), hass.config.units.temperature_unit)], True)
 
 
-class GisMeteoWeather(WeatherEntity):
-    """Implementation of an GisMeteo sensor."""
+class GismeteoWeather(WeatherEntity):
+    """Implementation of an Gismeteo sensor."""
 
     def __init__(self, name, gm, city_id, temperature_unit):
         """Initialize the sensor."""
@@ -130,7 +142,7 @@ class GisMeteoWeather(WeatherEntity):
 
     @property
     def wind_bearing(self):
-        """Return the current wind bearing (degrees)."""
+        """Return the current wind bearing."""
         return self.data.fact.wind_dir
 
     @property

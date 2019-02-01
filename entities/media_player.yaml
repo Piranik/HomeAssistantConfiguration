@@ -1,0 +1,7 @@
+#  - platform: emby
+#    host: emby.lan
+#    api_key: 7790b3e866a74a05a4f24041f932aade
+#    auto_hide: true
+  - platform: linkplay
+    name: Колонки на кухне
+    host: 192.168.1.138

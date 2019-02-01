@@ -1,2 +1,4 @@
 media_player.emby_sonarr_emby_nest:
   hidden: true
+group.guests_devices:
+  hidden: true

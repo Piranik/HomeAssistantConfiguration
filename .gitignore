@@ -1,23 +1,28 @@
-# Ignore all, except specified files
-*
-!.gitignore
+*.pid
+*.xml
+*.csr
+*.crt
+*.key
+*.log
+*.conf
+.*
 !.gitkeep
-!*.yaml
-!*.md
-!git_update.sh
-
-# Ignore folders.
-.storage
-.cloud
-.google.token
-!custom_components/
-!packages/
-!python_scripts/
-!scenes/
-!shell_scripts/
-
-# Ensure these YAML files are ignored, otherwise your secret data/credentials will leak.
+!.gitignore
+home-assistant*
 ip_bans.yaml
 secrets.yaml
+secrets.txt
+google_calendars.yaml
+.uuid
 known_devices.yaml
-zones.yaml
+
+__pycache__/
+lib
+/deps/
+/tts/
+/ssh/
+
+/lovelace/links_card.yaml
+/lovelace/for_gen/*
+
+/www/custom-lovelace/upcoming-media-card/images/

@@ -1,36 +1,37 @@
 homeassistant:
-    # Name of the location where Home Assistant is running
-    name: !secret home_title
-    # Location required to calculate the time the sun rises and sets
-    latitude: !secret home_latitude
-    longitude: !secret home_longitude
-    # Impacts weather/sunrise data (altitude above sea level in meters)
-    elevation: !secret home_elevation
-    # metric for Metric, imperial for Imperial
-    unit_system: metric
-    # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-    time_zone: !secret home_timezone
-
-    # Customization file
-    customize: !include customize.yaml
-    packages: !include_dir_named packages
-
-http:
-    ssl_certificate: /ssl/fullchain.cer
-    ssl_key: /ssl/privkey.key
-    base_url: !secret hass_base_url
-
+  # Name of the location where Home Assistant is running
+  name: !secret home_title
+  # Location required to calculate the time the sun rises and sets
+  latitude: !secret home_latitude
+  longitude: !secret home_longitude
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: !secret home_elevation
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: !secret home_timezone
+  #    whitelist_external_dirs:
+  #      - '/config/www/motion'
+  # Customization
+  customize_glob: !include customglob.yaml
+  customize: !include customize.yaml
+  packages: !include_dir_named packages
+config:   # Enables configuration UI
 auth:
-
-# Enables the frontend
-frontend:
-    javascript_version: latest
-
-# Enables configuration UI
-config:
-
-shell_command:
-    cert_update: /config/shell_scripts/cert_update
+api:
+wake_on_lan:
+upnp:
+  port_mapping: true
+#  sensors: false
+http:
+  base_url: !secret hass_base_url
+  ssl_certificate: /ssl/fullchain.cer
+  ssl_key: /ssl/privkey.key
+  ip_ban_enabled: true
+  login_attempts_threshold: 3
+  trusted_networks:
+    - 127.0.0.1
+    - 192.168.1.1
 
 # Checks for available updates
 # Note: This component will send some information about your system to
@@ -38,80 +39,92 @@ shell_command:
 # For more information, please see:
 # https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
 updater:
-  # Optional, allows Home Assistant developers to focus on popular components.
-  # include_used_components: true
+# Optional, allows Home Assistant developers to focus on popular components.
+# include_used_components: true
+customizer:
+  custom_ui: hosted
 
-lovelace:
-    mode: yaml
-
-custom_updater:
-  card_urls:
-    - https://raw.githubusercontent.com/kalkih/mini-media-player/master/tracker.json
-    - https://raw.githubusercontent.com/kalkih/mini-graph-card/master/tracker.json
-
-# Discover some devices automatically
-discovery:
-
-mqtt:
-  broker: localhost
-  discovery: true
-
-# Record events
-recorder:
-#  purge_interval: 1
-#  purge_keep_days: 5
-
-# Enables a map showing the location of tracked devices
-map:
-
-# Track the sun
-sun:
-
-# Text to speech
-tts:
-  - platform: google
-
-# OwnTracks device tracker
-owntracks:
-
-python_script:
-
-ffmpeg:
-    ffmpeg_bin: /usr/bin/ffmpeg
-
-wake_on_lan:
-
-api:
-
-#upnp:
-#  port_mapping: true
-#  sensors: false
-
-weather:
-#  - platform: openweathermap
-#    api_key: !secret openweathermap_apikey
-  - platform: yandex
-    api_key: !secret yandex_apikey
-  - platform: gismeteo
-
-media_player:
-#  - platform: emby
-#    host: emby.lan
-#    api_key: 7790b3e866a74a05a4f24041f932aade
-#    auto_hide: true
-#  - platform: linkplay
-#    name: Колонки на кухне
-#    host: 192.168.1.138
- 
 #google:
 #  client_id: !secret google_client_id
 #  client_secret: !secret google_client_secret
 
 
+# ########################################
+# ###                GUI               ###
+# ########################################
 
-logbook: !include logbook.yaml  # View all events in a logbook
-notify: !include notify.yaml
-zone: !include zones.yaml
+lovelace:
+#  mode: yaml
+map:   # Enables a map showing the location of tracked devices
+frontend:   # Enables the frontend
+  javascript_version: latest
+  themes: !include_dir_named themes/
+
+#panel_custom: !include panels/panel_custom.yaml
+#panel_iframe: !include panels/panel_iframe.yaml
+
+custom_updater:
+  track:
+    - cards
+    - components
+  card_urls:
+    - https://raw.githubusercontent.com/kalkih/mini-media-player/master/tracker.json
+    - https://raw.githubusercontent.com/kalkih/mini-graph-card/master/tracker.json
+
+
+# ########################################
+# ###              LOGGING             ###
+# ########################################
+
+recorder: !include logging/recorder.yaml
+history: !include logging/history.yaml
+logbook: !include logging/logbook.yaml
+logger: !include logging/logger.yaml
+
+
+# ########################################
+# ###              ENTITIES            ###
+# ########################################
+
+media_player: !include entities/media_player.yaml
+device_tracker: !include entities/device_tracker.yaml
+zone: !include_dir_merge_list zones/
+
+
+# ########################################
+# ###             SERVICES             ###
+# ########################################
+
+sun:   # Track the sun
+#shopping_list:
+
+# Devices tracking
+discovery:   # Discover some devices automatically
+owntracks:   # OwnTracks device tracker
+mqtt:
+  broker: localhost
+  discovery: true
+
+# Notifications
+telegram_bot: !include notify/telegram.yaml
+notify: !include notify/notify.yaml
+
+python_script:
+
+tts:
+  - platform: google
+
+ffmpeg:
+  ffmpeg_bin: /usr/bin/ffmpeg
+
+shell_command:
+  lovelace_gen: 'python /config/lovelace-gen.py > /config/lovelace-gen.log'
+  cert_update: "bash /config/scripts/cert_update"
+
+
+
+
+
 binary_sensor: !include binary_sensors.yaml
 sensor: !include sensors.yaml
 input_select: !include input_selects.yaml
@@ -119,10 +132,8 @@ input_select: !include input_selects.yaml
 # input_datetime: !include input_datetimes.yaml
 input_boolean: !include input_booleans.yaml
 group: !include groups.yaml
-automation: !include automations.yaml
-script: !include scripts.yaml
+automation: !include_dir_merge_list automations/
+#script: !include scripts.yaml
 # alert: !include alerts.yaml
-history: !include history.yaml  # Enables support for tracking state changes over time
 camera: !include cameras.yaml
 scene: !include_dir_list scenes/
-device_tracker: !include devices.yaml  # Device Trackers
