@@ -5,11 +5,13 @@ house_mode:
         - Home
         - Away
         - Night
-        - Extended Away
+        - Vacation
 
 security_system:
     name: "Система Безопасности"
-    icon: mdi:shield-home
+    icon: mdi:security
+#    icon: mdi:shield-home
     options:
         - Disarmed
         - Armed
+        - Perimeter

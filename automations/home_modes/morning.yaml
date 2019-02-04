@@ -6,6 +6,9 @@
       from: 'Night'
       to: 'Home'
   action:
+    - service: input_select.select_option
+      entity_id: input_select.house_mode
+      data:
+        option: 'Home'
     - service: media_player.media_play
 #    entity_id: ...  # Default to All
-  

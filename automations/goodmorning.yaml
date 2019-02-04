@@ -21,7 +21,7 @@
       entity_id: input_boolean.goodmorning_switch
       to: 'on'
       for:
-        hours: 3
+        hours: 2
     - platform: time
       at: '12:00:00'
   action:

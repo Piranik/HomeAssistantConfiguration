@@ -12,10 +12,10 @@ homeassistant:
   time_zone: !secret home_timezone
   #    whitelist_external_dirs:
   #      - '/config/www/motion'
+  packages: !include_dir_named packages
   # Customization
   customize_glob: !include customglob.yaml
   customize: !include customize.yaml
-  packages: !include_dir_named packages
 config:   # Enables configuration UI
 auth:
 api:
@@ -86,9 +86,17 @@ logger: !include logging/logger.yaml
 # ###              ENTITIES            ###
 # ########################################
 
+zone: !include_dir_merge_list zones/
 media_player: !include entities/media_player.yaml
 device_tracker: !include entities/device_tracker.yaml
-zone: !include_dir_merge_list zones/
+camera: !include entities/cameras.yaml
+binary_sensor: !include entities/binary_sensors.yaml
+sensor: !include entities/sensors.yaml
+input_select: !include entities/input_selects.yaml
+# input_text: !include entities/input_texts.yaml
+# input_datetime: !include entities/input_datetimes.yaml
+input_boolean: !include entities/input_booleans.yaml
+group: !include entities/groups.yaml
 
 
 # ########################################
@@ -108,8 +116,7 @@ mqtt:
 # Notifications
 telegram_bot: !include notify/telegram.yaml
 notify: !include notify/notify.yaml
-
-python_script:
+#alert: !include_dir_merge_named notify/alerts/
 
 tts:
   - platform: google
@@ -117,23 +124,10 @@ tts:
 ffmpeg:
   ffmpeg_bin: /usr/bin/ffmpeg
 
+#script: !include scripts.yaml
+automation: !include_dir_merge_list automations/
+scene: !include_dir_list scenes/
+python_script:
 shell_command:
   lovelace_gen: 'python /config/lovelace-gen.py > /config/lovelace-gen.log'
-  cert_update: "bash /config/scripts/cert_update"
-
-
-
-
-
-binary_sensor: !include binary_sensors.yaml
-sensor: !include sensors.yaml
-input_select: !include input_selects.yaml
-# input_text: !include input_texts.yaml
-# input_datetime: !include input_datetimes.yaml
-input_boolean: !include input_booleans.yaml
-group: !include groups.yaml
-automation: !include_dir_merge_list automations/
-#script: !include scripts.yaml
-# alert: !include alerts.yaml
-camera: !include cameras.yaml
-scene: !include_dir_list scenes/
+  cert_update: 'bash /config/scripts/cert_update'

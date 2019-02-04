@@ -1,0 +1,9 @@
+guests_present:
+  name: У нас гости
+  icon: mdi:account-clock
+goodnight_switch:
+  name: Спокойной ночи
+  icon: mdi:weather-night
+goodmorning_switch:
+  name: Доброе утро
+  icon: mdi:white-balance-sunny

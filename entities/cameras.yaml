@@ -2,6 +2,8 @@
     name: Входная дверь
     input: -rtsp_transport tcp -i rtsp://hass:321ewq@192.168.1.124:554/av0_1
   - platform: onvif
+    name: Входная дверь
     host: 192.168.1.124
-    username: hass
+    port: 2000
+    username: !secret camera_doorbell_login
     password: !secret camera_doorbell_password

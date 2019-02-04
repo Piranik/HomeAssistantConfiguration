@@ -2,4 +2,4 @@
   icon: mdi:briefcase
   latitude: !secret work_penati_lat
   longitude: !secret work_penati_lon
-  radius: 300
+  radius: 150

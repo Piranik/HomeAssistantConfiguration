@@ -7,6 +7,7 @@
       for:
         hours: 24
   action:
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.vacation_mode
-  
+    - service: input_select.select_option
+      entity_id: input_select.house_mode
+      data:
+        option: 'Vacation'
