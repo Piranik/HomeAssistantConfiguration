@@ -10,3 +10,5 @@ CERTFILE=$HOST:/mnt/pool1/Certs/$DOMAIN/fullchain.cer
 # copy certs to store
 scp -i $SSH_CERT $KEYFILE '/ssl/privkey.key'
 scp -i $SSH_CERT $CERTFILE '/ssl/fullchain.cer'
+
+exit 0

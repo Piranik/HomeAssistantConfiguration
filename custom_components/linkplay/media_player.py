@@ -5,6 +5,10 @@ For more details about this platform, please refer to the documentation at
 https://home-assistant.io/components/media_player.linkplay/
 """
 
+#
+#  Copyright (c) 2019, Andrey "Limych" Khrolenok <andrey@khrolenok.ru>
+#  GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+#
 import binascii
 import json
 import logging
@@ -17,11 +21,12 @@ import requests
 import voluptuous as vol
 
 from homeassistant.components.media_player import (
-    DOMAIN, MEDIA_PLAYER_SCHEMA, MEDIA_TYPE_MUSIC, PLATFORM_SCHEMA,
-    SUPPORT_NEXT_TRACK, SUPPORT_PAUSE, SUPPORT_PLAY, SUPPORT_PLAY_MEDIA,
-    SUPPORT_PREVIOUS_TRACK, SUPPORT_SEEK, SUPPORT_SELECT_SOUND_MODE,
-    SUPPORT_SELECT_SOURCE, SUPPORT_SHUFFLE_SET, SUPPORT_VOLUME_MUTE,
-    SUPPORT_VOLUME_SET, MediaPlayerDevice)
+    MEDIA_PLAYER_SCHEMA, MediaPlayerDevice)
+from homeassistant.components.media_player.const import (
+    DOMAIN, MEDIA_TYPE_MUSIC, SUPPORT_NEXT_TRACK, SUPPORT_PAUSE, SUPPORT_PLAY,
+    SUPPORT_PLAY_MEDIA, SUPPORT_PREVIOUS_TRACK, SUPPORT_SEEK,
+    SUPPORT_SELECT_SOUND_MODE, SUPPORT_SELECT_SOURCE, SUPPORT_SHUFFLE_SET,
+    SUPPORT_VOLUME_MUTE, SUPPORT_VOLUME_SET)
 from homeassistant.const import (
     ATTR_ENTITY_ID, CONF_HOST, CONF_NAME, STATE_PAUSED, STATE_PLAYING,
     STATE_UNKNOWN)
@@ -57,7 +62,7 @@ LINKPLAY_REMOVE_SLAVES_SCHEMA = MEDIA_PLAYER_SCHEMA.extend({
 
 MAX_VOL = 100
 
-PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
+cv.PLATFORM_SCHEMA = cv.PLATFORM_SCHEMA.extend({
     vol.Required(CONF_HOST): cv.string,
     vol.Required(CONF_NAME): cv.string,
     vol.Optional(CONF_LASTFM_API_KEY): cv.string
@@ -80,12 +85,11 @@ SERVICE_TO_METHOD = {
 }
 
 SUPPORT_LINKPLAY = SUPPORT_SELECT_SOURCE | SUPPORT_SELECT_SOUND_MODE | \
-    SUPPORT_SHUFFLE_SET | SUPPORT_VOLUME_SET | SUPPORT_VOLUME_MUTE
+                   SUPPORT_SHUFFLE_SET | SUPPORT_VOLUME_SET | SUPPORT_VOLUME_MUTE
 
 SUPPORT_MEDIA_MODES_WIFI = SUPPORT_NEXT_TRACK | SUPPORT_PAUSE | \
-    SUPPORT_PLAY | SUPPORT_SEEK | SUPPORT_PREVIOUS_TRACK | SUPPORT_SEEK | \
-    SUPPORT_PLAY_MEDIA
-
+                           SUPPORT_PLAY | SUPPORT_SEEK | SUPPORT_PREVIOUS_TRACK | SUPPORT_SEEK | \
+                           SUPPORT_PLAY_MEDIA
 
 SOUND_MODES = {'0': 'Normal', '1': 'Classic', '2': 'Pop', '3': 'Jazz',
                '4': 'Vocal'}
@@ -169,6 +173,7 @@ class LinkPlayDevice(MediaPlayerDevice):
         self._ssid = None
         self._playing_spotify = None
         self._slave_list = None
+        self._new_song = True
 
     @property
     def name(self):
@@ -479,7 +484,7 @@ class LinkPlayDevice(MediaPlayerDevice):
             if device.entity_id == master_id:
                 cmd = "ConnectMasterAp:ssid={0}:ch={1}:auth=OPEN:".format(
                     device.ssid, device.wifi_channel) + \
-                    "encry=NONE:pwd=:chext=0"
+                      "encry=NONE:pwd=:chext=0"
                 self._lpapi.call('GET', cmd)
                 value = self._lpapi.data
                 if value == "OK":
@@ -564,8 +569,11 @@ class LinkPlayDevice(MediaPlayerDevice):
             return True
         if status['totlen'] == '0':
             # Special case when listening to radio
-            return bool(bytes.fromhex(
-                status['Title']).decode('utf-8') != self._media_title)
+            try:
+                return bool(bytes.fromhex(
+                    status['Title']).decode('utf-8') != self._media_title)
+            except ValueError:
+                return True
         return False
 
     def _update_via_upnp(self):
@@ -626,7 +634,7 @@ class LinkPlayDevice(MediaPlayerDevice):
         lfmdata = json.loads(self._lfmapi.data)
         try:
             self._media_image_url = \
-                    lfmdata['track']['album']['image'][2]['#text']
+                lfmdata['track']['album']['image'][2]['#text']
         except (ValueError, KeyError):
             self._media_image_url = None
 
@@ -645,7 +653,7 @@ class LinkPlayDevice(MediaPlayerDevice):
                             self._name:
                         self._upnp_device = upnpclient.Device(entry.location)
                         break
-                except requests.exceptions.HTTPError:
+                except (requests.exceptions.HTTPError, requests.exceptions.MissingSchema):
                     pass
 
         self._lpapi.call('GET', 'getPlayerStatus')
@@ -681,8 +689,11 @@ class LinkPlayDevice(MediaPlayerDevice):
             self._muted = player_status['mute']
             self._seek_position = int(int(player_status['curpos']) / 1000)
             self._position_updated_at = utcnow()
-            self._media_uri = str(bytearray.fromhex(
-                player_status['iuri']).decode())
+            try:
+                self._media_uri = str(bytearray.fromhex(
+                    player_status['iuri']).decode())
+            except KeyError:
+                self._media_uri = None
             self._state = {
                 'stop': STATE_PAUSED,
                 'play': STATE_PLAYING,
@@ -694,18 +705,17 @@ class LinkPlayDevice(MediaPlayerDevice):
             self._shuffle = True if player_status['loop'] == '2' else False
             self._playing_spotify = bool(player_status['mode'] == '31')
 
-            if self._is_playing_new_track(player_status):
-                # Only do some things when a new track is playing.
-                if self._playing_spotify or player_status['totlen'] == '0':
-                    self._update_via_upnp()
+            self._new_song = self._is_playing_new_track(player_status)
+            if self._playing_spotify or player_status['totlen'] == '0':
+                self._update_via_upnp()
 
+            elif self._media_uri is not None and self._new_song:
+                self._update_from_id3()
+                if self._lfmapi is not None and \
+                        self._media_title is not None:
+                    self._get_lastfm_coverart()
                 else:
-                    self._update_from_id3()
-                    if self._lfmapi is not None and\
-                            self._media_title is not None:
-                        self._get_lastfm_coverart()
-                    else:
-                        self._media_image_url = None
+                    self._media_image_url = None
 
             self._duration = int(int(player_status['totlen']) / 1000)
 

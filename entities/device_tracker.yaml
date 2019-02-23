@@ -1,27 +1,17 @@
-  - platform: owntracks
-  - platform: nmap_tracker
-    hosts: !secret nmap_tracker_hosts
-    scan_options: "-sn -T5 -n"
-    home_interval: 3
-    exclude:
-      - !secret hass_host_ip
-      - 192.168.1.1    # Gateway Router
-      - 192.168.1.2    # TOR-proxy
-      - 192.168.1.120  # NAS server
-      - 192.168.1.129  # Gogs server
-      - 192.168.1.146  # OpenVPN server
-      - 192.168.1.171  # Syncthing server
-      - 192.168.1.218  # Emby server
-      - 192.168.1.234  # Transmission server
-      - 192.168.1.239  # Sonarr & Jackett servers
-      - 192.168.1.254  # Wi-Fi Access Point
-      #
-      - 192.168.1.124  # Intercom
-      - 192.168.1.138  # Kitchen speaker
-    new_device_defaults:
-      track_new_devices: true
-      hide_if_away: true
-#  - platform: google_maps
-#    username: !secret google_location_username
-#    password: !secret google_location_password
-#    max_gps_accuracy: 150
+platform: snmp
+host: 192.168.1.1
+community: public
+baseoid: 1.3.6.1.2.1.4.22.1.2
+interval_seconds: 30
+consider_home: 120
+#- platform: nmap_tracker
+#  hosts: !secret nmap_tracker_hosts
+#  scan_options: "-sn -T5 -n"
+#  home_interval: 3
+#  new_device_defaults:
+#    track_new_devices: true
+#    hide_if_away: true
+#- platform: google_maps
+#  username: !secret google_location_username
+#  password: !secret google_location_password
+#  max_gps_accuracy: 150

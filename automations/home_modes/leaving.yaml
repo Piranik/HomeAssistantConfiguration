@@ -10,9 +10,6 @@
     - condition: numeric_state
       entity_id: sensor.ha_runtime_in_minutes
       above: 1
-    - condition: state
-      entity_id: input_select.house_mode
-      state: 'Home'
   action:
     - service: input_select.select_option
       entity_id: input_select.house_mode

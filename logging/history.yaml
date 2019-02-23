@@ -1,30 +1,30 @@
-  exclude:
-    domains:
-      - automation
-      - alert
-      - camera
-      - media_player
-      - sun
-      - calendar
-      # - sensor
-      - group
-      - switch
-      - script
-    entities:
-      - group.all_automations
-      - group.all_scripts
-      - group.all_switches
-      - group.all_lights
-      - group.all_devices
-  include:
-    domains:
-      - light
-      - device_tracker
-      - binary_sensor
-      - group
-      - media_player
-    entities:
-      - input_select.house_mode
-      - input_select.security_system
-      - sensor.owm_temperature
-      - sensor.owm_pressure_mmhg
+include:
+  domains:
+    - light
+    - device_tracker
+    - binary_sensor
+    - group
+    - media_player
+    - person
+  entities:
+    - input_select.house_mode
+    - input_select.security_system
+    - sensor.owm_temperature
+    - sensor.owm_pressure_mmhg
+exclude:
+  domains:
+    - automation
+    - alert
+    - camera
+    - sun
+    - calendar
+#    - sensor
+    - group
+    - switch
+    - script
+  entities:
+    - group.all_automations
+    - group.all_scripts
+    - group.all_switches
+    - group.all_lights
+    - group.all_devices

@@ -1,7 +1,14 @@
-#  - platform: emby
-#    host: emby.lan
-#    api_key: 7790b3e866a74a05a4f24041f932aade
-#    auto_hide: true
-  - platform: linkplay
-    name: Колонки на кухне
-    host: 192.168.1.138
+#- platform: emby
+#  host: !secret emby_host
+#  api_key: !secret emby_apikey
+#  auto_hide: true
+platform: linkplay
+name: "Kitchen"
+host: !secret speaker_kitchen_host
+#friendly_name: "Колонки на кухне"
+lastfm_api_key: !secret lastfm_apikey
+#- platform: linkplay
+#  name: 'Living Room'    # As Slave
+#  host: !secret speaker_kitchen_host
+#  friendly_name: 'Колонки в гостиной'
+#  lastfm_api_key: !secret lastfm_apikey

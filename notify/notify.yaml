@@ -1,8 +1,8 @@
-  - name: All
-    platform: group
-    services:
-      - service: limych
+- name: All
+  platform: group
+  services:
+    - service: limych
 
-  - name: Limych
-    platform: telegram
-    chat_id: !secret telegram_chat_limych
+- name: Limych
+  platform: telegram
+  chat_id: !secret telegram_chat_limych

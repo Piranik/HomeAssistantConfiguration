@@ -1,54 +1,49 @@
-  - platform: template
-    sensors:
-        dark_outside:
-           friendly_name: "Темно на улице"
-           value_template: "{{ is_state('sun.sun', 'below_horizon') }}"
+- platform: template
+  sensors:
+      dark_outside:
+         friendly_name: "Темно на улице"
+         value_template: "{{ is_state('sun.sun', 'below_horizon') }}"
 
-        presence:
-           friendly_name: "Люди в Доме"
-           device_class: occupancy
-           value_template: "{{ is_state('binary_sensor.presence_primary', 'on')
-               or is_state('binary_sensor.presence_guests', 'on') }}"
+      presence:
+         friendly_name: "Люди в Доме"
+         device_class: occupancy
+         value_template: "{{ is_state('binary_sensor.presence_primary', 'on')
+             or is_state('binary_sensor.presence_guests', 'on') }}"
 
-        presence_primary:
-           friendly_name: "Хозяева в Доме"
-           device_class: occupancy
-           value_template: "{{ is_state('binary_sensor.limych_at_home', 'on') }}"
+      presence_primary:
+         friendly_name: "Хозяева в Доме"
+         device_class: occupancy
+         value_template: "{{ is_state('binary_sensor.limych_at_home', 'on') }}"
 
-        presence_guests:
-           friendly_name: "Гости в Доме"
-           device_class: occupancy
-           value_template: "{{ is_state('input_boolean.guests_present', 'on')
-               or is_state('group.guests_devices', 'home') }}"
+      presence_guests:
+         friendly_name: "Гости в Доме"
+         device_class: occupancy
+         value_template: "{{ is_state('input_boolean.guests_present', 'on')
+             or is_state('group.guests_devices', 'home') }}"
 
-  - platform: ping
-    name: Internet Accessible
-    host: yandex.ru
-    scan_interval: 3
-    count: 3
+- platform: ping
+  name: Internet Accessible
+  host: yandex.ru
+  scan_interval: 3
+  count: 3
 
-#   - platform: workday
-#    country: RU
+# - platform: workday
+#  country: RU
    
-  - platform: bayesian
-    name: Limych at Home
-    friendly_name: "Лимыч в Доме"
-    device_class: occupancy
-    prior: 0.5
-    probability_threshold: 0.85
-    observations:
-      - entity_id: device_tracker.limych_ahphonem
-        prob_given_true: 0.9
-        prob_given_false: 0.1
-        platform: 'state'
-        to_state: 'home'
-      - entity_id: device_tracker.limych_ahtabletl
-        prob_given_true: 0.5
-        prob_given_false: 0.1
-        platform: 'state'
-        to_state: 'home'
-      - entity_id: device_tracker.limych_ahphones
-        prob_given_true: 0.5
-        prob_given_false: 0.1
-        platform: 'state'
-        to_state: 'home'
+- platform: bayesian
+  name: "Limych at Home"
+#  friendly_name: "Лимыч в Доме"
+  device_class: occupancy
+  prior: 0.5
+  probability_threshold: 0.9
+  observations:
+    - entity_id: device_tracker.limych_ahphonem
+      prob_given_true: 0.9
+      prob_given_false: 0.1
+      platform: 'state'
+      to_state: 'home'
+    - entity_id: device_tracker.limych_ahphones
+      prob_given_true: 0.5
+      prob_given_false: 0.1
+      platform: 'state'
+      to_state: 'home'

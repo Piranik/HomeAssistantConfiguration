@@ -39,19 +39,9 @@
 #            friendly_name: "OWM Pressure"
 #            value_template: "{{ (states('sensor.owm_pressure') | float / 1.33322) | round(0) }}"
 
-# Torrents
-  - platform: transmission
-    host: 192.168.1.234
-    monitored_variables:
-      - 'current_status'
-      - 'download_speed'
-      - 'upload_speed'
-      - 'active_torrents'
-      - 'paused_torrents'
-
 # Sonarr
   - platform: sonarr
-    host: 192.168.1.239
+    host: !secret sonarr_host
     api_key: !secret sonarr_apikey
     days: 3
 
@@ -59,3 +49,9 @@
   - platform: seventeentrack
     username: !secret seventeentrack_email
     password: !secret seventeentrack_password
+
+# Last.fm
+  - platform: lastfm
+    api_key: !secret lastfm_apikey
+    users:
+      - Limych

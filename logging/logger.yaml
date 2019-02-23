@@ -39,4 +39,5 @@ logs:
   homeassistant.components.sensor.vma: debug
   # pydeconz: debug
   # homeassistant.components.deconz: debug
+  homeassistant.components.telegram: debug
   root: warning

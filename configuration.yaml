@@ -16,10 +16,10 @@ homeassistant:
   # Customization
   customize_glob: !include customglob.yaml
   customize: !include customize.yaml
-config:   # Enables configuration UI
+
+default_config: # Add default configuration
 auth:
 api:
-wake_on_lan:
 upnp:
   port_mapping: true
 #  sensors: false
@@ -32,15 +32,6 @@ http:
   trusted_networks:
     - 127.0.0.1
     - 192.168.1.1
-
-# Checks for available updates
-# Note: This component will send some information about your system to
-# the developers to assist with development of Home Assistant.
-# For more information, please see:
-# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
-updater:
-# Optional, allows Home Assistant developers to focus on popular components.
-# include_used_components: true
 customizer:
   custom_ui: hosted
 
@@ -55,7 +46,6 @@ customizer:
 
 lovelace:
 #  mode: yaml
-map:   # Enables a map showing the location of tracked devices
 frontend:   # Enables the frontend
   javascript_version: latest
   themes: !include_dir_named themes/
@@ -98,16 +88,23 @@ input_select: !include entities/input_selects.yaml
 input_boolean: !include entities/input_booleans.yaml
 group: !include entities/groups.yaml
 
+# Torrents
+transmission:
+  host: !secret transmission_host
+  turtle_mode: true
+  monitored_conditions:
+    - current_status
+    - download_speed
+    - upload_speed
+
 
 # ########################################
 # ###             SERVICES             ###
 # ########################################
 
-sun:   # Track the sun
 #shopping_list:
 
 # Devices tracking
-discovery:   # Discover some devices automatically
 owntracks:   # OwnTracks device tracker
 mqtt:
   broker: localhost
@@ -119,7 +116,7 @@ notify: !include notify/notify.yaml
 #alert: !include_dir_merge_named notify/alerts/
 
 tts:
-  - platform: google
+  platform: google
 
 ffmpeg:
   ffmpeg_bin: /usr/bin/ffmpeg
@@ -127,7 +124,7 @@ ffmpeg:
 #script: !include scripts.yaml
 automation: !include_dir_merge_list automations/
 scene: !include_dir_list scenes/
-python_script:
+#python_script:
 shell_command:
   lovelace_gen: 'python /config/lovelace-gen.py > /config/lovelace-gen.log'
-  cert_update: 'bash /config/scripts/cert_update'
+  cert_update: '/bin/bash /config/scripts/cert_update'
