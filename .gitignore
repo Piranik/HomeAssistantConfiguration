@@ -1,3 +1,4 @@
+.*
 *.pid
 *.xml
 *.csr
@@ -5,22 +6,21 @@
 *.key
 *.log
 *.conf
-.*
-.uuid
+
 core.*
-!.gitkeep
-!.gitignore
+secrets.*
 home-assistant*
-ip_bans.yaml
-secrets.yaml
-secrets.txt
-google_calendars.yaml
-known_devices.yaml
 
 __pycache__/
-lib
 /deps/
 /tts/
 /ssh/
-
 /www/github/
+
+!.gitkeep
+!.gitignore
+
+ip_bans.yaml
+google_calendars.yaml
+known_devices.yaml
+cert_update.sh

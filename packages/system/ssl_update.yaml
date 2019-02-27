@@ -1,0 +1,14 @@
+# Update SSL certificates from NAS
+
+shell_command:
+  cert_update: '/bin/bash /config/cert_update.sh'
+
+automation:
+  - alias: '[System] Update SSL Certificates'
+    initial_state: 'on'
+    trigger:
+      platform: time
+      at: '00:00'
+
+    action:
+      service: shell_command.cert_update

@@ -10,19 +10,19 @@ homeassistant:
   unit_system: metric
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   time_zone: !secret home_timezone
-  #    whitelist_external_dirs:
-  #      - '/config/www/motion'
+#  whitelist_external_dirs:
+#    - '/config/www/motion'
   packages: !include_dir_named packages
   # Customization
   customize_glob: !include customglob.yaml
   customize: !include customize.yaml
 
 # Load basic components
-config:
 system_health:
 updater:
 auth:
 api:
+config:
 upnp:
   port_mapping: true
 #  sensors: false
@@ -81,16 +81,10 @@ logger: !include logging/logger.yaml
 discovery:
 person:
 zone: !include_dir_merge_list zones/
-media_player: !include entities/media_player.yaml
 device_tracker: !include entities/device_tracker.yaml
 camera: !include entities/cameras.yaml
 binary_sensor: !include entities/binary_sensors.yaml
 sensor: !include entities/sensors.yaml
-input_select: !include entities/input_selects.yaml
-# input_text: !include entities/input_texts.yaml
-# input_datetime: !include entities/input_datetimes.yaml
-input_boolean: !include entities/input_booleans.yaml
-group: !include entities/groups.yaml
 
 # Torrents
 transmission:
@@ -124,13 +118,4 @@ notify: !include notify/notify.yaml
 #tts:
 #  - platform: google
 
-ffmpeg:
-  ffmpeg_bin: /usr/bin/ffmpeg
-
-script:
-#  !include scripts.yaml
-automation: !include_dir_merge_list automations/
 scene: !include_dir_list scenes/
-python_script:
-shell_command:
-  cert_update: '/bin/bash /config/scripts/cert_update'

@@ -1,0 +1,138 @@
+title: Home info
+icon: mdi:home-heart
+panel: true
+path: home-info
+cards:
+  - type: vertical-stack
+    cards:
+      - type: custom:compact-custom-header
+      - type: custom:layout-card
+        layout: vertical
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    show:
+                      icon: false
+                    entities:
+                      - sensor.kitchen_temperature
+                    height: 75
+                    color_thresholds:
+                      - value: 0
+                        color: "#CCE5FF"
+                      - value: 10
+                        color: "#66B2FF"
+                      - value: 18
+                        color: "#0080FF"
+                      - value: 20
+                        color: "#87c087"
+                      - value: 21
+                        color: "#389638"
+                      - value: 24
+                        color: "#FF9932"
+                      - value: 25
+                        color: "#FF8000"
+                      - value: 26
+                        color: "#ff0000"
+                  - type: custom:mini-graph-card
+                    show:
+                      icon: false
+                    entities:
+                      - sensor.kitchen_humidity
+                    height: 75
+
+              - type: glance
+                show_header_toggle: false
+                column_width: calc(100% / 3)
+                entities:
+                  - input_boolean.cleaning_day
+                  - input_boolean.guest_mode
+                  - entity: input_boolean.vacation_mode
+                    name: "Отпуск"
+
+          - break
+          - type: vertical-stack
+            cards:
+#              - type: alarm-panel
+#                entity: alarm_control_panel.house
+#                states:
+#                  - arm_home
+#                  - arm_away
+#                  - arm_night
+
+              - type: entities
+                entities:
+#                  - type: custom:fold-entity-row
+#                    head:
+#                      type: section
+#                      label: Security
+#                    group_config:
+#                      secondary_info: last-changed
+#                    items:
+#                      - sensor.front_door
+#                      - sensor.back_door
+#                      - sensor.yard_door
+#                      - sensor.balcony_door
+#
+#                      - sensor.dining_area_window
+#                      - sensor.bedroom_window
+#                      - binary_sensor.bedroom_door
+#
+#                      - sensor.passage_movement
+#                      - sensor.upstairs_hallway_movement
+#                      - binary_sensor.stefans_room_motion
+#                      - sensor.ring_front_door_last_motion
+
+                  - type: custom:fold-entity-row
+                    head:
+                      type: section
+                      label: Presence
+                    group_config:
+                      secondary_info: last-changed
+                    items:
+                      - entity: device_tracker.limych_presence
+                        secondary_info: last-changed
+                      - entity: device_tracker.limych_ahphonem
+                        secondary_info: last-changed
+                      - entity: device_tracker.limych_ahtabletl
+                        secondary_info: last-changed
+                      - entity: device_tracker.limych_ahphones
+                        secondary_info: last-changed
+                      - entity: proximity.home_limych
+                        name: "Близость к дому"
+                      - entity: proximity.home_limych
+                        type: custom:state-attribute-element
+                        attribute: dir_of_travel
+                        prefix: "Направление движения: "
+
+                      - type: divider
+                      
+#                      - entity: sensor.unlocked_by
+#                        name: "Front door last unlocked by"
+#                        secondary_info: last-changed
+                      - entity: sensor.monitor
+                        secondary_info: last-changed
+
+          - break
+          - type: vertical-stack
+            cards: 
+              - type: history-graph
+                title: "Температура за 48ч"
+                hours_to_show: 48
+                entities:
+                  - sensor.kitchen_temperature
+                  - sensor.owm_temperature
+              - type: history-graph
+                title: "Температура за 7 дней"
+                hours_to_show: 168
+                entities:
+                  - sensor.kitchen_temperature
+                  - sensor.owm_temperature
+#              - type: history-graph
+#                title: Light 24 Hours
+#                hours_to_show: 24
+#                entities:
+#                  - sensor.passage_pir_luminance
+#                  - sensor.upstairs_hallway_pir_luminance

@@ -1,51 +1,8 @@
-- platform: uptime
-  name: Uptime
-  unit_of_measurement: minutes
-
-# Time-Date Sensor
-- platform: time_date
-  display_options:
-    - 'time'
-    - 'date'
-    - 'date_time'
-#    - 'time_date'
-
-# Weather prediction
-#  - platform: yr
-#    Name: Погода
-
-- platform: openweathermap
-  api_key: !secret openweathermap_apikey
-  language: ru
-  forecast: true
-  monitored_conditions:
-    - weather
-    - temperature
-    - wind_speed
-    - wind_bearing
-    - humidity
-    - pressure
-    - clouds
-    - rain
-    - snow
-    - weather_code
-
-# Sonarr
-- platform: sonarr
-  host: !secret sonarr_host
-  api_key: !secret sonarr_apikey
-  days: 3
 
 # 17track packages tracker
 - platform: seventeentrack
   username: !secret seventeentrack_email
   password: !secret seventeentrack_password
-
-# Last.fm
-- platform: lastfm
-  api_key: !secret lastfm_apikey
-  users:
-    - Limych
 
 # MQTT sensors
 #- platform: mqtt
@@ -66,12 +23,6 @@
   state_topic: "home/kitchen/humidity"
   unit_of_measurement: '%'
   device_class: humidity
-  availability_topic: "home/kitchen/status"
-- platform: mqtt
-  name: "Pressure"
-  state_topic: "home/kitchen/pressure"
-  unit_of_measurement: 'hPa'
-  device_class: pressure
   availability_topic: "home/kitchen/status"
 
 # Template sensors

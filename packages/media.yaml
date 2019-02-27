@@ -1,0 +1,44 @@
+homeassistant:
+  customize:
+    media_player.kitchen:
+      friendly_name: "Колонки на кухне"
+    media_player.living_room:
+      friendly_name: "Колонки в гостиной"
+
+ffmpeg:
+  ffmpeg_bin: /usr/bin/ffmpeg
+
+media_player:
+  - platform: linkplay
+    name: Kitchen
+    host: !secret speaker_kitchen_host
+    lastfm_api_key: !secret lastfm_apikey
+
+  - platform: linkplay
+    name: 'Living Room'    # As Slave
+    host: !secret speaker_kitchen_host
+    lastfm_api_key: !secret lastfm_apikey
+
+#  - platform: emby
+#    host: !secret emby_host
+#    api_key: !secret emby_apikey
+#    auto_hide: true
+
+sensor:
+  - platform: sonarr
+    host: !secret sonarr_host
+    api_key: !secret sonarr_apikey
+    days: 3
+
+
+automation:
+  - alias: '[Media] Stop all players at Night'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: input_select.day_mode
+        to: 'Ночь'
+
+    action:
+      - service: media_player.media_pause
+#        entity_id: ...  # Default to All

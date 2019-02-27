@@ -1,3 +1,8 @@
+homeassistant:
+  customize:
+    sensor.pressure:
+      friendly_name: "Атм. Давление"
+
 weather:
   - platform: openweathermap
     api_key: !secret openweathermap_apikey
@@ -6,11 +11,31 @@ weather:
 #  - platform: gismeteo
 
 sensor:
-#  - platform: command_line
-#    name: "Forecast Stockholm"
-#    icon: alert-outline
-#    command: "bash /config/scripts/check-weather-sthlm.sh"
-#    scan_interval: 180
+  - platform: openweathermap
+    api_key: !secret openweathermap_apikey
+    language: ru
+    forecast: true
+    monitored_conditions:
+      - weather
+      - temperature
+      - wind_speed
+      - wind_bearing
+      - humidity
+      - pressure
+      - clouds
+      - rain
+      - snow
+      - weather_code
+
+#  - platform: yr
+#    Name: Погода
+
+  - platform: mqtt
+    name: pressure
+    state_topic: "home/kitchen/pressure"
+    unit_of_measurement: 'hPa'
+    device_class: pressure
+    availability_topic: "home/kitchen/status"
 
 camera:
   - platform: generic

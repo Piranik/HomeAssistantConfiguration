@@ -1,9 +1,0 @@
-# Update SSL certificates from NAS
-- alias: Update SSL certificates
-  initial_state: true
-  trigger:
-    platform: time
-    at: '00:00:00'
-  action:
-    service: shell_command.cert_update
-  

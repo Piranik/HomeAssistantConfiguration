@@ -1,0 +1,54 @@
+group:
+  owners:
+    name: "Хозяева"
+    entities:
+      - person.limych
+
+#  motion:
+#    name: motion
+#    entities:
+#      - binary_sensor.home_occupancy
+
+sensor:
+  - platform: mqtt
+    state_topic: 'monitor/home/status'
+    name: "Статус мониторинга"
+
+proximity:
+  home_limych:
+    zone: home
+    devices:
+      - device_tracker.limych_ahphonem
+    tolerance: 50
+    unit_of_measurement: km
+
+automation:
+  - alias: '[Presence] Presence MQTT event'
+    initial_state: 'on'
+    trigger:
+    - platform: mqtt
+      topic: 'monitor/home/#'
+    action:
+      event: HASS_MQTT_PRESENCE
+      event_data_template:
+        topic: '{{ trigger.topic }}'
+        payload: '{{ trigger.payload }}'
+
+  - alias: '[Presence] Presence Homebound'
+    initial_state: 'on'
+    trigger:
+      - platform: numeric_state
+        entity_id: proximity.home_limych
+        below: 3
+    condition:
+      condition: or
+      conditions:
+      - condition: template
+        value_template: >
+          {{ states.proximity.home_limych.attributes.dir_of_travel == "towards" }}
+    action:
+      - service: notify.limych
+        data_template:
+          title: "{{ trigger.to_state.name | title }}"
+          message: "{{ trigger.to_state.state }}"
+

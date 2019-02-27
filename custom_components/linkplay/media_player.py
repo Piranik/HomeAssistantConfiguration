@@ -5,10 +5,6 @@ For more details about this platform, please refer to the documentation at
 https://home-assistant.io/components/media_player.linkplay/
 """
 
-#
-#  Copyright (c) 2019, Andrey "Limych" Khrolenok <andrey@khrolenok.ru>
-#  GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-#
 import binascii
 import json
 import logging
@@ -62,7 +58,7 @@ LINKPLAY_REMOVE_SLAVES_SCHEMA = MEDIA_PLAYER_SCHEMA.extend({
 
 MAX_VOL = 100
 
-cv.PLATFORM_SCHEMA = cv.PLATFORM_SCHEMA.extend({
+PLATFORM_SCHEMA = cv.PLATFORM_SCHEMA.extend({
     vol.Required(CONF_HOST): cv.string,
     vol.Required(CONF_NAME): cv.string,
     vol.Optional(CONF_LASTFM_API_KEY): cv.string
@@ -85,11 +81,12 @@ SERVICE_TO_METHOD = {
 }
 
 SUPPORT_LINKPLAY = SUPPORT_SELECT_SOURCE | SUPPORT_SELECT_SOUND_MODE | \
-                   SUPPORT_SHUFFLE_SET | SUPPORT_VOLUME_SET | SUPPORT_VOLUME_MUTE
+    SUPPORT_SHUFFLE_SET | SUPPORT_VOLUME_SET | SUPPORT_VOLUME_MUTE
 
 SUPPORT_MEDIA_MODES_WIFI = SUPPORT_NEXT_TRACK | SUPPORT_PAUSE | \
-                           SUPPORT_PLAY | SUPPORT_SEEK | SUPPORT_PREVIOUS_TRACK | SUPPORT_SEEK | \
-                           SUPPORT_PLAY_MEDIA
+    SUPPORT_PLAY | SUPPORT_SEEK | SUPPORT_PREVIOUS_TRACK | SUPPORT_SEEK | \
+    SUPPORT_PLAY_MEDIA
+
 
 SOUND_MODES = {'0': 'Normal', '1': 'Classic', '2': 'Pop', '3': 'Jazz',
                '4': 'Vocal'}
@@ -484,7 +481,7 @@ class LinkPlayDevice(MediaPlayerDevice):
             if device.entity_id == master_id:
                 cmd = "ConnectMasterAp:ssid={0}:ch={1}:auth=OPEN:".format(
                     device.ssid, device.wifi_channel) + \
-                      "encry=NONE:pwd=:chext=0"
+                    "encry=NONE:pwd=:chext=0"
                 self._lpapi.call('GET', cmd)
                 value = self._lpapi.data
                 if value == "OK":
@@ -634,7 +631,7 @@ class LinkPlayDevice(MediaPlayerDevice):
         lfmdata = json.loads(self._lfmapi.data)
         try:
             self._media_image_url = \
-                lfmdata['track']['album']['image'][2]['#text']
+                    lfmdata['track']['album']['image'][2]['#text']
         except (ValueError, KeyError):
             self._media_image_url = None
 
@@ -653,7 +650,7 @@ class LinkPlayDevice(MediaPlayerDevice):
                             self._name:
                         self._upnp_device = upnpclient.Device(entry.location)
                         break
-                except (requests.exceptions.HTTPError, requests.exceptions.MissingSchema):
+                except (requests.exceptions.HTTPError,requests.exceptions.MissingSchema):
                     pass
 
         self._lpapi.call('GET', 'getPlayerStatus')
@@ -711,7 +708,7 @@ class LinkPlayDevice(MediaPlayerDevice):
 
             elif self._media_uri is not None and self._new_song:
                 self._update_from_id3()
-                if self._lfmapi is not None and \
+                if self._lfmapi is not None and\
                         self._media_title is not None:
                     self._get_lastfm_coverart()
                 else:

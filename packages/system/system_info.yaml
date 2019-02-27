@@ -14,14 +14,16 @@ homeassistant:
       icon: mdi:emby
     sensor.system_server_transmission:
       icon: mdi:download
+    sensor.system_security_intercom:
+      icon: mdi:cctv
 
   customize_glob:
     sensor.system_*:
       templates:
         hs_color: >
           if (state === 'Online') return [0, 0];
-          else if (state === 'Unknown') return [40, 70];
           else if (state === 'Offline') return [0, 85];
+          else return [40, 70];
 
 sensor:
   - platform: template
@@ -61,6 +63,11 @@ sensor:
         entity_id: device_tracker.server_transmission
         value_template: >
           {{ 'Online' if is_state('device_tracker.server_transmission', 'home') else 'Offline' }}
+      system_security_intercom:
+        friendly_name: Домофон
+        entity_id: device_tracker.security_intercom
+        value_template: >
+          {{ 'Online' if is_state('device_tracker.security_intercom', 'home') else 'Offline' }}
 
 
 #automation:

@@ -1,12 +1,12 @@
 homeassistant:
   customize:
     sensor.kitchen_temperature:
-      friendly_name: Кухня
+      friendly_name: "Кухня"
     sensor.owm_temperature:
-      friendly_name: На улице
+      friendly_name: "На улице"
 
     sensor.kitchen_humidity:
-      friendly_name: Кухня
+      friendly_name: "Кухня"
 
 #    sensor.illumination_158d0001a66256:
 #      friendly_name: Hallway Lux
@@ -17,6 +17,6 @@ homeassistant:
     sensor.*temperature*:
       templates:
         hs_color: >
-          if (state < 23) return [0, 0];
+          if (state > 25) return [0, 85];
           else if (state > 23) return [40, 70];
-          else if (state > 25) return [0, 85];
+          else return [0, 0];

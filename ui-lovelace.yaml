@@ -21,16 +21,16 @@ resources:
     type: module
 #  - url: /customcards/custom-lovelace/calendar-card.js
 #    type: module
-#  - url: /customcards/custom-lovelace/card-modder.js
-#    type: js
+  - url: /customcards/github/thomasloven/card-modder.js?track=true
+    type: js
   - url: /customcards/github/maykar/compact-custom-header.js?track=true
     type: module
 #  - url: /customcards/custom-lovelace/dual-gauge-card.js
 #    type: js
 #  - url: /customcards/custom-lovelace/entity-attributes-card.js
 #    type: js
-#  - url: /customcards/custom-lovelace/fold-entity-row.js
-#    type: js
+  - url: /customcards/github/thomasloven/fold-entity-row.js?track=true
+    type: js
 #  - url: /customcards/custom-lovelace/home-setter.js
 #    type: js
 #  - url: /customcards/custom-lovelace/krisinfo-card.js
@@ -55,14 +55,14 @@ resources:
 #    type: js
 #  - url: /customcards/custom-lovelace/slideshow-card.js
 #    type: js
-#  - url: /customcards/custom-lovelace/state-attribute-element.js
-#    type: js
+  - url: /customcards/github/custom-cards/state-attribute-element.js?track=true
+    type: js
 #  - url: /customcards/custom-lovelace/state-element.js
 #    type: js
 #  - url: /customcards/custom-lovelace/state-switch.js
 #    type: js
-#  - url: /customcards/custom-lovelace/text-element.js
-#    type: js
+  - url: /customcards/github/custom-cards/text-element.js?track=true
+    type: js
 #  - url: /customcards/custom-lovelace/toggle-lock-entity-row.js
 #    type: js
 #  - url: /customcards/custom-lovelace/tracker-card.js
@@ -79,7 +79,7 @@ resources:
 title: Home
 views:
   - !include lovelace/00_home_view.yaml
-#  - !include lovelace/10_home_info_view.yaml
+  - !include lovelace/10_home_info_view.yaml
 #  - !include lovelace/20_lights_view.yaml
   - !include lovelace/30_system_info_view.yaml
 #  - !include lovelace/31_system_graphs.yaml
