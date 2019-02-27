@@ -1,0 +1,21 @@
+#homeassistant:
+#  customize:
+#    binary_sensor.internet_accessible:
+#      friendly_name: Internet
+
+sensor:
+  - platform: dnsip
+
+binary_sensor:
+  - platform: ping
+    name: Internet
+    host: yandex.ru
+    scan_interval: 3
+    count: 3
+
+speedtestdotnet:
+  monitored_conditions:
+    - download
+    - upload
+  scan_interval:
+    hours: 3

@@ -6,6 +6,7 @@
 *.log
 *.conf
 .*
+.uuid
 core.*
 !.gitkeep
 !.gitignore
@@ -14,7 +15,6 @@ ip_bans.yaml
 secrets.yaml
 secrets.txt
 google_calendars.yaml
-.uuid
 known_devices.yaml
 
 __pycache__/
@@ -23,7 +23,4 @@ lib
 /tts/
 /ssh/
 
-/lovelace/links_card.yaml
-/lovelace/for_gen/*
-
-/www/custom-lovelace/upcoming-media-card/images/
+/www/github/

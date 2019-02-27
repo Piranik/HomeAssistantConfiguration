@@ -1,0 +1,117 @@
+title: Info
+icon: mdi:lan
+path: info
+panel: true
+cards:  
+  - type: vertical-stack
+    cards:
+      - type: custom:compact-custom-header
+      - type: custom:layout-card
+        layout: vertical
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: picture-elements
+                image: /local/lovelace_ui/info/hubs_background.jpg
+                elements:
+                  - type: custom:hui-glance-card
+                    show_state: false
+                    columns: 4
+                    entities:
+                      - sensor.system_uplink
+                      - sensor.system_gateway
+                      - sensor.system_nas
+                      - sensor.system_server_emby
+                      - sensor.system_server_transmission
+                    style:
+                      left: 50%
+                      top: 50%
+                      width: 100%
+                      --paper-card-background-color: rgba(0, 0, 0, 0.5)
+                      --paper-item-icon-color: white
+                      border-radius: 5px
+                      color: rgb(0, 0, 0)
+#          - break
+#          - type: vertical-stack
+#            cards:
+#              - type: picture-elements
+#                image: /local/lovelace_ui/info/computers_background.jpg
+#                elements:
+#                  - type: custom:hui-glance-card
+#                    show_state: false
+#                    columns: 4
+#                    entities:
+#                      - entity: sensor.system_isa_computer
+#                        name: Isa
+#                      - entity: sensor.system_isa_dell_xps
+#                        name: Isa work laptop
+#                      # - entity: sensor.system_isa_laptop
+#                      #   name: Isa laptop
+#                      - entity: sensor.system_stefan_computer
+#                        name: Stefan
+#                      - entity: sensor.system_stefan_laptop
+#                        name: Stefan work laptop
+#                    style:
+#                      left: 50%
+#                      top: 50%
+#                      width: 100%
+#                      --paper-card-background-color: rgba(0, 0, 0, 0.4)
+#                      --paper-item-icon-color: white
+#                      border-radius: 5px
+#                      color: rgb(0, 0, 0)
+#
+#              - type: picture-elements
+#                image: /local/lovelace_ui/info/tv_background.jpg
+#                elements:
+#                  - type: custom:hui-glance-card
+#                    show_state: false
+#                    columns: 3
+#                    entities:
+#                      - entity: sensor.system_samsung65
+#                        name: TV
+#                      - entity: sensor.system_movie_system
+#                        name: Movie System
+#                      - entity: sensor.system_shield
+#                        name: Shield
+#                      - entity: sensor.system_sonos
+#                        name: Sonos
+#                        icon: mdi:speaker-wireless
+#                      - entity: sensor.system_samsung49
+#                        name: Bed TV
+#                      - entity: sensor.system_chromecast_bedroom
+#                        name: Bed CC
+#                    style:
+#                      left: 50%
+#                      top: 50%
+#                      width: 100%
+#                      --paper-card-background-color: rgba(0, 0, 0, 0.4)
+#                      --paper-item-icon-color: white
+#                      border-radius: 5px
+#                      color: rgb(0, 0, 0)
+
+          - type: vertical-stack
+            cards:
+            - type: picture-elements
+              image: /local/lovelace_ui/info/internet_background.jpg
+              elements:
+                - type: custom:hui-glance-card
+                  show_state: true
+                  columns: 4
+                  entities:
+                    - binary_sensor.internet
+                    - sensor.system_lan_wifi_ap
+                    - sensor.system_lan_router
+                    - entity: sensor.speedtest_ping
+                      name: Ping
+                    - entity: sensor.speedtest_download
+                      name: Download
+                    - entity: sensor.speedtest_upload
+                      name: Upload
+                  style:
+                    left: 50%
+                    top: 50%
+                    width: 100%
+                    --paper-card-background-color: rgba(0, 0, 0, 0.5)
+                    --paper-item-icon-color: white
+                    border-radius: 5px
+                    color: rgb(0, 0, 0)

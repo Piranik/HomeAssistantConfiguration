@@ -1,8 +1,16 @@
-# Add guests devices here who are staying over
-guests_devices:
-  name: "Устройства Гостей"
-  icon: mdi:tablet-cellphone
-  view: no
+owners:
+  name: "Хозяева"
   entities:
-    - device_tracker.ivanchev_phone1
-    - device_tracker.ivanchev_phone2
+    - person.limych
+#
+#motion:
+#  name: motion
+#  entities:
+#    - binary_sensor.home_occupancy
+
+kitchen:
+  name: Кухня
+  entities:
+    - sensor.kitchen_temperature
+    - sensor.kitchen_humidity
+    - media_player.kitchen

@@ -17,7 +17,10 @@ homeassistant:
   customize_glob: !include customglob.yaml
   customize: !include customize.yaml
 
-default_config: # Add default configuration
+# Load basic components
+config:
+system_health:
+updater:
 auth:
 api:
 upnp:
@@ -45,21 +48,20 @@ customizer:
 # ########################################
 
 lovelace:
-#  mode: yaml
+  mode: yaml
 frontend:   # Enables the frontend
   javascript_version: latest
   themes: !include_dir_named themes/
+map:
 
 #panel_custom: !include panels/panel_custom.yaml
 #panel_iframe: !include panels/panel_iframe.yaml
 
 custom_updater:
-  track:
-    - cards
-    - components
   card_urls:
-    - https://raw.githubusercontent.com/kalkih/mini-media-player/master/tracker.json
+    - https://raw.githubusercontent.com/MizterB/lovelace-secondaryinfo-entity-row/master/custom_cards.json
     - https://raw.githubusercontent.com/kalkih/mini-graph-card/master/tracker.json
+    - https://raw.githubusercontent.com/kalkih/mini-media-player/master/tracker.json
 
 
 # ########################################
@@ -76,6 +78,8 @@ logger: !include logging/logger.yaml
 # ###              ENTITIES            ###
 # ########################################
 
+discovery:
+person:
 zone: !include_dir_merge_list zones/
 media_player: !include entities/media_player.yaml
 device_tracker: !include entities/device_tracker.yaml
@@ -102,6 +106,7 @@ transmission:
 # ###             SERVICES             ###
 # ########################################
 
+sun:
 #shopping_list:
 
 # Devices tracking
@@ -109,22 +114,23 @@ owntracks:   # OwnTracks device tracker
 mqtt:
   broker: localhost
   discovery: true
+  discovery_prefix: homeassistant
 
 # Notifications
 telegram_bot: !include notify/telegram.yaml
 notify: !include notify/notify.yaml
 #alert: !include_dir_merge_named notify/alerts/
 
-tts:
-  platform: google
+#tts:
+#  - platform: google
 
 ffmpeg:
   ffmpeg_bin: /usr/bin/ffmpeg
 
-#script: !include scripts.yaml
+script:
+#  !include scripts.yaml
 automation: !include_dir_merge_list automations/
 scene: !include_dir_list scenes/
-#python_script:
+python_script:
 shell_command:
-  lovelace_gen: 'python /config/lovelace-gen.py > /config/lovelace-gen.log'
   cert_update: '/bin/bash /config/scripts/cert_update'

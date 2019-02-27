@@ -1,0 +1,10 @@
+input_boolean:
+  show_security:
+    name: Show security
+    initial: off
+  show_batteries:
+    name: Show batteries
+    initial: off
+  show_traffic:
+    name: Show traffic
+    initial: off

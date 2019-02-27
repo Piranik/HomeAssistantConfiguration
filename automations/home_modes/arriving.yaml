@@ -2,7 +2,7 @@
   initial_state: true
   trigger:
     - platform: state
-      entity_id: binary_sensor.presence_primary
+      entity_id: binary_sensor.presence_owners
       to: 'on'
   condition:
     - condition: numeric_state

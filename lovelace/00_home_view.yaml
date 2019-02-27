@@ -1,0 +1,330 @@
+title: Home
+icon: mdi:view-dashboard
+panel: true
+path: home
+cards:
+  - type: vertical-stack
+    cards:
+      - type: custom:compact-custom-header
+        main_config: true
+        disable: false
+        header: true
+        background_image: false
+        menu: show
+        notifications: show
+        voice: hide
+        options: clock
+        clock_format: 24
+        hide_tabs: 13
+
+      - type: custom:layout-card
+        layout: vertical
+        cards:
+          - type: custom:popup-card
+            entity: person.limych
+            title: Limych
+            card:
+              type: entities
+              entities:
+                - entity: sensor.isabellas_iphone_x_battery_level
+                  type: custom:secondaryinfo-entity-row
+                  secondary_info: "[[ sensor.isabellas_iphone_x_battery_state.state ]]"
+                - entity: person.limych
+                  name: Limych presence
+                  secondary_info: last-changed
+                  icon: mdi:map-marker-circle
+                - entity: device_tracker.limych_ahphonem
+                  secondary_info: last-changed
+                - entity: device_tracker.limych_ahtabletl
+                  secondary_info: last-changed
+                - entity: device_tracker.limych_ahphones
+                  secondary_info: last-changed
+#                - entity: proximity.home_isa
+#                  name: Proximity to home
+#                - entity: proximity.home_isa
+#                  type: custom:state-attribute-element
+#                  attribute: dir_of_travel
+#                  prefix: "Direction of travel: "
+          - type: horizontal-stack
+            cards:
+              - type: picture-entity
+                entity: person.limych
+                image: /local/lovelace_ui/home/limych_square.jpg
+                show_name: false
+                tap_action:
+                  action: more-info
+
+#              - type: custom:state-switch
+#                entity: user
+#                default: default
+#                states:
+#                  Stefan:
+#                    type: picture-elements
+#                    image: /local/lovelace_ui/home/background_square.png
+#                    elements:
+#                      - type: image
+#                        entity: switch.stefan_radiator_3
+#                        tap_action:
+#                          action: more-info
+#                        state_image:
+#                          "on": /local/lovelace_ui/home/radiator_on.jpg
+#                          "off": /local/lovelace_ui/home/radiator_off.jpg
+#                        style:
+#                          top: 50%
+#                          left: 50%
+#                          width: 100%
+#                      - type: state-label
+#                        entity: sensor.temperature_stefan
+#                        style:
+#                          top: 90%
+#                          left: 50%
+#
+#                  default:
+#                    type: picture-elements
+#                    image: /local/lovelace_ui/home/background_square.png
+#                    elements:
+#                      - type: state-icon
+#                        entity: light.inside_lights
+#                        tap_action:
+#                          action: navigate
+#                          navigation_path: /lovelace/lights
+#                        style:
+#                          "--iron-icon-width": 50px
+#                          "--iron-icon-height": 50px
+#                          top: 50%
+#                          left: 20%
+#                      - type: state-icon
+#                        entity: light.outdoor_lights
+#                        style:
+#                          "--iron-icon-width": 50px
+#                          "--iron-icon-height": 50px
+#                          top: 50%
+#                          left: 75%
+
+              - type: picture-elements
+                image: /local/lovelace_ui/home/background_square.png
+                elements:
+                  - type: icon
+                    icon: mdi:car
+                    tap_action:
+                      action: navigate
+                      navigation_path: /lovelace/traffic
+                    style:
+                      "--iron-icon-width": 100px
+                      "--iron-icon-height": 100px
+                      top: 50%
+                      left: 50%
+
+#          - type: horizontal-stack
+#            cards:
+              - type: picture-entity
+                name: Alarm
+                show_name: false
+                entity: alarm_control_panel.house
+                image: /local/lovelace_ui/home/house_square.jpg
+              - type: picture-entity
+                entity: input_boolean.guest_mode
+                image: /local/lovelace_ui/home/guests_square.jpg
+                show_name: false
+                tap_action:
+                  action: toggle
+
+          - type: horizontal-stack
+            cards:
+              - type: picture-entity
+                entity: input_boolean.cleaning_day
+                image: /local/lovelace_ui/home/cleaning_square.jpg
+                show_name: false
+                tap_action:
+                  action: toggle
+#              - type: custom:card-modder
+#                style:
+#                  animation: '[[ sensor.washer_animation.state ]] 2s linear infinite'
+#                  # animation: [[ if(sensor.washer_animation == 'Clean', "blink 2s linear infinite", "none") ]]
+#                extra_styles: >
+#                  @keyframes blink {
+#
+#                    50% {
+#                      outline: 3px solid #389638;
+#                    }
+#                  }
+#                card:
+#                  type: picture-entity
+#                  name: Washer
+#                  show_name: false
+#                  entity: input_select.washing_machine_status
+#                  state_image:
+#                    "Idle": /local/lovelace_ui/home/washer_square.jpg
+#                    "Running": /local/lovelace_ui/home/laundry_running_square.jpg
+#                    "Clean": /local/lovelace_ui/home/laundry_clean_2_square.jpg
+#              - type: picture-entity
+#                name: Cleaner
+#                show_name: false
+#                entity: input_boolean.cleaning_day
+#                image: /local/lovelace_ui/home/cleaner_square.jpg
+#                state_image:
+#                  "Not Today": /local/lovelace_ui/home/cleaner_bw_square.jpg
+#              - type: picture-entity
+#                entity: sensor.trash_status
+#                image: /local/lovelace_ui/home/trash_bear_bw_square.jpg
+#                show_name: false
+#                state_image:
+#                  "Put out": /local/lovelace_ui/home/trash_square.jpg
+#                  "Take in": /local/lovelace_ui/home/trash_square.jpg
+
+#          - type: horizontal-stack
+#            cards:
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.kitchen_temperature
+                show:
+                  icon: false
+                height: 75
+                color_thresholds:
+                  - value: 0
+                    color: "#CCE5FF"
+                  - value: 10
+                    color: "#66B2FF"
+                  - value: 15
+                    color: "#0080FF"
+                  - value: 18
+                    color: "#87c087"
+                  - value: 21
+                    color: "#389638"
+                  - value: 24
+                    color: "#FF9932"
+                  - value: 25
+                    color: "#FF8000"
+                  - value: 26
+                    color: "#FF0000"
+
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.owm_temperature
+                show:
+                  icon: false
+                height: 75
+                color_thresholds:
+                  - value: 0
+                    color: "#CCE5FF"
+                  - value: 10
+                    color: "#66B2FF"
+                  - value: 15
+                    color: "#0080FF"
+                  - value: 18
+                    color: "#87c087"
+                  - value: 21
+                    color: "#389638"
+                  - value: 24
+                    color: "#FF9932"
+                  - value: 25
+                    color: "#FF8000"
+                  - value: 26
+                    color: "#FF0000"
+
+          - break
+
+#          - type: vertical-stack
+#            cards:
+#              - type: custom:vertical-stack-in-card
+#                cards:
+#                - type: entity-filter
+#                  show_empty: false
+#                  entities:
+#                    - entity: sensor.front_door_lock
+#                      name: Front door lock
+#                    - entity: sensor.yard_door_lock
+#                      name: Yard door lock
+#                    - sensor.front_door
+#                    - sensor.back_door
+#                    - sensor.yard_door
+#                    - sensor.balcony_door
+#                    - sensor.yard_door
+#                    - entity: sensor.dining_area_window
+#                      name: Dining area
+#                    - entity: sensor.bedroom_window
+#                      name: Bedroom
+#                    - entity: sensor.front_door_outdoor_movement
+#                      name: Ring motion
+#                    - sensor.hallway_movement
+#                    - sensor.passage_movement
+#                    - sensor.upstairs_hallway_movement
+#                    - sensor.living_room_movement
+#                    - sensor.back_door_camera_movement
+#                    - entity: sensor.yard_storage_door
+#                      name: Storage door
+#                    - sensor.water_heater
+#                    - sensor.kitchen_sink
+#                    - binary_sensor.smoke_sensor_158d0001d37bdd
+#                    - binary_sensor.smoke_sensor_158d0001d37be5
+#                    - binary_sensor.smoke_sensor_158d0001d37c82
+#                  state_filter:
+#                    - 'Open'
+#                    - 'Movement detected'
+#                    - 'Leaking'
+#                    - 'Unlocked'
+#                    - 'on'
+#                    # - 'Unknown'
+#                  card:
+#                    type: glance
+#                    show_state: false
+#
+#                - type: entity-filter
+#                  show_empty: false
+#                  entities:
+#                    - light.outdoor_lights
+#                    - entity: light.outdoor_yard_light_net
+#                      name: Yard net
+#                    - light.bedroom_ceiling_light
+#                    - light.bedside_lamp
+#                    - light.dining_area_ceiling_light_level
+#                    - light.kitchen_ceiling_spotlights_level
+#                    - light.floorlamp_reading_light
+#                    - light.floorlamp_uplight
+#                    - light.hallway_window_light
+#                    - light.isa_ceiling_light
+#                    - light.living_room_ceiling_light_level
+#                    - light.living_room_spotlights_level
+#                    - light.passage_ceiling_spotlights_level
+#                    - light.stairs_lights_lights
+#                    - light.walk_in_closet_lights
+#                    - light.upstairs_hallway_ceiling_light_level
+#                    - light.gateway_light_34ce008bfc4b
+#                  state_filter:
+#                    - 'on'
+#                  card:
+#                    type: glance
+#                    show_state: false
+#              - type: shopping-list
+
+          - break
+
+          - type: vertical-stack
+            cards:
+              - type: entities
+                entities:
+                  - type: custom:mini-media-player
+                    entity: media_player.kitchen
+                    artwork_border: true
+                    toggle_power: false
+                    group: true
+                    show_source: true
+                    power_color: true
+                    show_progress: true
+                  - type: custom:mini-media-player
+                    entity: media_player.living_room
+                    artwork_border: true
+                    toggle_power: false
+                    group: true
+                    show_source: true
+                    power_color: true
+                    show_progress: true
+
+          - break
+
+          - type: custom:vertical-stack-in-card
+            cards:
+            - type: picture-entity
+              entity: camera.moscow_meteogram
+              show_name: false
+              show_state: false

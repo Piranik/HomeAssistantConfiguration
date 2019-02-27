@@ -1,0 +1,94 @@
+homeassistant:
+  customize:
+    sensor.system_uplink:
+      icon: mdi:wan
+    sensor.system_gateway:
+      icon: mdi:server
+    sensor.system_nas:
+      icon: mdi:nas
+    sensor.system_lan_wifi_ap:
+      icon: mdi:access-point
+    sensor.system_lan_router:
+      icon: mdi:router-wireless
+    sensor.system_server_emby:
+      icon: mdi:emby
+    sensor.system_server_transmission:
+      icon: mdi:download
+
+  customize_glob:
+    sensor.system_*:
+      templates:
+        hs_color: >
+          if (state === 'Online') return [0, 0];
+          else if (state === 'Unknown') return [40, 70];
+          else if (state === 'Offline') return [0, 85];
+
+sensor:
+  - platform: template
+    sensors:
+      system_uplink:
+        friendly_name: Uplink
+        entity_id: device_tracker.uplink
+        value_template: >
+          {{ 'Online' if is_state('device_tracker.uplink', 'home') else 'Offline' }}
+      system_gateway:
+        friendly_name: Gateway
+        entity_id: device_tracker.server_gate_uplink
+        value_template: >
+          {{ 'Online' if is_state('device_tracker.server_gate_uplink', 'home') else 'Offline' }}
+      system_nas:
+        friendly_name: NAS
+        entity_id: device_tracker.server_nas
+        value_template: >
+          {{ 'Online' if is_state('device_tracker.server_nas', 'home') else 'Offline' }}
+      system_lan_wifi_ap:
+        friendly_name: WiFi точка доступа
+        entity_id: device_tracker.lan_wifi_ap
+        value_template: >
+          {{ 'Online' if is_state('device_tracker.lan_wifi_ap', 'home') else 'Offline' }}
+      system_lan_router:
+        friendly_name: OpenWRT роутер
+        entity_id: device_tracker.lan_router
+        value_template: >
+          {{ 'Online' if is_state('device_tracker.lan_router', 'home') else 'Offline' }}
+      system_server_emby:
+        friendly_name: Emby
+        entity_id: device_tracker.server_emby
+        value_template: >
+          {{ 'Online' if is_state('device_tracker.server_emby', 'home') else 'Offline' }}
+      system_server_transmission:
+        friendly_name: Transmission
+        entity_id: device_tracker.server_transmission
+        value_template: >
+          {{ 'Online' if is_state('device_tracker.server_transmission', 'home') else 'Offline' }}
+
+
+#automation:
+#  - alias: '[System] Device Status'
+#    initial_state: 'on'
+#    trigger:
+#         - platform: state
+#           entity_id:
+#              - sensor.system_asus_router
+#              - sensor.system_netgear_router
+#              - sensor.system_printer
+#              - sensor.system_nas
+#              # - sensor.system_hue_hub
+#              - sensor.system_ir_blaster
+#              - sensor.system_ir_blaster_bedroom
+#              - sensor.system_ip_camera
+#            #  - sensor.system_ir_blaster_living_room
+#              - sensor.system_gateway
+#              - sensor.system_milight_hub
+#              - sensor.system_ring_doorbell
+#              - sensor.system_ring_chime_pro
+#              - sensor.system_ring_chime
+#           to: 'Offline'
+#           for:
+#             minutes: 5
+#    action:
+#      - service: notify.ios_isabellas_iphone_x
+#        data_template:
+#          title: 'Device {{ trigger.to_state.name }} is'
+#          message: >
+#            '{{ trigger.to_state.state }}'

@@ -3,3 +3,8 @@
 
 "sensor.openwrt_*":
   hidden: true
+
+"group.all_*":
+  hide_control: true
+"group.*":
+  hide_control: true

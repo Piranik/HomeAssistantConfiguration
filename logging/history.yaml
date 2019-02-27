@@ -10,7 +10,12 @@ include:
     - input_select.house_mode
     - input_select.security_system
     - sensor.owm_temperature
-    - sensor.owm_pressure_mmhg
+    - sensor.owm_humidity
+    - sensor.owm_pressure
+    - sensor.owm_wind_speed
+    - sensor.pressure
+    - sensor.kitchen_temperature
+    - sensor.kitchen_humidity
 exclude:
   domains:
     - automation

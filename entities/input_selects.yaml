@@ -1,17 +1,17 @@
 house_mode:
-    name: "Режим Дома"
-    icon: mdi:home
-    options:
-        - Home
-        - Away
-        - Night
-        - Vacation
+  name: "Режим Дома"
+  icon: mdi:home
+  options:
+    - Home
+    - Away
+    - Night
+    - Vacation
 
 security_system:
-    name: "Система Безопасности"
-    icon: mdi:security
-#    icon: mdi:shield-home
-    options:
-        - Disarmed
-        - Armed
-        - Perimeter
+  name: "Система Безопасности"
+#  icon: mdi:security
+  icon: mdi:shield-home
+  options:
+    - Disarmed
+    - Armed
+    - Perimeter

@@ -1,0 +1,6 @@
+homeassistant:
+  customize:
+    media_player.kitchen:
+      friendly_name: "Колонки на кухне"
+    media_player.living_room:
+      friendly_name: "Колонки в гостиной"
