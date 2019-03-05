@@ -23,4 +23,3 @@ __pycache__/
 ip_bans.yaml
 google_calendars.yaml
 known_devices.yaml
-cert_update.sh

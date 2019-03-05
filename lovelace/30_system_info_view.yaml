@@ -16,9 +16,8 @@ cards:
                 elements:
                   - type: custom:hui-glance-card
                     show_state: false
-                    columns: 4
+                    columns: 3
                     entities:
-                      - sensor.system_uplink
                       - sensor.system_gateway
                       - sensor.system_nas
                       - sensor.system_security_intercom
@@ -28,7 +27,7 @@ cards:
                       left: 50%
                       top: 50%
                       width: 100%
-                      --paper-card-background-color: rgba(0, 0, 0, 0.5)
+                      --paper-card-background-color: rgba(0, 0, 0, 0.3)
                       --paper-item-icon-color: white
                       border-radius: 5px
                       color: rgb(0, 0, 0)
@@ -60,21 +59,17 @@ cards:
                 image: /local/lovelace_ui/info/internet_background.jpg
                 elements:
                   - type: custom:hui-glance-card
-                    show_state: true
+                    show_state: false
                     columns: 3
                     entities:
-                      - binary_sensor.internet
+                      - sensor.system_internet
                       - sensor.system_lan_wifi_ap
                       - sensor.system_lan_router
-                      - entity: sensor.speedtest_download
-                        name: Download
-                      - entity: sensor.speedtest_upload
-                        name: Upload
                     style:
                       left: 50%
                       top: 50%
                       width: 100%
-                      --paper-card-background-color: rgba(0, 0, 0, 0.5)
+                      --paper-card-background-color: rgba(0, 0, 0, 0.3)
                       --paper-item-icon-color: white
                       border-radius: 5px
                       color: rgb(0, 0, 0)
@@ -86,28 +81,28 @@ cards:
               - type: custom:vertical-stack-in-card
                 cards:
                   - type: entities
+                    title: "NAS сервер"
                     show_header_toggle: false
                     entities:
-                      - type: custom:text-element
-                        text: "HAss сервер (192.168.1.7)"
-                      - entity: sensor.last_boot
+                      - entity: sensor.nas_last_boot
                         name: Last boot
-              - type: horizontal-stack
-                cards:
+                      - sensor.nas_alert_level
+                      - type: custom:useful-markdown-card
+                        content: [[ sensor.nas_alert_message ]]
                   - type: custom:mini-graph-card
+                    height: 75
+                    hour24: true
                     show:
-                      graph: false
-                    align_state: center
-                    name: Containers
+                      icon: false
                     entities:
-                      - sensor.nuc_containers_active
-                  - type: custom:mini-graph-card
-                    name: Cont. cpu use
-                    align_state: center
-                    show:
-                      graph: false
-                    entities:
-                      - sensor.nuc_containers_cpu_used
+                      - sensor.nas_volume_pct_used
+                    color_thresholds:
+                      - value: -1
+                        color: green
+                      - value: 75
+                        color: orange
+                      - value: 80
+                        color: red
 
               - type: horizontal-stack
                 cards:
@@ -116,11 +111,12 @@ cards:
                     show:
                       icon: false
                     font_size: 75
+                    hour24: true
                     entities:
-                      - sensor.nuc_cpu_load
+                      - sensor.nas_cpu_load
 #                    line_color: "#389638"
                     color_thresholds:
-                      - value: 1
+                      - value: -1
                         color: green
                       - value: 2
                         color: orange
@@ -128,11 +124,12 @@ cards:
                     show:
                       icon: false
                     name: CPU use
+                    hour24: true
                     entities:
-                      - sensor.processor_use
+                      - sensor.nas_processor_use
 #                    line_color: "#389638"
                     color_thresholds:
-                      - value: 0
+                      - value: -1
                         color: green
                       - value: 50
                         color: orange
@@ -142,8 +139,9 @@ cards:
                     name: Disk use
                     show:
                       icon: false
+                    hour24: true
                     entities:
-                      - sensor.nuc_disk_used
+                      - sensor.nas_disk_used
                     line_color: "#389638"
 
               - type: horizontal-stack
@@ -152,6 +150,106 @@ cards:
                     show:
                       icon: false
                     name: RAM free
+                    hour24: true
+                    entities:
+                      - sensor.nas_memory_free
+                    font_size: 50
+                    line_color: "#389638"
+                  - type: custom:mini-graph-card
+                    name: RAM use
+                    show:
+                      icon: false
+                    hour24: true
+                    entities:
+                      - sensor.nas_ram_used
+                    line_color: "#389638"
+                  - type: custom:mini-graph-card
+                    name: Swap size
+                    show:
+                      icon: false
+                    hour24: true
+                    entities:
+                      - sensor.nas_swap_used
+                    line_color: "#389638"
+
+          - break
+
+          - type: vertical-stack
+            cards:
+              - type: custom:vertical-stack-in-card
+                cards:
+                  - type: entities
+                    title: "HAss сервер"
+                    show_header_toggle: false
+                    entities:
+                      - entity: sensor.last_boot
+                        name: Last boot
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    show:
+                      graph: false
+                    align_state: center
+                    name: Containers
+                    hour24: true
+                    entities:
+                      - sensor.hass_containers_active
+                  - type: custom:mini-graph-card
+                    name: Cont. cpu use
+                    align_state: center
+                    show:
+                      graph: false
+                    hour24: true
+                    entities:
+                      - sensor.hass_containers_cpu_used
+
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    name: CPU load
+                    show:
+                      icon: false
+                    font_size: 75
+                    hour24: true
+                    entities:
+                      - sensor.hass_cpu_load
+#                    line_color: "#389638"
+                    color_thresholds:
+                      - value: -1
+                        color: green
+                      - value: 2
+                        color: orange
+                  - type: custom:mini-graph-card
+                    show:
+                      icon: false
+                    name: CPU use
+                    hour24: true
+                    entities:
+                      - sensor.processor_use
+#                    line_color: "#389638"
+                    color_thresholds:
+                      - value: -1
+                        color: green
+                      - value: 50
+                        color: orange
+                      - value: 80
+                        color: red
+                  - type: custom:mini-graph-card
+                    name: Disk use
+                    show:
+                      icon: false
+                    hour24: true
+                    entities:
+                      - sensor.hass_disk_used
+                    line_color: "#389638"
+
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    show:
+                      icon: false
+                    name: RAM free
+                    hour24: true
                     entities:
                       - sensor.memory_free
                     font_size: 50
@@ -160,26 +258,32 @@ cards:
                     name: RAM use
                     show:
                       icon: false
+                    hour24: true
                     entities:
-                      - sensor.nuc_ram_used
+                      - sensor.hass_ram_used
                     line_color: "#389638"
                   - type: custom:mini-graph-card
                     name: Swap size
                     show:
                       icon: false
+                    hour24: true
                     entities:
-                      - sensor.nuc_swap_used
+                      - sensor.hass_swap_used
                     line_color: "#389638"
 
-              - type: custom:mini-graph-card
-                name: "Оценка скорости"
-                show:
-                  icon: false
-                  extrema: true
-                  fill: false
-                entities:
-                  - entity: sensor.speedtest_download
-                    name: Download
-                  - entity: sensor.speedtest_upload
-                    name: Upload
-                line_color: "#389638"
+          - break
+
+          - type: custom:mini-graph-card
+            name: "Speed Test"
+            height: 75
+            show:
+              icon: false
+              extrema: true
+              fill: false
+            hour24: true
+            entities:
+              - entity: sensor.speedtest_download
+                name: Download
+              - entity: sensor.speedtest_upload
+                name: Upload
+            line_color: "#389638"

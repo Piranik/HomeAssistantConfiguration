@@ -6,9 +6,9 @@ include:
     - group
     - media_player
     - person
+    - proximity
   entities:
-    - input_select.house_mode
-    - input_select.security_system
+    - input_select.day_mode
     - sensor.owm_temperature
     - sensor.owm_humidity
     - sensor.owm_pressure
@@ -24,7 +24,6 @@ exclude:
     - sun
     - calendar
 #    - sensor
-    - group
     - switch
     - script
   entities:

@@ -1,13 +1,13 @@
 homeassistant:
   customize:
-    sensor.limych_sleeping:
+    binary_sensor.limych_sleeping:
       friendly_name: "Лимыч спит"
       icon: mdi:sleep
     device_tracker.limych_presence:
       friendly_name: "Присутствие Лимыча"
       icon: mdi:map-marker-circle
 
-sensor:
+binary_sensor:
   - platform: mqtt
     name: limych_sleeping
     state_topic: 'sleep/limych/tracking'

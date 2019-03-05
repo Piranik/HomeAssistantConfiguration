@@ -101,19 +101,19 @@ cards:
 #                          top: 50%
 #                          left: 75%
 
-              - type: picture-elements
-                image: /local/lovelace_ui/home/background_square.png
-                elements:
-                  - type: icon
-                    icon: mdi:car
-                    tap_action:
-                      action: navigate
-                      navigation_path: /lovelace/traffic
-                    style:
-                      "--iron-icon-width": 100px
-                      "--iron-icon-height": 100px
-                      top: 50%
-                      left: 50%
+              # - type: picture-elements
+              #   image: /local/lovelace_ui/home/background_square.png
+              #   elements:
+              #     - type: icon
+              #       icon: mdi:car
+              #       tap_action:
+              #         action: navigate
+              #         navigation_path: /lovelace/traffic
+              #       style:
+              #         "--iron-icon-width": 100px
+              #         "--iron-icon-height": 100px
+              #         top: 50%
+              #         left: 50%
 
 #          - type: horizontal-stack
 #            cards:
@@ -128,15 +128,15 @@ cards:
                 show_name: false
                 tap_action:
                   action: toggle
-
-          - type: horizontal-stack
-            cards:
               - type: picture-entity
                 entity: input_boolean.cleaning_day
                 image: /local/lovelace_ui/home/cleaning_square.jpg
                 show_name: false
                 tap_action:
                   action: toggle
+
+          - type: horizontal-stack
+            cards:
 #              - type: custom:card-modder
 #                style:
 #                  animation: '[[ sensor.washer_animation.state ]] 2s linear infinite'
@@ -180,6 +180,7 @@ cards:
                 show:
                   icon: false
                 height: 75
+                hour24: true
                 color_thresholds:
                   - value: 0
                     color: "#CCE5FF"
@@ -204,6 +205,7 @@ cards:
                 show:
                   icon: false
                 height: 75
+                hour24: true
                 color_thresholds:
                   - value: 0
                     color: "#CCE5FF"
@@ -222,8 +224,8 @@ cards:
                   - value: 26
                     color: "#FF0000"
 
-          - break
-
+#          - break
+#
 #          - type: vertical-stack
 #            cards:
 #              - type: custom:vertical-stack-in-card
@@ -297,8 +299,8 @@ cards:
 #                    show_state: false
 #              - type: shopping-list
 
-          - break
-
+#          - break
+#
           - type: vertical-stack
             cards:
               - type: entities
@@ -328,3 +330,12 @@ cards:
               entity: camera.moscow_meteogram
               show_name: false
               show_state: false
+
+          - type: picture-glance
+            show_state: false
+            title: Latest Motion Front Door
+            entity: camera.intercom
+            camera_image: camera.intercom
+            entities:
+              -  sensor.ring_front_door_battery
+          - !include dev_card.yaml

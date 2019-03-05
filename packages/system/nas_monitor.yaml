@@ -1,0 +1,85 @@
+homeassistant:
+  customize:
+    sensor.nas_last_boot:
+      icon: mdi:clock-outline
+    sensor.nas_volume_report:
+      friendly_name: "Pool Status"
+      icon: mdi:harddrive
+      templates:
+        hs_color: >
+          if (state == "HEALTHY") return [0, 0];
+          else return [0, 85];
+    sensor.nas_alert_level:
+      friendly_name: "Alert Level"
+      icon: mdi:alert
+    sensor.nas_alert_message:
+      friendly_name: "Alert Message"
+      icon: mdi:message-alert
+    sensor.nas_volume_pct_used:
+      friendly_name: "Pool Usage"
+      icon: mdi:gauge
+      templates:
+        hs_color: >
+          if (state < 80) return [0, 0];
+          else return [0, 85];
+
+sensor:
+  - platform: snmp
+    name: nas_uptime
+    host: nas.lan
+    baseoid: 1.3.6.1.2.1.1.3.0
+    accept_errors: true
+    unit_of_measurement: 'seconds'
+    value_template: '{{((value | int) / 100) | int}}'
+
+  - platform: template
+    sensors:
+      nas_last_boot:
+#        unit_of_measurement: '%'
+        value_template: "{{ as_timestamp(now()) - as_timestamp(states('sensor.nas_uptime')) | timestamp_local }}"
+        entity_id: sensor.nas_uptime
+
+  - platform: rest
+    name: nas_volume_report
+    json_attributes:
+      - name
+      - status
+      - used_pct
+      - is_decrypted
+    resource: http://nas.lan/api/v1.0/storage/volume/pool1/?format=json
+    username: !secret nas_username
+    password: !secret nas_password
+    value_template: '{{ value_json.status }}'
+    authentication: basic
+    scan_interval: 3600
+    headers:
+      Content-Type: application/json
+
+  - platform: template
+    sensors:
+      nas_volume_pct_used:
+        unit_of_measurement: '%'
+        value_template: "{{ state_attr('sensor.nas_volume_report', 'used_pct') | replace('%', '') | int }}"
+        entity_id: sensor.nas_volume_report
+
+  - platform: rest
+    name: nas_alert_level
+    resource: http://nas.lan/api/v1.0/system/alert/?format=json
+    username: !secret nas_username
+    password: !secret nas_password
+    value_template: "{{ value_json['objects'][0].level }}"
+    authentication: basic
+    scan_interval: 3600
+    headers:
+      Content-Type: application/json
+
+  - platform: rest
+    name: nas_alert_message
+    resource: http://nas.lan/api/v1.0/system/alert/?format=json
+    value_template: "{{ value_json['objects'][0].message }}"
+    username: !secret nas_username
+    password: !secret nas_password
+    authentication: basic
+    scan_interval: 3600
+    headers:
+      Content-Type: application/json

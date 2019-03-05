@@ -69,8 +69,8 @@ resources:
 #    type: js
 #  - url: /customcards/custom-lovelace/upcoming-media-card.js
 #    type: js
-#  - url: /customcards/custom-lovelace/useful-markdown-card.js
-#    type: js
+  - url: /customcards/github/thomasloven/useful-markdown-card.js?track=true
+    type: js
 #  - url: /customcards/custom-lovelace/username-element.js
 #    type: js
   - url: /customcards/custom-lovelace/vertical-stack-in-card.js

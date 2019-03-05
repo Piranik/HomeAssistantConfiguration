@@ -16,8 +16,10 @@ sensor:
     source: hassio
 
   - platform: glances
-    host: !secret hass_host_ip
-    name: "Nuc"
+    name: "HAss"
+#    host: this host
+    username: !secret glances_username
+    password: !secret glances_password
     version: 3
     resources:
       - 'disk_use_percent'
@@ -57,6 +59,7 @@ automation:
           message: "Hass.io Offline"
 
   - alias: '[System] Hass New Device Tracked'
+    initial_state: 'on'
     trigger:
       platform: event
       event_type: device_tracker_new_device
@@ -67,6 +70,7 @@ automation:
             New Device Tracked: {{trigger.event.data.host_name}} ({{trigger.event.data.entity_id}})
 
   - alias: '[System] Hass Updater'
+    initial_state: 'on'
     trigger:
       - platform: state
         entity_id: sensor.version_available
@@ -90,6 +94,7 @@ automation:
               url: https://png2.kisspng.com/20180504/avq/kisspng-computer-icons-starburst-clip-art-the-store-to-upgrade-kuangshuai-5aecf79d6760f6.2104595515254793254235.png
 
   - alias: '[System] Weekly Backup Monday at 3:00'
+    initial_state: 'on'
     trigger:
       platform: time
       at: '03:00'
@@ -106,6 +111,7 @@ automation:
           message: "Automated Snapshot {{ now().strftime('%Y-%m-%d') }}"
 
   - alias: '[System] Weekly Backup Monday to Google at 3:30'
+    initial_state: 'on'
     trigger:
       - platform: time
         at: '03:30'
@@ -120,6 +126,7 @@ automation:
           message: "Automatic snapshot uploaded"
 
   - alias: '[System] IP Ban Notify'
+    initial_state: 'on'
     trigger:
       - platform: state
         entity_id: persistent_notification.ipban

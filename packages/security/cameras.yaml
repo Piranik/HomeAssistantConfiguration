@@ -1,0 +1,20 @@
+homeassistant:
+  customize:
+    camera.intercom:
+      friendly_name: "Входная дверь"
+
+
+camera:
+  - platform: ffmpeg
+    name: intercom
+    input: -rtsp_transport tcp -i rtsp://hass:321ewq@192.168.1.90:554/av0_1
+
+  - platform: onvif
+    name: intercom1
+    host: 192.168.1.90
+    port: 2000
+    #  username: hass
+    #  password: 321ewq
+    username: !secret camera_doorbell_login
+    password: !secret camera_doorbell_password
+

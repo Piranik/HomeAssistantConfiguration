@@ -1,5 +1,5 @@
-host: 123 # Фиктивное поле для обхода ошибки
-name: 123 # Фиктивное поле для обхода ошибки
+#host: 123 # Фиктивное поле для обхода ошибки
+#name: 123 # Фиктивное поле для обхода ошибки
 platform: polling
 api_key: !secret telegram_apikey
 allowed_chat_ids:

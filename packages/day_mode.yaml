@@ -23,7 +23,7 @@ group:
     icon: mdi:sleep
     all: true
     entities:
-      - sensor.limych_sleeping
+      - binary_sensor.limych_sleeping
 
 automation:
   ###################################

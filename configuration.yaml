@@ -28,8 +28,8 @@ upnp:
 #  sensors: false
 http:
   base_url: !secret hass_base_url
-  ssl_certificate: /ssl/fullchain.cer
-  ssl_key: /ssl/privkey.key
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
   ip_ban_enabled: true
   login_attempts_threshold: 3
   trusted_networks:
@@ -55,7 +55,7 @@ frontend:   # Enables the frontend
 map:
 
 #panel_custom: !include panels/panel_custom.yaml
-#panel_iframe: !include panels/panel_iframe.yaml
+panel_iframe: !include panels/panel_iframe.yaml
 
 custom_updater:
   card_urls:
@@ -82,7 +82,6 @@ discovery:
 person:
 zone: !include_dir_merge_list zones/
 device_tracker: !include entities/device_tracker.yaml
-camera: !include entities/cameras.yaml
 binary_sensor: !include entities/binary_sensors.yaml
 sensor: !include entities/sensors.yaml
 
@@ -106,9 +105,10 @@ sun:
 # Devices tracking
 owntracks:   # OwnTracks device tracker
 mqtt:
-  broker: localhost
-  discovery: true
-  discovery_prefix: homeassistant
+  broker: a0d7b954-mqtt
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+  client_id: !secret home_title
 
 # Notifications
 telegram_bot: !include notify/telegram.yaml

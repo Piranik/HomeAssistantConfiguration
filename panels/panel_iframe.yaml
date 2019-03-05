@@ -1,0 +1,8 @@
+ide:
+  title: IDE
+  icon: mdi:code-braces
+  url: !secret ide_address
+mqtt:
+  title: MQTT
+  icon: mdi:home-automation
+  url: !secret mqtt_client_url
