@@ -6,7 +6,7 @@
 # read yaml file
 eval $(parse_yaml secrets.yaml "secret_")
 
-SSH_CERT=/config/ssh/id_rsa
+SSH_CERT=/config/.ssh/id_rsa
 
 CERTFILE=$secret_nas_host_ip:/mnt/pool1/Certs/$secret_hass_domain/fullchain.cer
 KEYFILE=$secret_nas_host_ip:/mnt/pool1/Certs/$secret_hass_domain/$secret_hass_domain.key

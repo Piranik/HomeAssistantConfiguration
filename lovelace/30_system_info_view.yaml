@@ -78,31 +78,17 @@ cards:
 
           - type: vertical-stack
             cards:
-              - type: custom:vertical-stack-in-card
-                cards:
-                  - type: entities
-                    title: "NAS сервер"
-                    show_header_toggle: false
-                    entities:
-                      - entity: sensor.nas_last_boot
-                        name: Last boot
-                      - sensor.nas_alert_level
-                      - type: custom:useful-markdown-card
-                        content: [[ sensor.nas_alert_message ]]
-                  - type: custom:mini-graph-card
-                    height: 75
-                    hour24: true
-                    show:
-                      icon: false
-                    entities:
-                      - sensor.nas_volume_pct_used
-                    color_thresholds:
-                      - value: -1
-                        color: green
-                      - value: 75
-                        color: orange
-                      - value: 80
-                        color: red
+              # - type: custom:vertical-stack-in-card
+              #   cards:
+              - type: entities
+                title: "NAS сервер"
+                show_header_toggle: false
+                entities:
+                  - entity: sensor.nas_last_boot
+                    name: Last boot
+                  - sensor.nas_alert_level
+                  - type: custom:useful-markdown-card
+                    content: [[ sensor.nas_alert_message ]]
 
               - type: horizontal-stack
                 cards:
@@ -126,7 +112,7 @@ cards:
                     name: CPU use
                     hour24: true
                     entities:
-                      - sensor.nas_processor_use
+                      - sensor.nas_cpu_use
 #                    line_color: "#389638"
                     color_thresholds:
                       - value: -1
@@ -136,13 +122,19 @@ cards:
                       - value: 80
                         color: red
                   - type: custom:mini-graph-card
-                    name: Disk use
+                    height: 75
+                    hour24: true
                     show:
                       icon: false
-                    hour24: true
                     entities:
-                      - sensor.nas_disk_used
-                    line_color: "#389638"
+                      - sensor.nas_volume_pct_used
+                    color_thresholds:
+                      - value: -1
+                        color: green
+                      - value: 75
+                        color: orange
+                      - value: 80
+                        color: red
 
               - type: horizontal-stack
                 cards:
@@ -152,7 +144,7 @@ cards:
                     name: RAM free
                     hour24: true
                     entities:
-                      - sensor.nas_memory_free
+                      - sensor.nas_ram_free
                     font_size: 50
                     line_color: "#389638"
                   - type: custom:mini-graph-card
@@ -195,7 +187,7 @@ cards:
                     entities:
                       - sensor.hass_containers_active
                   - type: custom:mini-graph-card
-                    name: Cont. cpu use
+                    name: Cont. CPU use
                     align_state: center
                     show:
                       graph: false
@@ -241,7 +233,13 @@ cards:
                     hour24: true
                     entities:
                       - sensor.hass_disk_used
-                    line_color: "#389638"
+                    color_thresholds:
+                      - value: -1
+                        color: green
+                      - value: 75
+                        color: orange
+                      - value: 80
+                        color: red
 
               - type: horizontal-stack
                 cards:
@@ -276,11 +274,11 @@ cards:
           - type: custom:mini-graph-card
             name: "Speed Test"
             height: 75
+            hour24: true
             show:
               icon: false
               extrema: true
               fill: false
-            hour24: true
             entities:
               - entity: sensor.speedtest_download
                 name: Download

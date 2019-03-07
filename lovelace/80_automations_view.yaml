@@ -1,0 +1,94 @@
+title: Automations
+icon: mdi:flash-auto
+path: automations
+cards:
+  - type: custom:compact-custom-header
+  # - type: custom:monster-card
+  #   show_empty: false
+  #   card:
+  #     type: entities
+  #     show_header_toggle: false
+  #     title: Appdaemon Apps
+  #   filter:
+  #     include:
+  #       - entity_id: input_boolean.ad_*
+
+  - type: custom:monster-card
+    show_empty: false
+    card:
+      type: entities
+      show_header_toggle: false
+      title: House
+    filter:
+      include:
+        - entity_id: 'automation.house*'
+
+  - type: custom:monster-card
+    show_empty: false
+    card:
+      type: entities
+      show_header_toggle: false
+      title: Lights
+    filter:
+      include:
+        - entity_id: 'automation.lights*'
+
+  - type: custom:monster-card
+    show_empty: false
+    card:
+      type: entities
+      show_header_toggle: false
+      title: Presence
+    filter:
+      include:
+        - entity_id: 'automation.presence*'
+
+  - type: custom:monster-card
+    show_empty: false
+    card:
+      type: entities
+      show_header_toggle: false
+      title: Security
+    filter:
+      include:
+        - entity_id: 'automation.security*'
+
+  - type: custom:monster-card
+    show_empty: false
+    card:
+      type: entities
+      show_header_toggle: false
+      title: System
+    filter:
+      include:
+        - entity_id: 'automation.system*'
+
+  - type: custom:monster-card
+    show_empty: false
+    card:
+      type: entities
+      show_header_toggle: false
+      title: Temperature
+    filter:
+      include:
+        - entity_id: 'automation.temperature*'
+
+  # - type: custom:monster-card
+  #   show_empty: false
+  #   card:
+  #     type: entities
+  #     show_header_toggle: false
+  #     title: TTS
+  #   filter:
+  #     include:
+  #       - entity_id: 'automation.tts*'
+
+  - type: custom:monster-card
+    show_empty: false
+    card:
+      type: entities
+      show_header_toggle: false
+      title: Alerts
+    filter:
+      include:
+        - entity_id: 'alert.*'

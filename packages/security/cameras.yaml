@@ -9,6 +9,10 @@ camera:
     name: intercom
     input: -rtsp_transport tcp -i rtsp://hass:321ewq@192.168.1.90:554/av0_1
 
+  - platform: local_file
+    name: intercom_last
+    file_path: /config/www/tmp/intercom_last.jpg
+    
   - platform: onvif
     name: intercom1
     host: 192.168.1.90
@@ -18,3 +22,26 @@ camera:
     username: !secret camera_doorbell_login
     password: !secret camera_doorbell_password
 
+
+automation:
+  - alias: "[Security] Doorbell"
+    trigger:
+      platform: webhook
+      webhook_id: doorbell
+    
+    action:
+      - service: camera.snapshot
+        data:
+          entity_id: camera.intercom
+          filename: /config/www/tmp/intercom_last.jpg
+      # - service: camera.local_file_update_file_path
+      #   data:
+      #     entity_id: camera.intercom_last
+      #     file_path: '/config/www/images/intercom_last.jpg'
+      - service: notify.limych
+        data:
+          title: "Front door motion"
+          message: "Image of pool gate attached"
+          data:
+            photo:
+              file: /config/www/tmp/intercom_last.jpg

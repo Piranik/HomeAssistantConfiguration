@@ -16,9 +16,10 @@ cards:
                   - type: custom:mini-graph-card
 #                    show:
 #                      icon: false
+                    height: 75
+                    hour24: true
                     entities:
                       - sensor.owm_temperature
-                    height: 75
                     # color_thresholds:
                     #   - value: 0
                     #     color: "#CCE5FF"
@@ -39,24 +40,28 @@ cards:
                   - type: custom:mini-graph-card
 #                    show:
 #                      icon: false
+                    height: 75
+                    hour24: true
                     entities:
                       - sensor.owm_humidity
-                    height: 75
                   - type: custom:mini-graph-card
-#                    show:
-#                      icon: false
+    #                    show:
+    #                      icon: false
+                    hour24: true
+                    height: 75
+                    decimals: 0
                     entities:
                       - sensor.pressure_mmhg
-                    height: 75
 
               - type: horizontal-stack
                 cards:
                   - type: custom:mini-graph-card
 #                    show:
 #                      icon: false
+                    hour24: true
+                    height: 75
                     entities:
                       - sensor.kitchen_temperature
-                    height: 75
                     color_thresholds:
                       - value: 0
                         color: "#CCE5FF"
@@ -77,9 +82,10 @@ cards:
                   - type: custom:mini-graph-card
 #                    show:
 #                      icon: false
+                    height: 75
+                    hour24: true
                     entities:
                       - sensor.kitchen_humidity
-                    height: 75
 
           - break
           - type: vertical-stack

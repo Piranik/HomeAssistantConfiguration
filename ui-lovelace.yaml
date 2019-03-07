@@ -43,8 +43,8 @@ resources:
     type: module
   - url: /customcards/github/kalkih/mini-media-player-bundle.js?track=true
     type: module
-#  - url: /customcards/custom-lovelace/monster-card.js
-#    type: js
+  - url: /customcards/custom-lovelace/monster-card.js
+    type: js
 #  - url: /customcards/custom-lovelace/plan-coordinates.js
 #    type: js
   - url: /customcards/github/thomasloven/popup-card.js?track=true
@@ -87,13 +87,10 @@ views:
 #  # - !include lovelace/50_cat_view.yaml
 #  - !include lovelace/60_traffic_view.yaml
 #  # - !include lovelace/60_floorplan_view.yaml
-#  # - !include lovelace/70_isa_view.yaml
-#  - !include lovelace/80_automations_view.yaml
+  - !include lovelace/80_automations_view.yaml
 #  - !include lovelace/101_dashboard.yaml
 #  # - !include lovelace/minimal_dash.yaml
 #  # - !include lovelace/103_dashboard_test.yaml
-#  - !include lovelace/krisinfotest.yaml
-#  # - !include lovelace/everything.yaml
 #  - !include lovelace/areas.yaml
 #
 #  - !include lovelace/99_settings_view.yaml

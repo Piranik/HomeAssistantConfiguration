@@ -26,9 +26,9 @@ cards:
             card:
               type: entities
               entities:
-                - entity: sensor.isabellas_iphone_x_battery_level
+                - entity: sensor.limych_ahphonem_battery_level
                   type: custom:secondaryinfo-entity-row
-                  secondary_info: "[[ sensor.isabellas_iphone_x_battery_state.state ]]"
+                  secondary_info: "[[ sensor.limych_ahphonem_battery_level.state ]]"
                 - entity: person.limych
                   name: Limych presence
                   secondary_info: last-changed
@@ -117,11 +117,11 @@ cards:
 
 #          - type: horizontal-stack
 #            cards:
-              - type: picture-entity
-                name: Alarm
-                show_name: false
-                entity: alarm_control_panel.house
-                image: /local/lovelace_ui/home/house_square.jpg
+              # - type: picture-entity
+              #   name: Alarm
+              #   show_name: false
+              #   entity: alarm_control_panel.house
+              #   image: /local/lovelace_ui/home/house_square.jpg
               - type: picture-entity
                 entity: input_boolean.guest_mode
                 image: /local/lovelace_ui/home/guests_square.jpg
@@ -335,7 +335,7 @@ cards:
             show_state: false
             title: Latest Motion Front Door
             entity: camera.intercom
-            camera_image: camera.intercom
+            camera_image: camera.intercom_last
             entities:
               -  sensor.ring_front_door_battery
           - !include dev_card.yaml

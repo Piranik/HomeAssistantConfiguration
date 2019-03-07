@@ -14,8 +14,8 @@ home-assistant*
 __pycache__/
 /deps/
 /tts/
-/ssh/
 /www/github/
+/tmp/
 
 !.gitkeep
 !.gitignore
