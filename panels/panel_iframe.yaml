@@ -2,7 +2,7 @@ ide:
   title: IDE
   icon: mdi:code-braces
   url: !secret ide_url
-logger:
+logs:
   title: Logs
   icon: mdi:view-list
   url: !secret logs_viewer_url
