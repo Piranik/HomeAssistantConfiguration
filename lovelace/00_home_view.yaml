@@ -2,6 +2,33 @@ title: Home
 icon: mdi:view-dashboard
 panel: true
 path: home
+popup_cards:
+  device_tracker.limych_presence:
+    card:
+      type: entities
+      entities:
+        - entity: sensor.limych_ahphonem_battery_level
+          type: custom:secondaryinfo-entity-row
+          secondary_info: "[[ sensor.limych_ahphonem_battery_level.state ]]"
+        - entity: device_tracker.limych_presence
+          name: "Присутствие Лимыча"
+          secondary_info: last-changed
+          icon: mdi:map-marker-circle
+        - entity: proximity.home_limych
+          name: "Расстояние от Дома"
+        - entity: proximity.home_limych
+          type: custom:state-attribute-element
+          attribute: dir_of_travel
+          prefix: "Направление движения: "
+          style:
+            text-align: right
+        #
+        - entity: device_tracker.limych_ahphonem
+          secondary_info: last-changed
+        - entity: device_tracker.limych_ahtabletl
+          secondary_info: last-changed
+        - entity: device_tracker.limych_ahphones
+          secondary_info: last-changed
 cards:
   - type: vertical-stack
     cards:
@@ -20,35 +47,10 @@ cards:
       - type: custom:layout-card
         layout: vertical
         cards:
-          - type: custom:popup-card
-            entity: person.limych
-            title: Limych
-            card:
-              type: entities
-              entities:
-                - entity: sensor.limych_ahphonem_battery_level
-                  type: custom:secondaryinfo-entity-row
-                  secondary_info: "[[ sensor.limych_ahphonem_battery_level.state ]]"
-                - entity: person.limych
-                  name: Limych presence
-                  secondary_info: last-changed
-                  icon: mdi:map-marker-circle
-                - entity: device_tracker.limych_ahphonem
-                  secondary_info: last-changed
-                - entity: device_tracker.limych_ahtabletl
-                  secondary_info: last-changed
-                - entity: device_tracker.limych_ahphones
-                  secondary_info: last-changed
-#                - entity: proximity.home_isa
-#                  name: Proximity to home
-#                - entity: proximity.home_isa
-#                  type: custom:state-attribute-element
-#                  attribute: dir_of_travel
-#                  prefix: "Direction of travel: "
           - type: horizontal-stack
             cards:
               - type: picture-entity
-                entity: person.limych
+                entity: device_tracker.limych_presence
                 image: /local/lovelace_ui/home/limych_square.jpg
                 show_name: false
                 tap_action:

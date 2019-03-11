@@ -2,7 +2,7 @@ group:
   owners:
     name: "Хозяева"
     entities:
-      - person.limych
+      - device_tracker.limych_presence
 
 #  motion:
 #    name: motion
@@ -44,7 +44,7 @@ automation:
       condition: or
       conditions:
       - condition: template
-        value_template: >
+        value_template: >-
           {{ states.proximity.home_limych.attributes.dir_of_travel == "towards" }}
     action:
       - service: notify.limych

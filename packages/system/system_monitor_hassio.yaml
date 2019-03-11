@@ -66,8 +66,8 @@ automation:
     action:
       - service: notify.hass_info
         data_template:
-          message: >
-            New Device Tracked: {{trigger.event.data.host_name}} ({{trigger.event.data.entity_id}})
+          message: >-
+            New Device Tracked: {{trigger.event.data.host_name}} ({{trigger.event.data.entity_id}}; {{trigger.event.data.source_type}})
 
   - alias: '[System] Hass Updater'
     initial_state: 'on'
@@ -76,12 +76,7 @@ automation:
         entity_id: sensor.version_available
     condition:
       - condition: template
-        value_template: >-
-          {{
-            states('sensor.version_available')
-            !=
-            states('sensor.version_current')
-          }}
+        value_template: "{{ states('sensor.version_available') != states('sensor.current_version') }}"
     action:
       - service: notify.hass_info
         data_template:
@@ -89,15 +84,14 @@ automation:
           message: >-
             Hass.io version {{ states('sensor.version_available') }} is now available!
           data:
-            attachment:
-              content-type: png
+            photo:
               url: https://png2.kisspng.com/20180504/avq/kisspng-computer-icons-starburst-clip-art-the-store-to-upgrade-kuangshuai-5aecf79d6760f6.2104595515254793254235.png
 
-  - alias: '[System] Weekly Backup Monday at 3:00'
+  - alias: '[System] Weekly Backup Monday at 5:00'
     initial_state: 'on'
     trigger:
       platform: time
-      at: '03:00'
+      at: '05:00'
 #    condition:
 #      - condition: time
 #        weekday:
@@ -110,11 +104,11 @@ automation:
         data_template:
           message: "Automated Snapshot {{ now().strftime('%Y-%m-%d') }}"
 
-  - alias: '[System] Weekly Backup Monday to Google at 3:30'
+  - alias: '[System] Weekly Backup Monday to Google at 5:30'
     initial_state: 'on'
     trigger:
       - platform: time
-        at: '03:30'
+        at: '05:30'
 #    condition:
 #      - condition: time
 #        weekday:
@@ -124,16 +118,3 @@ automation:
       - service: notify.hass_info
         data:
           message: "Automatic snapshot uploaded"
-
-  - alias: '[System] IP Ban Notify'
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: persistent_notification.ipban
-    condition:
-      - condition: template
-        value_template: "{{ trigger.to_state.state != off }}"
-    action:
-      - service: notify.hass_info
-        data_template:
-          message: "{{ trigger.state.attributes.message }}. IP address has been banned."

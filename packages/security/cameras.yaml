@@ -12,7 +12,7 @@ camera:
   - platform: local_file
     name: intercom_last
     file_path: /config/www/tmp/intercom_last.jpg
-    
+
   - platform: onvif
     name: intercom1
     host: 192.168.1.90
@@ -24,24 +24,26 @@ camera:
 
 
 automation:
-  - alias: "[Security] Doorbell"
+  - alias: "[Security] Front door motion"
     trigger:
       platform: webhook
       webhook_id: doorbell
     
     action:
+      # - delay: '00:00:02'
       - service: camera.snapshot
         data:
           entity_id: camera.intercom
           filename: /config/www/tmp/intercom_last.jpg
-      # - service: camera.local_file_update_file_path
-      #   data:
-      #     entity_id: camera.intercom_last
-      #     file_path: '/config/www/images/intercom_last.jpg'
-      - service: notify.limych
+      - delay: '00:00:07'
+      - service: camera.local_file_update_file_path
         data:
-          title: "Front door motion"
-          message: "Image of pool gate attached"
-          data:
-            photo:
-              file: /config/www/tmp/intercom_last.jpg
+          entity_id: camera.intercom_last
+          file_path: /config/www/tmp/intercom_last.jpg
+      # - service: notify.limych
+      #   data:
+      #     title: "Front door motion"
+      #     message: "Image of pool gate attached"
+      #     data:
+      #       photo:
+      #         file: /config/www/tmp/intercom_last.jpg

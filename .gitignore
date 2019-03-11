@@ -13,9 +13,11 @@ home-assistant*
 
 __pycache__/
 /deps/
+/esphome/
+/gh-pages/
+/tmp/
 /tts/
 /www/github/
-/tmp/
 
 !.gitkeep
 !.gitignore
@@ -23,3 +25,5 @@ __pycache__/
 ip_bans.yaml
 google_calendars.yaml
 known_devices.yaml
+
+/lovelace/links_card.yaml

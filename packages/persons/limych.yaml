@@ -14,10 +14,10 @@ homeassistant:
     sensor.*battery*:
       unit_of_measurement: '%'
       templates:
-        hs_color: >
-          if (state > 50) return [0, 85];
+        hs_color: >-
+          if (state > 50) return [0, 0];
           else if (state > 25) return [40, 70];
-          else return [0, 0];
+          else return [0, 85];
 
 
 binary_sensor:

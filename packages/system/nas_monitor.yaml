@@ -6,7 +6,7 @@ homeassistant:
       friendly_name: "Pool Status"
       icon: mdi:harddrive
       templates:
-        hs_color: >
+        hs_color: >-
           if (state == "HEALTHY") return [0, 0];
           else return [0, 85];
     sensor.nas_alert_level:
@@ -19,28 +19,65 @@ homeassistant:
       friendly_name: "Pool use"
       icon: mdi:gauge
       templates:
-        hs_color: >
+        hs_color: >-
           if (state < 80) return [0, 0];
           else return [0, 85];
+    sensor.nas_disk_ada0_temperature:
+      friendly_name: "ada0"
+    sensor.nas_disk_ada1_temperature:
+      friendly_name: "ada1"
+    sensor.nas_disk_ada2_temperature:
+      friendly_name: "ada2"
+    sensor.nas_disk_ada3_temperature:
+      friendly_name: "ada3"
+
+  customize_glob:
+    sensor.nas_disk_*_temperature:
+      unit_of_measurement: '°C'
+      scan_interval: 300
+      templates:
+        hs_color: >
+          if (state > 55) return [0, 85];
+          else if (state > 45) return [40, 70];
+          else if (state < 25) return [40, 70];
+          else return [0, 0];
 
 sensor:
   - platform: command_line
     name: nas_last_boot
     scan_interval: 3000
-    value_template: '{{ value | int | timestamp_local }}'
     command: >-
       ssh -i /config/.ssh/id_rsa -o StrictHostKeyChecking=no -q
       nas.lan
-      stat -f %m /var/run/dmesg.boot
+      perl -MPOSIX -le '$t = `stat -f %m /var/run/dmesg.boot`; $t = strftime "%FT%T%z", localtime($t); $t =~ s/..$/:$&/; print $t'
 
   - platform: command_line
-    name: nas_drive_ada2
-    unit_of_measurement: '°C'
-    scan_interval: 300
+    name: nas_disk_ada0_temperature
     command: >-
       ssh -i /config/.ssh/id_rsa -o StrictHostKeyChecking=no -q
       nas.lan
-      smartctl -A /dev/ada2 | grep -i temperature | awk '{print $10}'
+      smartctl -A /dev/ada0 | awk '{ if ($1 == 194) print $10 }'
+
+  - platform: command_line
+    name: nas_disk_ada1_temperature
+    command: >-
+      ssh -i /config/.ssh/id_rsa -o StrictHostKeyChecking=no -q
+      nas.lan
+      smartctl -A /dev/ada1 | awk '{ if ($1 == 194) print $10 }'
+
+  - platform: command_line
+    name: nas_disk_ada2_temperature
+    command: >-
+      ssh -i /config/.ssh/id_rsa -o StrictHostKeyChecking=no -q
+      nas.lan
+      smartctl -A /dev/ada2 | awk '{ if ($1 == 194) print $10 }'
+
+  - platform: command_line
+    name: nas_disk_ada3_temperature
+    command: >-
+      ssh -i /config/.ssh/id_rsa -o StrictHostKeyChecking=no -q
+      nas.lan
+      smartctl -A /dev/ada3 | awk '{ if ($1 == 194) print $10 }'
 
   - platform: snmp
     name: nas_uptime

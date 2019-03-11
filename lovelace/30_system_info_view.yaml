@@ -90,6 +90,14 @@ cards:
                   - type: custom:useful-markdown-card
                     content: [[ sensor.nas_alert_message ]]
 
+              - type: custom:monster-card
+                show_empty: false
+                card:
+                  type: glance
+                filter:
+                  include:
+                    - entity_id: 'sensor.nas_disk_*_temperature'
+
               - type: horizontal-stack
                 cards:
                   - type: custom:mini-graph-card
@@ -122,10 +130,10 @@ cards:
                       - value: 80
                         color: red
                   - type: custom:mini-graph-card
-                    height: 75
                     hour24: true
                     show:
                       icon: false
+                    lower_bound: 0
                     entities:
                       - sensor.nas_volume_pct_used
                     color_thresholds:
