@@ -52,21 +52,21 @@ Click on the images to get to the corresponding YAML-file.
 
 Home view
 
-[![](https://github.com/Limych/hassio-config/docs_images/mobile_home.jpg)](https://github.com/Limych/hassio-config/blob/master/lovelace/00_home_view.yaml)
+[![](https://raw.githubusercontent.com/Limych/hassio-config/master/docs_images/mobile_home.jpg)](https://github.com/Limych/hassio-config/blob/master/lovelace/00_home_view.yaml)
 
 Home info
 
-[![](https://github.com/Limych/hassio-config/docs_images/mobile_home_info.jpg)](https://github.com/Limych/hassio-config/blob/master/lovelace/10_home_info_view.yaml)
+[![](https://raw.githubusercontent.com/Limych/hassio-config/master/docs_images/mobile_home_info.jpg)](https://github.com/Limych/hassio-config/blob/master/lovelace/10_home_info_view.yaml)
 
 #### Desktop
 
 Home view
 
-[![](https://github.com/Limych/hassio-config/docs_images/desktop_home.jpg)](https://github.com/Limych/hassio-config/blob/master/lovelace/00_home_view.yaml)
+[![](https://raw.githubusercontent.com/Limych/hassio-config/master/docs_images/desktop_home.jpg)](https://github.com/Limych/hassio-config/blob/master/lovelace/00_home_view.yaml)
 
 Home info
 
-[![](https://github.com/Limych/hassio-config/docs_images/desktop_home_info.jpg)](https://github.com/Limych/hassio-config/blob/master/lovelace/10_home_info_view.yaml)
+[![](https://raw.githubusercontent.com/Limych/hassio-config/master/docs_images/desktop_home_info.jpg)](https://github.com/Limych/hassio-config/blob/master/lovelace/10_home_info_view.yaml)
 
 ## Add-ons
 
