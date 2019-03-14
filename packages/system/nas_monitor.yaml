@@ -12,7 +12,7 @@ homeassistant:
     sensor.nas_alert_level:
       friendly_name: "Alert Level"
       icon: mdi:alert
-    sensor.nas_alert_message:
+    sensor.nas_alerts:
       friendly_name: "Alert Message"
       icon: mdi:message-alert
     sensor.nas_volume_pct_used:
@@ -22,21 +22,33 @@ homeassistant:
         hs_color: >-
           if (state < 80) return [0, 0];
           else return [0, 85];
-    sensor.nas_disk_ada0_temperature:
-      friendly_name: "ada0"
-    sensor.nas_disk_ada1_temperature:
-      friendly_name: "ada1"
-    sensor.nas_disk_ada2_temperature:
-      friendly_name: "ada2"
-    sensor.nas_disk_ada3_temperature:
-      friendly_name: "ada3"
+    sensor.nas_cpu_load_1m:
+      friendly_name: "Load (1m)"
+    sensor.nas_cpu_load_5m:
+      friendly_name: "Load (5m)"
+    sensor.nas_cpu_load_15m:
+      friendly_name: "Load (15m)"
+    sensor.nas_ram_use:
+      friendly_name: "RAM use"
+    sensor.nas_ram_free:
+      friendly_name: "RAM free"
 
   customize_glob:
+    sensor.nas_disk_*:
+      icon: mdi:harddisk
+    sensor.nas_disk_ada0*:
+      friendly_name: "ada0"
+    sensor.nas_disk_ada1*:
+      friendly_name: "ada1"
+    sensor.nas_disk_ada2*:
+      friendly_name: "ada2"
+    sensor.nas_disk_ada3*:
+      friendly_name: "ada3"
     sensor.nas_disk_*_temperature:
       unit_of_measurement: '°C'
       scan_interval: 300
       templates:
-        hs_color: >
+        hs_color: >-
           if (state > 55) return [0, 85];
           else if (state > 45) return [40, 70];
           else if (state < 25) return [40, 70];
@@ -89,15 +101,6 @@ sensor:
     value_template: '{{ ((value | int) / 100) | int }}'
 
   - platform: snmp
-    name: nas_cpu_load
-    host: nas.lan
-    baseoid: 1.3.6.1.4.1.2021.10.1.3.3
-    scan_interval: 60
-    accept_errors: true
-    unit_of_measurement: '15 min'
-    value_template: '{{ value | float }}'
-
-  - platform: snmp
     name: nas_cpu_use
     host: nas.lan
     baseoid: 1.3.6.1.4.1.2021.11.11.0
@@ -107,13 +110,28 @@ sensor:
     value_template: '{{ 100 - (value | int) }}'
 
   - platform: snmp
-    name: nas_ram_free
+    name: nas_cpu_load_1m
     host: nas.lan
-    baseoid: 1.3.6.1.4.1.2021.4.5.0
+    baseoid: 1.3.6.1.4.1.2021.10.1.3.1
     scan_interval: 60
     accept_errors: true
-    unit_of_measurement: 'MiB'
-    value_template: '{{ (value | int) / 1024 / 1024 | round(1) }}'
+    value_template: '{{ value | float }}'
+
+  - platform: snmp
+    name: nas_cpu_load_5m
+    host: nas.lan
+    baseoid: 1.3.6.1.4.1.2021.10.1.3.2
+    scan_interval: 60
+    accept_errors: true
+    value_template: '{{ value | float }}'
+
+  - platform: snmp
+    name: nas_cpu_load_15m
+    host: nas.lan
+    baseoid: 1.3.6.1.4.1.2021.10.1.3.3
+    scan_interval: 60
+    accept_errors: true
+    value_template: '{{ value | float }}'
 
   - platform: snmp
     name: nas_ram_total
@@ -125,13 +143,22 @@ sensor:
     value_template: '{{ value | int }}'
 
   - platform: snmp
-    name: nas_ram_used
+    name: nas_ram_use
     host: nas.lan
     baseoid: 1.3.6.1.4.1.2021.4.6.0
     scan_interval: 60
     accept_errors: true
     unit_of_measurement: '%'
     value_template: '{{ (value | int) * 100 / (states("sensor.nas_ram_total") | int) | round(1) }}'
+
+  - platform: snmp
+    name: nas_ram_free
+    host: nas.lan
+    baseoid: 1.3.6.1.4.1.2021.4.5.0
+    scan_interval: 60
+    accept_errors: true
+    unit_of_measurement: 'MiB'
+    value_template: '{{ (value | int) / 1024 / 1024 | round(1) }}'
 
   - platform: rest
     name: nas_volume_report
@@ -151,7 +178,7 @@ sensor:
 
   - platform: template
     sensors:
-      nas_volume_pct_used:
+      nas_volume_pct_use:
         unit_of_measurement: '%'
         value_template: "{{ state_attr('sensor.nas_volume_report', 'used_pct') | replace('%', '') | int }}"
         entity_id: sensor.nas_volume_report
@@ -168,7 +195,7 @@ sensor:
       Content-Type: application/json
 
   - platform: rest
-    name: nas_alert_message
+    name: nas_alerts
     resource: http://nas.lan/api/v1.0/system/alert/?format=json
     value_template: "{{ value_json['objects'][0].message }}"
     username: !secret nas_username

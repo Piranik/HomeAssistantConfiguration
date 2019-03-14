@@ -2,140 +2,162 @@ title: Info
 icon: mdi:lan
 path: info
 panel: true
-cards:  
+popup_cards:
+  sensor.processor_use:
+    title: "CPU use"
+    card:
+      type: history-graph
+      title: "CPU load"
+      show:
+        icon: false
+        extrema: true
+      entities:
+        - sensor.load_1m
+        - sensor.load_5m
+        - sensor.load_15m
+        - sensor.cpu_temperature
+  sensor.memory_use_percent:
+    title: "RAM use"
+    card:
+      type: history-graph
+      entities:
+        - sensor.memory_free
+        - sensor.swap_use
+
+  sensor.nas_cpu_use:
+    title: "CPU use"
+    card:
+      type: history-graph
+      title: "CPU load"
+      show:
+        icon: false
+        extrema: true
+      entities:
+        - sensor.nas_cpu_load_1m
+        - sensor.nas_cpu_load_5m
+        - sensor.nas_cpu_load_15m
+        - sensor.nas_cpu_temperature
+  sensor.nas_ram_use:
+    title: "RAM use"
+    card:
+      type: history-graph
+      entities:
+        - sensor.nas_ram_free
+        - sensor.nas_swap_use
+
+cards:
   - type: vertical-stack
     cards:
       - type: custom:compact-custom-header
       - type: custom:layout-card
-        layout: vertical
+        max_columns: 3
         cards:
           - type: vertical-stack
             cards:
-              - type: picture-elements
-                image: /local/lovelace_ui/info/hubs_background.jpg
-                elements:
-                  - type: custom:hui-glance-card
-                    show_state: false
-                    columns: 3
-                    entities:
-                      - sensor.system_gateway
-                      - sensor.system_nas
-                      - sensor.system_security_intercom
-                      - sensor.system_server_emby
-                      - sensor.system_server_transmission
-                    style:
-                      left: 50%
-                      top: 50%
-                      width: 100%
-                      --paper-card-background-color: rgba(0, 0, 0, 0.3)
-                      --paper-item-icon-color: white
-                      border-radius: 5px
-                      color: rgb(0, 0, 0)
-#
-#          - type: vertical-stack
-#            cards:
-#              - type: picture-elements
-#                image: /local/lovelace_ui/info/cameras_background.jpg
-#                elements:
-#                  - type: custom:hui-glance-card
-#                    show_state: false
-#                    columns: 2
-#                    entities:
-#                      - sensor.system_security_intercom
-#                    style:
-#                      left: 50%
-#                      top: 50%
-#                      width: 100%
-#                      --paper-card-background-color: rgba(0, 0, 0, 0.4)
-#                      --paper-item-icon-color: white
-#                      border-radius: 5px
-#                      color: rgb(0, 0, 0)
-#
-#          - break
-#
-#          - type: vertical-stack
-#            cards:
-              - type: picture-elements
-                image: /local/lovelace_ui/info/internet_background.jpg
-                elements:
-                  - type: custom:hui-glance-card
-                    show_state: false
-                    columns: 3
-                    entities:
-                      - sensor.system_internet
-                      - sensor.system_lan_wifi_ap
-                      - sensor.system_lan_router
-                    style:
-                      left: 50%
-                      top: 50%
-                      width: 100%
-                      --paper-card-background-color: rgba(0, 0, 0, 0.3)
-                      --paper-item-icon-color: white
-                      border-radius: 5px
-                      color: rgb(0, 0, 0)
+              - type: custom:monster-card
+                show_empty: false
+                card:
+                  type: glance
+                  title: "Устройства"
+                  show_state: false
+                  columns: 4
+                filter:
+                  include:
+                    - entity_id: sensor.system_gateway
+                    - entity_id: sensor.system_nas
+                    - entity_id: 'sensor.system_server_*'
+                    - entity_id: 'sensor.system_*'
+                  exclude:
+                    - entity_id: sensor.system_uplink
 
-          - break
-
-          - type: vertical-stack
-            cards:
-              # - type: custom:vertical-stack-in-card
-              #   cards:
-              - type: entities
-                title: "NAS сервер"
-                show_header_toggle: false
-                entities:
-                  - entity: sensor.nas_last_boot
-                    name: Last boot
-                  - sensor.nas_alert_level
-                  - type: custom:useful-markdown-card
-                    content: [[ sensor.nas_alert_message ]]
+          # - type: vertical-stack
+          #   cards:
+          #     - type: picture-elements
+          #       image: /local/lovelace_ui/info/cameras_background.jpg
+          #       elements:
+          #         - type: custom:hui-glance-card
+          #           show_state: false
+          #           columns: 2
+          #           entities:
+          #             - sensor.system_security_intercom
+          #           style:
+          #             left: 50%
+          #             top: 50%
+          #             width: 100%
+          #             --paper-card-background-color: rgba(0, 0, 0, 0.4)
+          #             --paper-item-icon-color: white
+          #             border-radius: 5px
+          #             color: rgb(0, 0, 0)
 
               - type: custom:monster-card
                 show_empty: false
                 card:
                   type: glance
+                  title: "Соединения"
+                  show_state: false
                 filter:
                   include:
-                    - entity_id: 'sensor.nas_disk_*_temperature'
+                    - entity_id: sensor.connection_internet
+                    - entity_id: sensor.connection_wifi_ap
+                    - entity_id: 'sensor.connection_*'
+
+          - type: vertical-stack
+            cards:
+              - type: custom:vertical-stack-in-card
+                cards:
+                  - type: entities
+                    title: "NAS сервер"
+                    show_header_toggle: false
+                    entities:
+                      - entity: sensor.nas_last_boot
+                        name: "Last boot"
+    
+                  - type: custom:useful-markdown-card
+                    content: |
+                      <img alt='[[ sensor.nas_alert_level ]]' src='/local/lovelace_ui/info/icon_[[ sensor.nas_alert_level ]].svg' width='30'>
+                      [[ sensor.nas_alerts ]]
 
               - type: horizontal-stack
                 cards:
                   - type: custom:mini-graph-card
-                    name: CPU load
                     show:
                       icon: false
-                    font_size: 75
-                    hour24: true
-                    entities:
-                      - sensor.nas_cpu_load
-#                    line_color: "#389638"
-                    color_thresholds:
-                      - value: -1
-                        color: green
-                      - value: 2
-                        color: orange
-                  - type: custom:mini-graph-card
-                    show:
-                      icon: false
-                    name: CPU use
+                    name: "CPU use"
                     hour24: true
                     entities:
                       - sensor.nas_cpu_use
-#                    line_color: "#389638"
                     color_thresholds:
                       - value: -1
                         color: green
-                      - value: 50
+                      - value: 70
+                        color: lightgreen
+                      - value: 100
                         color: orange
-                      - value: 80
+                      - value: 300
                         color: red
+                    tap_action:
+                      action: more-info
                   - type: custom:mini-graph-card
-                    hour24: true
+                    name: "RAM use"
                     show:
                       icon: false
-                    lower_bound: 0
+                    hour24: true
                     entities:
-                      - sensor.nas_volume_pct_used
+                      - sensor.nas_ram_use
+                    color_thresholds:
+                      - value: -1
+                        color: green
+                      - value: 70
+                        color: orange
+                    tap_action:
+                      action: more-info
+                  - type: custom:mini-graph-card
+                    name: "Pool use"
+                    show:
+                      icon: false
+                    hour24: true
+                    entities:
+                      - sensor.nas_volume_pct_use
                     color_thresholds:
                       - value: -1
                         color: green
@@ -144,35 +166,13 @@ cards:
                       - value: 80
                         color: red
 
-              - type: horizontal-stack
-                cards:
-                  - type: custom:mini-graph-card
-                    show:
-                      icon: false
-                    name: RAM free
-                    hour24: true
-                    entities:
-                      - sensor.nas_ram_free
-                    font_size: 50
-                    line_color: "#389638"
-                  - type: custom:mini-graph-card
-                    name: RAM use
-                    show:
-                      icon: false
-                    hour24: true
-                    entities:
-                      - sensor.nas_ram_used
-                    line_color: "#389638"
-                  - type: custom:mini-graph-card
-                    name: Swap size
-                    show:
-                      icon: false
-                    hour24: true
-                    entities:
-                      - sensor.nas_swap_used
-                    line_color: "#389638"
-
-          - break
+              - type: custom:monster-card
+                show_empty: false
+                card:
+                  type: glance
+                filter:
+                  include:
+                    - entity_id: 'sensor.nas_disk_*_temperature'
 
           - type: vertical-stack
             cards:
@@ -183,104 +183,65 @@ cards:
                     show_header_toggle: false
                     entities:
                       - entity: sensor.last_boot
-                        name: Last boot
-              - type: horizontal-stack
-                cards:
-                  - type: custom:mini-graph-card
-                    show:
-                      graph: false
-                    align_state: center
-                    name: Containers
-                    hour24: true
-                    entities:
-                      - sensor.hass_containers_active
-                  - type: custom:mini-graph-card
-                    name: Cont. CPU use
-                    align_state: center
-                    show:
-                      graph: false
-                    hour24: true
-                    entities:
-                      - sensor.hass_containers_cpu_used
+                        name: "Last boot"
+                      - entity: sensor.cert
+                        # name: "SSL Cert"
+
+                  - type: custom:useful-markdown-card
+                    content: |
+                      [[ sensor.hass_alerts ]]
 
               - type: horizontal-stack
                 cards:
                   - type: custom:mini-graph-card
-                    name: CPU load
                     show:
                       icon: false
-                    font_size: 75
-                    hour24: true
-                    entities:
-                      - sensor.hass_cpu_load
-#                    line_color: "#389638"
-                    color_thresholds:
-                      - value: -1
-                        color: green
-                      - value: 2
-                        color: orange
-                  - type: custom:mini-graph-card
-                    show:
-                      icon: false
-                    name: CPU use
+                    name: "CPU use"
                     hour24: true
                     entities:
                       - sensor.processor_use
-#                    line_color: "#389638"
                     color_thresholds:
                       - value: -1
                         color: green
-                      - value: 50
+                      - value: 70
+                        color: lightgreen
+                      - value: 100
                         color: orange
-                      - value: 80
+                      - value: 300
                         color: red
+                    tap_action:
+                      action: more-info
                   - type: custom:mini-graph-card
-                    name: Disk use
+                    name: "RAM use"
                     show:
                       icon: false
                     hour24: true
                     entities:
-                      - sensor.hass_disk_used
+                      - sensor.memory_use_percent
+                    color_thresholds:
+                      - value: -1
+                        color: green
+                      - value: 70
+                        color: orange
+                    tap_action:
+                      action: more-info
+                  - type: custom:mini-graph-card
+                    name: "Disk use"
+                    show:
+                      icon: false
+                    hour24: true
+                    entities:
+                      - sensor.disk_use_percent
                     color_thresholds:
                       - value: -1
                         color: green
                       - value: 75
                         color: orange
-                      - value: 80
+                      - value: 90
                         color: red
 
-              - type: horizontal-stack
-                cards:
-                  - type: custom:mini-graph-card
-                    show:
-                      icon: false
-                    name: RAM free
-                    hour24: true
-                    entities:
-                      - sensor.memory_free
-                    font_size: 50
-                    line_color: "#389638"
-                  - type: custom:mini-graph-card
-                    name: RAM use
-                    show:
-                      icon: false
-                    hour24: true
-                    entities:
-                      - sensor.hass_ram_used
-                    line_color: "#389638"
-                  - type: custom:mini-graph-card
-                    name: Swap size
-                    show:
-                      icon: false
-                    hour24: true
-                    entities:
-                      - sensor.hass_swap_used
-                    line_color: "#389638"
-
-          - break
-
           - type: custom:mini-graph-card
-            name: "Speed Test"
+            name: "Скорость Интернета"
             height: 75
             hour24: true
             show:
@@ -289,7 +250,8 @@ cards:
               fill: false
             entities:
               - entity: sensor.speedtest_download
-                name: Download
+                name: "Приём"
               - entity: sensor.speedtest_upload
-                name: Upload
-            line_color: "#389638"
+                name: "Отправка"
+
+          - !include dev_card.yaml

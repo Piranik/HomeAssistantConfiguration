@@ -1,6 +1,6 @@
 homeassistant:
   customize:
-    sensor.system_internet:
+    sensor.connection_internet:
       icon: mdi:wan
     sensor.system_uplink:
       icon: mdi:wan
@@ -8,21 +8,28 @@ homeassistant:
       icon: mdi:server
     sensor.system_nas:
       icon: mdi:nas
-    sensor.system_lan_wifi_ap:
+    sensor.connection_wifi_ap:
       icon: mdi:access-point
-    sensor.system_lan_router:
+    sensor.connection_lan_router:
       icon: mdi:router-wireless
     sensor.system_server_emby:
       icon: mdi:emby
     sensor.system_server_transmission:
       icon: mdi:download
+    sensor.system_server_repo:
+      icon: mdi:git
+    sensor.system_server_syncthing:
+      icon: mdi:cloud-sync
+    sensor.system_server_sonarr:
+      icon: mdi:cloud-search
     sensor.system_security_intercom:
       icon: mdi:cctv
 
   customize_glob:
     sensor.system_*:
+      icon: mdi:server-network
       templates:
-        hs_color: >
+        hs_color: >-
           if (state === 'Online') return [0, 0];
           else if (state === 'Offline') return [0, 85];
           else return [40, 70];
@@ -30,50 +37,66 @@ homeassistant:
 sensor:
   - platform: template
     sensors:
-      system_internet:
+      connection_internet:
         friendly_name: "Интернет"
         entity_id: binary_sensor.internet
-        value_template: >
+        value_template: >-
           {{ 'Online' if is_state('binary_sensor.internet', 'on') else 'Offline' }}
       system_uplink:
         friendly_name: "Uplink"
         entity_id: device_tracker.uplink
-        value_template: >
+        value_template: >-
           {{ 'Online' if is_state('device_tracker.uplink', 'home') else 'Offline' }}
       system_gateway:
         friendly_name: "Gateway"
         entity_id: device_tracker.server_gate_uplink
-        value_template: >
+        value_template: >-
           {{ 'Online' if is_state('device_tracker.server_gate_uplink', 'home') else 'Offline' }}
       system_nas:
         friendly_name: "NAS"
         entity_id: device_tracker.server_nas
-        value_template: >
+        value_template: >-
           {{ 'Online' if is_state('device_tracker.server_nas', 'home') else 'Offline' }}
-      system_lan_wifi_ap:
+      connection_wifi_ap:
         friendly_name: "WiFi точка доступа"
         entity_id: device_tracker.lan_wifi_ap
-        value_template: >
+        value_template: >-
           {{ 'Online' if is_state('device_tracker.lan_wifi_ap', 'home') else 'Offline' }}
-      system_lan_router:
+      connection_lan_router:
         friendly_name: "OpenWRT роутер"
         entity_id: device_tracker.lan_router
-        value_template: >
+        value_template: >-
           {{ 'Online' if is_state('device_tracker.lan_router', 'home') else 'Offline' }}
       system_server_emby:
         friendly_name: "Emby"
         entity_id: device_tracker.server_emby
-        value_template: >
+        value_template: >-
           {{ 'Online' if is_state('device_tracker.server_emby', 'home') else 'Offline' }}
       system_server_transmission:
         friendly_name: "Transmission"
         entity_id: device_tracker.server_transmission
-        value_template: >
+        value_template: >-
           {{ 'Online' if is_state('device_tracker.server_transmission', 'home') else 'Offline' }}
+      system_server_repo:
+        friendly_name: "GIT Repository"
+        entity_id: device_tracker.server_repo
+        value_template: >-
+          {{ 'Online' if is_state('device_tracker.server_repo', 'home') else 'Offline' }}
+      system_server_syncthing:
+        friendly_name: "Syncthing"
+        entity_id: device_tracker.server_syncthing
+        value_template: >-
+          {{ 'Online' if is_state('device_tracker.server_syncthing', 'home') else 'Offline' }}
+      system_server_sonarr:
+        friendly_name: "Sonarr & Jackett"
+        entity_id: device_tracker.server_sonarr
+        value_template: >-
+          {{ 'Online' if is_state('device_tracker.server_sonarr', 'home') else 'Offline' }}
+
       system_security_intercom:
         friendly_name: "Домофон"
         entity_id: device_tracker.security_intercom
-        value_template: >
+        value_template: >-
           {{ 'Online' if is_state('device_tracker.security_intercom', 'home') else 'Offline' }}
 
 
@@ -83,14 +106,17 @@ automation:
     trigger:
       - platform: state
         entity_id:
-          - sensor.system_internet
+          - sensor.connection_internet
           - sensor.system_uplink
           - sensor.system_gateway
-#          - sensor.system_nas
-          - sensor.system_lan_wifi_ap
-          - sensor.system_lan_router
+          # - sensor.system_nas
+          - sensor.connection_wifi_ap
+          - sensor.connection_lan_router
           - sensor.system_server_emby
           - sensor.system_server_transmission
+          - sensor.system_server_repo
+          - sensor.system_server_syncthing
+          - sensor.system_server_sonarr
           - sensor.system_security_intercom
         to: 'Offline'
         for:
@@ -99,5 +125,4 @@ automation:
       - service: notify.hass_info
         data_template:
           title: 'Device {{ trigger.to_state.name }} is'
-          message: >
-            '{{ trigger.to_state.state }}'
+          message: '"{{ trigger.to_state.state }}"'

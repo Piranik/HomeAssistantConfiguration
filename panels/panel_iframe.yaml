@@ -4,7 +4,7 @@ ide:
   url: !secret ide_url
 logs:
   title: Logs
-  icon: mdi:view-list
+  icon: mdi:format-list-bulleted-type
   url: !secret logs_viewer_url
 mqtt:
   title: MQTT

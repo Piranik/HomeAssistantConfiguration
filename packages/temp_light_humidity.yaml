@@ -8,11 +8,19 @@ homeassistant:
       friendly_name: "Кухня"
     sensor.*temperature*:
       templates:
-        hs_color: >
+        hs_color: >-
           if (state > 25) return [0, 85];
           else if (state > 23) return [40, 70];
           else return [0, 0];
 
+
+binary_sensor:
+  - platform: template
+    sensors:
+      dark_outside:
+        friendly_name: "Темно на улице"
+        value_template: >-
+          {{ is_state('sun.sun', 'below_horizon') }}
 
 sensor:
   # - platform: mqtt

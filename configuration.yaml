@@ -16,6 +16,14 @@ homeassistant:
   # Customization
   customize_glob: !include customglob.yaml
   customize: !include customize.yaml
+  auth_providers:
+    - type: homeassistant
+    - type: trusted_networks
+      trusted_networks:
+        - 127.0.0.1
+        - ::1
+        - 192.168.1.0/24
+        - fd00::/8
 
 # Load basic components
 system_health:
@@ -32,10 +40,6 @@ http:
   ssl_key: /ssl/privkey.pem
   ip_ban_enabled: true
   login_attempts_threshold: 3
-  trusted_networks:
-    - 127.0.0.1
-    - ::1
-    - 192.168.1.1
 customizer:
   custom_ui: hosted
 
@@ -81,9 +85,6 @@ logger: !include logging/logger.yaml
 
 discovery:
 zone: !include_dir_merge_list zones/
-device_tracker: !include entities/device_tracker.yaml
-binary_sensor: !include entities/binary_sensors.yaml
-sensor: !include entities/sensors.yaml
 
 # Torrents
 transmission:
@@ -103,17 +104,23 @@ sun:
 #shopping_list:
 
 # Devices tracking
-owntracks:   # OwnTracks device tracker
+owntracks:
+  max_gps_accuracy: 200
 mqtt:
   broker: a0d7b954-mqtt
   username: !secret mqtt_username
   password: !secret mqtt_password
   client_id: !secret home_title
+  discovery: true
 
 # Notifications
 telegram_bot: !include notify/telegram.yaml
 notify: !include notify/notify.yaml
 #alert: !include_dir_merge_named notify/alerts/
+
+shell_command:
+  lovelace_gen: 'python /config/lovelace-gen.py'
+  # lovelace_gen_states: !secret lovelace_gen_states
 
 #tts:
 #  - platform: google

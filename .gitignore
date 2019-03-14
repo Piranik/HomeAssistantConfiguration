@@ -1,26 +1,24 @@
 .*
-*.pid
-*.xml
-*.csr
+*.conf
 *.crt
+*.csr
 *.key
 *.log
-*.conf
+*.pem
+*.pid
+*.xml
 
 core.*
-secrets.*
 home-assistant*
+secrets.*
 
 __pycache__/
 /deps/
-/esphome/
 /gh-pages/
-/tmp/
 /tts/
-/www/github/
 
-!.gitkeep
 !.gitignore
+!.gitkeep
 
 ip_bans.yaml
 google_calendars.yaml

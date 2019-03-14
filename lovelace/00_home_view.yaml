@@ -4,6 +4,7 @@ panel: true
 path: home
 popup_cards:
   device_tracker.limych_presence:
+    title: "Limych"
     card:
       type: entities
       entities:
@@ -340,4 +341,5 @@ cards:
             camera_image: camera.intercom_last
             entities:
               -  sensor.ring_front_door_battery
+
           - !include dev_card.yaml

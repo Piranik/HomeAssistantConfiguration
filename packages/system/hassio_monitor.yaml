@@ -1,34 +1,42 @@
+homeassistant:
+  customize:
+    sensor.cpu_temperature:
+      templates:
+        hs_color: >-
+          if (state > 80) return [0, 85];
+          else if (state > 60) return [40, 70];
+          else return [0, 0];
+
 sensor:
+  - platform: version
+  - platform: version
+    name: available_version
+    source: hassio
   - platform: uptime
     name: Uptime
     unit_of_measurement: minutes
+    
   - platform: systemmonitor
     resources:
+      - type: last_boot
+      - type: processor_use
+      - type: load_1m
+      - type: load_5m
+      - type: load_15m
+      - type: memory_use_percent
+      - type: memory_free
+      - type: swap_use
       - type: disk_use_percent
         arg: /
-      - type: memory_free
-      - type: memory_use_percent
-      - type: processor_use
-      - type: last_boot
-  - platform: version
-  - platform: version
-    name: version_available
-    source: hassio
+      - type: disk_use
+        arg: /
 
-  - platform: glances
-    name: "HAss"
-#    host: this host
-    username: !secret glances_username
-    password: !secret glances_password
-    version: 3
-    resources:
-      - 'disk_use_percent'
-      - 'memory_use_percent'
-      - 'swap_use_percent'
-      - 'processor_load'
-      - 'docker_active'
-      - 'docker_cpu_use'
-
+  - platform: command_line
+    name: "CPU Temperature"
+    command: "cat /sys/class/thermal/thermal_zone0/temp"
+    unit_of_measurement: "°C"
+    value_template: '{{ ( value | multiply(0.001) ) | round(1) }}'
+    
 rest_command:
   google_backup:
     url: 'http://localhost:8055/gb/doBackup'
@@ -67,25 +75,22 @@ automation:
       - service: notify.hass_info
         data_template:
           message: >-
-            New Device Tracked: {{trigger.event.data.host_name}} ({{trigger.event.data.entity_id}}; {{trigger.event.data.source_type}})
+            New Device Tracked: {{trigger.event.data.host_name}} ({{trigger.event.data.entity_id}})
 
   - alias: '[System] Hass Updater'
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: sensor.version_available
+        entity_id: sensor.available_version
     condition:
       - condition: template
-        value_template: "{{ states('sensor.version_available') != states('sensor.current_version') }}"
+        value_template: "{{ states('sensor.available_version') != states('sensor.current_version') }}"
     action:
       - service: notify.hass_info
         data_template:
           title: Upgrade time!
           message: >-
-            Hass.io version {{ states('sensor.version_available') }} is now available!
-          data:
-            photo:
-              url: https://png2.kisspng.com/20180504/avq/kisspng-computer-icons-starburst-clip-art-the-store-to-upgrade-kuangshuai-5aecf79d6760f6.2104595515254793254235.png
+            Hass.io version {{ states('sensor.available_version') }} is now available!
 
   - alias: '[System] Weekly Backup Monday at 5:00'
     initial_state: 'on'
@@ -99,10 +104,10 @@ automation:
     action:
       - service: hassio.snapshot_full
         data_template:
-          name: "Automated Snapshot {{ now().strftime('%Y-%m-%d') }}"
+          name: "Automated Snapshot {{ now().strftime('%F') }}"
       - service: notify.hass_info
         data_template:
-          message: "Automated Snapshot {{ now().strftime('%Y-%m-%d') }}"
+          message: "Automated Snapshot {{ now().strftime('%F') }}"
 
   - alias: '[System] Weekly Backup Monday to Google at 5:30'
     initial_state: 'on'

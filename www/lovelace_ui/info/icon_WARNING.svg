@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1"
+	 id="svg2" inkscape:output_extension="org.inkscape.output.svg.inkscape" inkscape:version="0.46" sodipodi:docname="good-warning-error.svg" sodipodi:version="0.32" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 34 34"
+	 style="enable-background:new 0 0 34 34;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:url(#path3368_1_);stroke:#7B0000;stroke-width:1.6643;}
+	.st1{fill:#FFFFFF;}
+	.st2{fill:url(#rect3426_1_);stroke:#816907;stroke-width:1.948;stroke-linecap:square;stroke-linejoin:round;}
+	.st3{fill:#4E4008;}
+	.st4{fill:url(#SVGID_1_);stroke:url(#SVGID_2_);stroke-width:1.944;stroke-linecap:round;stroke-linejoin:round;}
+	.st5{fill:#FFFFFF;stroke:#3776E4;stroke-width:0.1;stroke-miterlimit:10;}
+</style>
+<g id="g3515" transform="matrix(0.7700158,0,0,0.7700158,-5.326365,172.00685)">
+	
+		<linearGradient id="rect3426_1_" gradientUnits="userSpaceOnUse" x1="344.5838" y1="-1263.3867" x2="369.7279" y2="-1285.9226" gradientTransform="matrix(0.77 0 0 -0.77 -246.6419 -1176.1509)">
+		<stop  offset="0" style="stop-color:#FFE680"/>
+		<stop  offset="0.3965" style="stop-color:#FFCC00"/>
+		<stop  offset="1" style="stop-color:#FFE784"/>
+	</linearGradient>
+	<path id="rect3426" sodipodi:nodetypes="cccc" class="st2" d="M28.8-218.4l18.8,31.8H10.4L28.8-218.4z"/>
+	<g>
+		<path id="path3447" class="st3" d="M27.1-209.4l0,13.4l3.8,0l0-13.4L27.1-209.4z"/>
+		
+			<path id="path3483" sodipodi:cx="165.91756" sodipodi:cy="745.33893" sodipodi:rx="2.1465743" sodipodi:ry="2.1465743" sodipodi:type="arc" class="st3" d="
+			M31.1-191c0,1.2-1,2.1-2.1,2.1c-1.2,0-2.1-1-2.1-2.1s1-2.1,2.1-2.1C30.2-193.2,31.1-192.2,31.1-191L31.1-191z"/>
+	</g>
+</g>
+</svg>

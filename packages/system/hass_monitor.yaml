@@ -4,33 +4,6 @@ input_boolean:
     icon: mdi:code-braces
 
 sensor:
-  - platform: mqtt
-    state_topic: "homeassistant/sensor/uptime/state"
-    name: Hass Rpi Uptime
-    icon: mdi:clock-outline
-  - platform: mqtt
-    state_topic: "homeassistant/sensor/memory_free/state"
-    name: Hass Rpi Free Memory
-    icon: mdi:memory
-  - platform: mqtt
-    state_topic: "homeassistant/sensor/last_boot/state"
-    name: Hass Rpi Last Boot
-    icon: mdi:clock-outline
-  - platform: mqtt
-    state_topic: "homeassistant/sensor/disk_use_percent_/state"
-    name: Hass Rpi Disk Use Percent
-    icon: mdi:memory
-
-  # - platform: cert_expiry
-  #   host: https://grimsan.servebeer.com:8123
-  #   name: Cert port
-
-  # - platform: cert_expiry
-  #   host: https://grimsan.servebeer.com
-  #   name: Cert
-
-# binary_sensor:
-#   - platform: mqtt
-#     state_topic: "homeassistant/binary_sensor/critical_disk_use/state"
-#     name: Hass Rpi Critical Disk Use
-#     icon: mdi:floppy
+  - platform: cert_expiry
+    host: !secret hass_base_url
+    name: Cert
