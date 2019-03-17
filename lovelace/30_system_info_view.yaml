@@ -115,7 +115,6 @@ cards:
     
                   - type: custom:useful-markdown-card
                     content: |
-                      <img alt='[[ sensor.nas_alert_level ]]' src='/local/lovelace_ui/info/icon_[[ sensor.nas_alert_level ]].svg' width='30'>
                       [[ sensor.nas_alerts ]]
 
               - type: horizontal-stack

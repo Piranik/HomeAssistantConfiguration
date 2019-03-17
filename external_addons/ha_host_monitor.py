@@ -19,7 +19,13 @@ import psutil
 import requests
 import urllib3
 
-VERSION = '1.0'
+VERSION = '1.1'
+
+FREENAS = False
+try:
+    FREENAS = 'FreeNAS' in open('/etc/version').read()
+except FileNotFoundError:
+    pass
 
 
 class HddTemp:
@@ -174,6 +180,17 @@ if __name__ == '__main__':
     stat['disks_temperature'] = HddTemp().all_hdds_temp_dict()
     #
     stat['pools_stat'] = zpool_stat()
+
+    if FREENAS:
+        import sys
+        sys.path.append('/usr/local/www/')
+        from freenasUI.middleware.client import client
+        with client as c:
+            results = c.call("alert.list")
+        alerts = []
+        for al in results:
+            alerts.append('[{}] {}'.format(al['level'], al['formatted']))
+        stat['alerts'] = "\n".join(alerts)
 
     # Send data to Home Assistant
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)

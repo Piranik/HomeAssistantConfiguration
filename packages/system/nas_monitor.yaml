@@ -97,27 +97,27 @@ homeassistant:
           else return [0, 85];
 
 sensor:
-  - platform: rest
-    name: nas_alert_level
-    resource: http://nas.lan/api/v1.0/system/alert/?format=json
-    username: !secret nas_username
-    password: !secret nas_password
-    value_template: "{{ value_json['objects'][0].level }}"
-    authentication: basic
-    scan_interval: 3600
-    headers:
-      Content-Type: application/json
+  # - platform: rest
+  #   name: nas_alert_level
+  #   resource: http://nas.lan/api/v1.0/system/alert/?format=json
+  #   username: !secret nas_username
+  #   password: !secret nas_password
+  #   value_template: "{{ value_json['objects'][0].level }}"
+  #   authentication: basic
+  #   scan_interval: 3600
+  #   headers:
+  #     Content-Type: application/json
 
-  - platform: rest
-    name: nas_alerts
-    resource: http://nas.lan/api/v1.0/system/alert/?format=json
-    value_template: "{{ value_json['objects'][0].message }}"
-    username: !secret nas_username
-    password: !secret nas_password
-    authentication: basic
-    scan_interval: 3600
-    headers:
-      Content-Type: application/json
+  # - platform: rest
+  #   name: nas_alerts
+  #   resource: http://nas.lan/api/v1.0/system/alert/?format=json
+  #   value_template: "{{ value_json['objects'][0].message }}"
+  #   username: !secret nas_username
+  #   password: !secret nas_password
+  #   authentication: basic
+  #   scan_interval: 3600
+  #   headers:
+  #     Content-Type: application/json
 
   - platform: mqtt
     name: nas_last_boot
@@ -208,3 +208,9 @@ sensor:
     state_topic: "sensor/nas_state"
     value_template: >-
       {{ value_json.pools_stat.pool1.health }}
+
+  - platform: mqtt
+    name: nas_alerts
+    state_topic: "sensor/nas_state"
+    value_template: >-
+      {{ value_json.alerts | regex_replace(find='^\[([^\]]+)\]', replace='<img alt="\\1" src="/local/lovelace_ui/info/icon_\\1.svg" width="30">') }}
