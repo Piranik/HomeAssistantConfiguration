@@ -7,7 +7,7 @@ homeassistant:
 camera:
   - platform: ffmpeg
     name: intercom
-    input: -rtsp_transport tcp -i rtsp://hass:321ewq@192.168.1.90:554/av0_1
+    input: -rtsp_transport tcp -i rtsp://hass:hass321@192.168.1.90:554/av0_1
 
   - platform: local_file
     name: intercom_last
@@ -17,8 +17,8 @@ camera:
     name: intercom1
     host: 192.168.1.90
     port: 2000
-    #  username: hass
-    #  password: 321ewq
+    # username: "hass"
+    # password: "321ewq"
     username: !secret camera_doorbell_login
     password: !secret camera_doorbell_password
 
@@ -30,16 +30,15 @@ automation:
       webhook_id: doorbell
     
     action:
-      # - delay: '00:00:02'
       - service: camera.snapshot
         data:
           entity_id: camera.intercom
-          filename: /config/www/tmp/intercom_last.jpg
+          filename: /config/www/tmp/intercom_{{ now().strftime('%о%H%M%S') }}.jpg
       - delay: '00:00:07'
       - service: camera.local_file_update_file_path
         data:
           entity_id: camera.intercom_last
-          file_path: /config/www/tmp/intercom_last.jpg
+          file_path: /config/www/tmp/intercom_{{ now().strftime('%о%H%M%S') }}.jpg
       # - service: notify.limych
       #   data:
       #     title: "Front door motion"

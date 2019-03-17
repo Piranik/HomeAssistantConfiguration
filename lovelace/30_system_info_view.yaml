@@ -24,7 +24,7 @@ popup_cards:
         - sensor.memory_free
         - sensor.swap_use
 
-  sensor.nas_cpu_use:
+  sensor.nas_cpu_use_percent:
     title: "CPU use"
     card:
       type: history-graph
@@ -37,12 +37,12 @@ popup_cards:
         - sensor.nas_cpu_load_5m
         - sensor.nas_cpu_load_15m
         - sensor.nas_cpu_temperature
-  sensor.nas_ram_use:
+  sensor.nas_memory_use_percent:
     title: "RAM use"
     card:
       type: history-graph
       entities:
-        - sensor.nas_ram_free
+        - sensor.nas_memory_free
         - sensor.nas_swap_use
 
 cards:
@@ -111,6 +111,7 @@ cards:
                     entities:
                       - entity: sensor.nas_last_boot
                         name: "Last boot"
+                      - entity: sensor.nas_pool_pool1_health
     
                   - type: custom:useful-markdown-card
                     content: |
@@ -125,7 +126,7 @@ cards:
                     name: "CPU use"
                     hour24: true
                     entities:
-                      - sensor.nas_cpu_use
+                      - sensor.nas_cpu_use_percent
                     color_thresholds:
                       - value: -1
                         color: green
@@ -143,7 +144,7 @@ cards:
                       icon: false
                     hour24: true
                     entities:
-                      - sensor.nas_ram_use
+                      - sensor.nas_memory_use_percent
                     color_thresholds:
                       - value: -1
                         color: green
@@ -157,7 +158,7 @@ cards:
                       icon: false
                     hour24: true
                     entities:
-                      - sensor.nas_volume_pct_use
+                      - sensor.nas_pool_pool1_use_percent
                     color_thresholds:
                       - value: -1
                         color: green

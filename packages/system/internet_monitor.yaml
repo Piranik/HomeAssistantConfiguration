@@ -16,7 +16,7 @@ binary_sensor:
   - platform: ping
     name: internet
     host: yandex.ru
-    scan_interval: 3
+    scan_interval: 5
     count: 3
 
 speedtestdotnet:

@@ -1,16 +1,25 @@
 #!/usr/bin/env python
+
 #
 #  Copyright (c) 2019, Andrey "Limych" Khrolenok <andrey@khrolenok.ru>
 #  Creative Commons Attribution-NonCommercial-ShareAlike License v4.0
 #  (see COPYING, LICENSE or https://creativecommons.org/licenses/by-nc-sa/4.0/)
 #
+
+import argparse
 import datetime
+import json
 import multiprocessing
 import os
 import re
+import socket
 import subprocess
+
 import psutil
-import json
+import requests
+import urllib3
+
+VERSION = '1.0'
 
 
 class HddTemp:
@@ -27,7 +36,7 @@ class HddTemp:
             pass
 
     def hdds_temp_dict(self, hdds_list):
-        pool = multiprocessing.Pool(min(8, max(multiprocessing.cpu_count(), 1)))
+        pool = multiprocessing.Pool(min(8, max(multiprocessing.cpu_count(), 2)))
         results = []
         for hdd in hdds_list:
             results.append(pool.apply_async(func=self.hdd_temp, args=(hdd,)))
@@ -69,6 +78,11 @@ class HddTemp:
         return self.hdds_temp_dict(drives)
 
 
+def log(title, value):
+    if args.verbose:
+        print('{}: {}'.format(title, value))
+
+
 def zpool_stat():
     zp = {}
     try:
@@ -81,34 +95,67 @@ def zpool_stat():
                     'total': int(line[1]),
                     'used': int(line[2]),
                     'free': int(line[3]),
-                    'percent': round(int(line[2]) * 100 / int(line[1]), 1)
+                    'percent': round(int(line[2]) * 100 / int(line[1]), 1),
+                    'health': line[9],
                 }
     except FileNotFoundError:
         pass
     return zp
 
 
+def cpu_temp():
+    t = 0
+    try:
+        for line in subprocess.Popen(['sysctl', 'dev.cpu'],
+                                     stdout=subprocess.PIPE, encoding='utf8') \
+                .stdout.read().split('\n'):
+            line = line.split()
+            if len(line) > 1 and re.search(r"temperature", line[0]):
+                t = max(t, float(re.sub(r"[^0-9.]+", "", line[1])))
+    except FileNotFoundError:
+        pass
+    return t
+
+
 # ==================== Main Code ====================
 if __name__ == '__main__':
     stat = {}
+
+    if socket.gethostname().find('.') >= 0:
+        hostname = socket.gethostname()
+    else:
+        hostname = socket.gethostbyaddr(socket.gethostname())[0]
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-V', '--version', action='version', version='Home Assistant HTTP host monitor v' + VERSION)
+    parser.add_argument('-v', '--verbose', help='turns on verbose mode', action='store_true')
+    parser.add_argument('-n', '--name', default=re.sub(r"[^a-z0-9_]", "_", hostname.lower()),
+                        help='device name for Home Assistant sensor: [a-z0-9_]. Default current host name: %(default)s')
+    parser.add_argument('-s', '--server', default="https://" + re.sub(r"^[^.]+", "hass", hostname) + ":8123",
+                        help='HTTP server URL: http[s]://host.domain[:port] Default: %(default)s')
+    parser.add_argument('-c', '--no-check-ssl', help='disable SSL certificate check', action='store_false')
+    parser.add_argument('token', metavar='TOKEN', help='token to access to Home Assistant API')
+    args = parser.parse_args()
 
     # Basic stat
     stat['last_boot'] = datetime.datetime.fromtimestamp(psutil.boot_time()).strftime("%FT%T%z")
 
     # CPU stat
-    cpu_stat = psutil.cpu_times_percent(interval=1, percpu=False)
-    stat['cpu_load'] = round(100 - cpu_stat.idle, 1)
-    stat['cpu_stat'] = cpu_stat._asdict()
+    try:
+        lavg = os.getloadavg()
+        v = ['1m', '5m', '15m']
+        for k in range(3):
+            stat['cpu_load_' + v[k]] = '%.02f' % lavg[k]
+    except BaseException:
+        pass
+    stat['cpu_temperature'] = cpu_temp()
+    stat['cpu_stat'] = psutil.cpu_times_percent(interval=1, percpu=False)._asdict()
 
     # Mem stat
-    mem_stat = psutil.virtual_memory()
-    stat['mem_load'] = mem_stat.percent
-    stat['mem_stat'] = mem_stat._asdict()
+    stat['memory_stat'] = psutil.virtual_memory()._asdict()
 
     # Swap stat
-    swap_stat = psutil.swap_memory()
-    stat['swap_load'] = swap_stat.percent
-    stat['swap_stat'] = swap_stat._asdict()
+    stat['swap_stat'] = psutil.swap_memory()._asdict()
 
     # Disks stat
     disks = {}
@@ -121,15 +168,31 @@ if __name__ == '__main__':
             if part.fstype in ['nullfs', 'devfs', 'fdescfs', 'tmpfs']:
                 # Skip some virtual filesystems
                 continue
-        disk_usage = psutil.disk_usage(part.mountpoint)
-        disks[part.mountpoint] = disk_usage._asdict()
+        disks[part.mountpoint] = psutil.disk_usage(part.mountpoint)._asdict()
     stat['disks_stat'] = disks
     #
-    stat['disks_temp'] = HddTemp().all_hdds_temp_dict()
+    stat['disks_temperature'] = HddTemp().all_hdds_temp_dict()
     #
     stat['pools_stat'] = zpool_stat()
 
+    # Send data to Home Assistant
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+    base_url = args.server + "/api/services/mqtt/publish"
     #
-    # Cumulative stat
-    print()
-    print(json.dumps(stat))
+    log('Base URL', base_url)
+    log('SSL certificate check', args.no_check_ssl)
+    #
+    name = re.sub(r"[^a-z0-9_]", "_", args.name.lower()) + "_state"
+    data = json.dumps({
+        'topic': 'sensor/' + name,
+        'payload': json.dumps(stat),
+        'retain': True,
+    })
+    headers = {
+        'Authorization': "Bearer " + args.token,
+        'Content-Type': 'application/json',
+    }
+    log(name, json.dumps(stat))
+    r = requests.post(base_url, data=data, verify=args.no_check_ssl, headers=headers)
+    if args.verbose:
+        r.raise_for_status()

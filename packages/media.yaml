@@ -10,19 +10,19 @@ ffmpeg:
 
 media_player:
   - platform: linkplay
-    name: Kitchen
+    name: "Kitchen"
     host: !secret speaker_kitchen_host
     lastfm_api_key: !secret lastfm_apikey
 
   - platform: linkplay
-    name: 'Living Room'    # As Slave
+    name: "Living Room"    # As Slave
     host: !secret speaker_kitchen_host
     lastfm_api_key: !secret lastfm_apikey
 
-#  - platform: emby
-#    host: !secret emby_host
-#    api_key: !secret emby_apikey
-#    auto_hide: true
+  - platform: emby
+    host: !secret emby_host
+    api_key: !secret emby_apikey
+    auto_hide: true
 
 sensor:
   - platform: sonarr
@@ -44,4 +44,18 @@ automation:
 
     action:
       - service: media_player.media_pause
-#        entity_id: ...  # Default to All
+        # entity_id: ...  # Default to All
+
+  - alias: "[Media] Stop bg sound when movie is playing"
+    initial_state: on
+    trigger:
+      - platform: state
+        entity_id: media_player.emby_emby_for_android_mobile_lenovo_tbx704l
+        to: 'playing'
+      - platform: state
+        entity_id: media_player.emby_emby_mobile_chrome
+        to: 'playing'
+        
+    action:
+      - service: media_player.media_pause
+        entity_id: media_player.emby_dlna_kitchen
