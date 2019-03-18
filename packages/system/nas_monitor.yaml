@@ -1,55 +1,4 @@
 homeassistant:
-  customize:
-    sensor.nas_last_boot:
-      device_class: timestamp
-      unit_of_measurement: 
-      friendly_name: Last boot
-      icon: mdi:clock
-    #
-    sensor.nas_cpu_use_percent:
-      friendly_name: 'CPU use'
-    sensor.nas_cpu_load_1m:
-      unit_of_measurement: ''
-      friendly_name: 'Load (1m)'
-    sensor.nas_cpu_load_5m:
-      unit_of_measurement: ''
-      friendly_name: 'Load (5m)'
-    sensor.nas_cpu_load_15m:
-      unit_of_measurement: ''
-      friendly_name: 'Load (15m)'
-    sensor.nas_cpu_temperature:
-      device_class: 'temperature'
-      unit_of_measurement: '°C'
-      friendly_name: 'CPU temperature'
-      templates:
-        hs_color: >-
-          if (state > 80) return [0, 85];
-          else if (state > 60) return [40, 70];
-          else return [0, 0];
-    #
-    sensor.nas_memory_use_percent:
-      friendly_name: 'Memory use'
-    sensor.nas_memory_free:
-      unit_of_measurement': 'MiB'
-      friendly_name: 'Memory free'
-    #
-    sensor.nas_swap_use:
-      unit_of_measurement': 'MiB'
-      friendly_name: 'Swap use'
-      icon: mdi:harddisk
-    #
-    sensor.nas_pool_pool1_health:
-      friendly_name: 'Pool health'
-
-    sensor.nas_alert_level:
-      friendly_name: "Alert Level"
-      icon: mdi:alert
-    sensor.nas_alerts:
-      friendly_name: "Alert Message"
-      icon: mdi:message-alert
-    sensor.nas_volume_pct_used:
-      friendly_name: "Pool use"
-
   customize_glob:
     sensor.*_percent:
       unit_of_measurement: '%'
@@ -96,29 +45,53 @@ homeassistant:
           if (state == "DEGRADED") return [40, 70];
           else return [0, 85];
 
+  customize:
+    sensor.nas_last_boot:
+      device_class: timestamp
+      unit_of_measurement: ''
+      friendly_name: Last boot
+      icon: mdi:clock
+    #
+    sensor.nas_cpu_use_percent:
+      friendly_name: 'CPU use'
+    sensor.nas_cpu_load_1m:
+      unit_of_measurement: ''
+      friendly_name: 'Load (1m)'
+    sensor.nas_cpu_load_5m:
+      unit_of_measurement: ''
+      friendly_name: 'Load (5m)'
+    sensor.nas_cpu_load_15m:
+      unit_of_measurement: ''
+      friendly_name: 'Load (15m)'
+    sensor.nas_cpu_temperature:
+      device_class: 'temperature'
+      unit_of_measurement: '°C'
+      friendly_name: 'CPU temperature'
+      templates:
+        hs_color: >-
+          if (state > 80) return [0, 85];
+          else if (state > 60) return [40, 70];
+          else return [0, 0];
+    #
+    sensor.nas_memory_use_percent:
+      friendly_name: 'Memory use'
+    sensor.nas_memory_free:
+      unit_of_measurement: 'MiB'
+      friendly_name: 'Memory free'
+    #
+    sensor.nas_swap_use:
+      unit_of_measurement: 'MiB'
+      friendly_name: 'Swap use'
+      icon: mdi:harddisk
+    #
+    sensor.nas_pool_pool1_health:
+      friendly_name: 'Pool health'
+    #
+    sensor.nas_alerts:
+      friendly_name: 'Alert Message'
+      icon: mdi:message-alert
+
 sensor:
-  # - platform: rest
-  #   name: nas_alert_level
-  #   resource: http://nas.lan/api/v1.0/system/alert/?format=json
-  #   username: !secret nas_username
-  #   password: !secret nas_password
-  #   value_template: "{{ value_json['objects'][0].level }}"
-  #   authentication: basic
-  #   scan_interval: 3600
-  #   headers:
-  #     Content-Type: application/json
-
-  # - platform: rest
-  #   name: nas_alerts
-  #   resource: http://nas.lan/api/v1.0/system/alert/?format=json
-  #   value_template: "{{ value_json['objects'][0].message }}"
-  #   username: !secret nas_username
-  #   password: !secret nas_password
-  #   authentication: basic
-  #   scan_interval: 3600
-  #   headers:
-  #     Content-Type: application/json
-
   - platform: mqtt
     name: nas_last_boot
     state_topic: "sensor/nas_state"

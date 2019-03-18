@@ -33,12 +33,12 @@ automation:
       - service: camera.snapshot
         data:
           entity_id: camera.intercom
-          filename: /config/www/tmp/intercom_{{ now().strftime('%о%H%M%S') }}.jpg
+          filename: /config/www/tmp/intercom_last.jpg
       - delay: '00:00:07'
       - service: camera.local_file_update_file_path
         data:
           entity_id: camera.intercom_last
-          file_path: /config/www/tmp/intercom_{{ now().strftime('%о%H%M%S') }}.jpg
+          file_path: /config/www/tmp/intercom_last.jpg
       # - service: notify.limych
       #   data:
       #     title: "Front door motion"

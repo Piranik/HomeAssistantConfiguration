@@ -26,12 +26,12 @@ cards:
             show_header_toggle: false
             entities:
               - input_boolean.hass_dev_mode
-              - type: call-service
-                name: "Lovelace generator"
-                service: shell_command.lovelace_gen
-                icon: mdi:refresh
-                action_name: "Run"
-                service_data: {}
+              # - type: call-service
+              #   name: "Lovelace generator"
+              #   service: shell_command.lovelace_gen
+              #   icon: mdi:refresh
+              #   action_name: "Run"
+              #   service_data: {}
     
           - type: entities
             title: "Debugging"
@@ -43,7 +43,7 @@ cards:
                 secondary_info: last-changed
               - input_boolean.test
     
-          # - !include links_card.yaml
+          - !include links_card.yaml
     
           - type: custom:auto-entities
             card:

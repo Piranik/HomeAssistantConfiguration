@@ -25,6 +25,8 @@ logs:
   homeassistant.components.sensor: fatal
   homeassistant.components.shell_command: debug
   homeassistant.components.telegram: error
-  # homeassistant.core: warn
+  homeassistant.components.websocket_api: error
+  # homeassistant.core: debug
   # homeassistant.helpers.entity: error
-  root: warning
+  homeassistant.helpers.script: debug
+  root: debug
