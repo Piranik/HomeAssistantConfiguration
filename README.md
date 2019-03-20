@@ -70,7 +70,7 @@ System info
 
 Automations view
 
-[![](https://raw.githubusercontent.com/Limych/HomeAssistantConfiguration/master/docs/images/mobile_home.jpg)](https://github.com/Limych/HomeAssistantConfiguration/blob/master/lovelace/00_home_view.yaml)
+[![](https://raw.githubusercontent.com/Limych/HomeAssistantConfiguration/master/docs/images/mobile_automations.jpg)](https://github.com/Limych/HomeAssistantConfiguration/blob/master/lovelace/00_automations_view.yaml)
 
 #### Desktop
 
@@ -85,6 +85,10 @@ Home info
 System info
 
 [![](https://raw.githubusercontent.com/Limych/HomeAssistantConfiguration/master/docs/images/desktop_system_info.jpg)](https://github.com/Limych/HomeAssistantConfiguration/blob/master/lovelace/30_system_info_view.yaml)
+
+Automations view
+
+[![](https://raw.githubusercontent.com/Limych/HomeAssistantConfiguration/master/docs/images/desktop_automations.jpg)](https://github.com/Limych/HomeAssistantConfiguration/blob/master/lovelace/00_automations_view.yaml)
 
 ## Add-ons
 
