@@ -20,6 +20,9 @@ But while using packages you can no longer reload your config with the buttons i
 
 Now I have very few devices in the system. But I plan to gradually add new ones.
 
+<details>
+    <summary>Click to expand!</summary>
+
 Now I am running Hass.io on my FreeNAS server into Bhyve virtual machine which emulates Raspberry Pi 3 Model B+ 32bit.
 
 * **Personal gadgets:**
@@ -39,9 +42,11 @@ Now I am running Hass.io on my FreeNAS server into Bhyve virtual machine which e
 * **Climate:**
     1. Home made [ESP32-driven](https://ru.wikipedia.org/wiki/ESP32) climate sensor (now only indoor Pressure, Humidity & Temperature);
 
+</details>
+
 ## Lovelace
 
-I'm using yaml mode, with includes.
+I'm using [YAML mode](https://www.home-assistant.io/lovelace/yaml-mode/). Single file splitted to several ones via [includes](https://www.home-assistant.io/docs/configuration/splitting_configuration/).
 
 My main Lovelace-file is found [here](https://github.com/Limych/HomeAssistantConfiguration/blob/master/ui-lovelace.yaml), and my folder with includes [here](https://github.com/Limych/HomeAssistantConfiguration/tree/master/lovelace). This is very much still a work in progress, so files might not correspond exactly to screenshots.
 
@@ -50,11 +55,14 @@ I put a lot of work into making this repo available and updated to inspire and h
 
 ### Examples from my Lovelace GUI
 
-I have tried to make a GUI that is mobile first, since that's how I most often look at it.
+I have tried to make a GUI that is [mobile first](https://medium.com/@Vincentxia77/what-is-mobile-first-design-why-its-important-how-to-make-it-7d3cf2e29d00), since that's how I most often look at it.
 
 Click on the images to get to the corresponding YAML-file.
 
 #### Mobile
+
+<details>
+    <summary>Click to expand!</summary>
 
 Home view
 
@@ -72,7 +80,12 @@ Automations view
 
 [![](https://raw.githubusercontent.com/Limych/HomeAssistantConfiguration/master/docs/images/mobile_automations.jpg)](https://github.com/Limych/HomeAssistantConfiguration/blob/master/lovelace/00_automations_view.yaml)
 
+</details>
+
 #### Desktop
+
+<details>
+    <summary>Click to expand!</summary>
 
 Home view
 
@@ -89,6 +102,8 @@ System info
 Automations view
 
 [![](https://raw.githubusercontent.com/Limych/HomeAssistantConfiguration/master/docs/images/desktop_automations.jpg)](https://github.com/Limych/HomeAssistantConfiguration/blob/master/lovelace/00_automations_view.yaml)
+
+</details>
 
 ## Add-ons
 
