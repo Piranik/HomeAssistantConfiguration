@@ -22,22 +22,22 @@ Now I have very few devices in the system. But I plan to gradually add new ones.
 
 Now I am running Hass.io on my FreeNAS server into Bhyve virtual machine which emulates Raspberry Pi 3 Model B+ 32bit.
 
-1. Personal gadgets:
-  1. Android devices (Phones and Tablets);
-1. Media:
-  1. Two [LinkPlay-driven](https://linkplay.com/) Wireless Speakers;
-  1. [FreeNAS](https://freenas.org/) File Server;
-  1. [Emby](https://emby.media/) Media Server;
-1. Network:
-  1. [Transmission](https://transmissionbt.com/) BitTorrent Client;
-  1. [Sonarr](https://sonarr.tv/) Monitoring Server;
-  1. [Syncthing](https://syncthing.net/) Sync Client;
-  1. [Gogs](https://gogs.io/) Git Server;
-1. Security:
-  1. [OPNsense-driven](https://opnsense.org/) Network Firewall;
-  1. [Beward DS06M](https://www.beward.ru/katalog/ip-videodomofony/vyzyvnye-paneli/vyzyvnaya-panel-ds06m/) Doorbell;
-1. Climate:
-  1. Home made [ESP32-driven](https://ru.wikipedia.org/wiki/ESP32) climate sensor (now only indoor Pressure, Humidity & Temperature);
+* **Personal gadgets:**
+    1. Android devices (Phones and Tablets);
+* **Media:**
+    1. Two [LinkPlay-driven](https://linkplay.com/) Wireless Speakers;
+    1. [FreeNAS](https://freenas.org/) File Server;
+    1. [Emby](https://emby.media/) Media Server;
+* **Network:**
+    1. [Transmission](https://transmissionbt.com/) BitTorrent Client;
+    1. [Sonarr](https://sonarr.tv/) Monitoring Server;
+    1. [Syncthing](https://syncthing.net/) Sync Client;
+    1. [Gogs](https://gogs.io/) Git Server;
+* **Security:**
+    1. [OPNsense-driven](https://opnsense.org/) Network Firewall;
+    1. [Beward DS06M](https://www.beward.ru/katalog/ip-videodomofony/vyzyvnye-paneli/vyzyvnaya-panel-ds06m/) Doorbell;
+* **Climate:**
+    1. Home made [ESP32-driven](https://ru.wikipedia.org/wiki/ESP32) climate sensor (now only indoor Pressure, Humidity & Temperature);
 
 ## Lovelace
 
@@ -45,7 +45,8 @@ I'm using yaml mode, with includes.
 
 My main Lovelace-file is found [here](https://github.com/Limych/HomeAssistantConfiguration/blob/master/ui-lovelace.yaml), and my folder with includes [here](https://github.com/Limych/HomeAssistantConfiguration/tree/master/lovelace). This is very much still a work in progress, so files might not correspond exactly to screenshots.
 
-I put a lot of work into making this repo available and updated to inspire and help others!
+I put a lot of work into making this repo available and updated to inspire and help others! I will be glad to receive thanks from you — it will give me new strength and add enthusiasm:
+<p align="center"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=UAGFL5L6M8RN2&item_name=Donation+for+a+big+barrel+of+coffee+:)&currency_code=EUR&source=url"><img alt="Buy Me a Coffe" src="https://raw.githubusercontent.com/Limych/HomeAssistantConfiguration/master/docs/images/donate-with-paypal.png"></a></p>
 
 ### Examples from my Lovelace GUI
 

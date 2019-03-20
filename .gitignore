@@ -12,7 +12,6 @@ core.*
 home-assistant*
 secrets.*
 
-__pycache__/
 /deps/
 /gh-pages/
 /tts/
@@ -28,3 +27,8 @@ google_calendars.yaml
 known_devices.yaml
 
 /lovelace/links_card.yaml
+
+# Python byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class

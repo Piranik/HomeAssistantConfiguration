@@ -54,12 +54,14 @@ cards:
                 elements:      
                   - type: state-label
                     entity: sensor.time
+                    tap_action: none
                     style:
                       top: 35%
                       left: 50%
                       font-size: 2.1em
                   - type: state-label
                     entity: sensor.date_day
+                    tap_action: none
                     style:
                       top: 70%
                       left: 50%
