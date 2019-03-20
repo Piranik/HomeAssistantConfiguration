@@ -2,6 +2,8 @@
 
 This [Home Assistant](https://www.home-assistant.io/) configuration is based on [configuration by Isabella Gross Alström](https://isabellaalstrom.github.io/).
 
+*Описание проекта будет вестись полностью на английском, но я готов помогать и русскоязычным пользователям Home Assistant. Буду рад, если смогу быть полезен в настройке вашего умного дома.*
+
 ![](https://img.shields.io/maintenance/yes/2019.svg?style=popout)
 ![](https://img.shields.io/github/last-commit/Limych/HomeAssistantConfiguration.svg?style=popout)
 ![](https://img.shields.io/github/issues-raw/Limych/HomeAssistantConfiguration.svg?label=Open%20todos&style=popout)

@@ -17,7 +17,7 @@ secrets.*
 /tts/
 
 /www/
-!/www/custom-lovelace
+!/www/custom-lovelace/
 
 !.gitignore
 !.gitkeep
