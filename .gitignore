@@ -17,8 +17,8 @@ __pycache__/
 /gh-pages/
 /tts/
 
-#/www/
-#!/www/custom-lovelace
+/www/
+!/www/custom-lovelace
 
 !.gitignore
 !.gitkeep

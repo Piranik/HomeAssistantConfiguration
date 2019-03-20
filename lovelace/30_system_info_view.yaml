@@ -137,6 +137,7 @@ cards:
                     show:
                       icon: false
                     hour24: true
+                    lower_bound: 0
                     entities:
                       - sensor.nas_pool_pool1_use_percent
                     color_thresholds:

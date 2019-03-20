@@ -1,17 +1,25 @@
 homeassistant:
+  customize_glob:
+    sensor.*_humidity:
+      device_class: humidity
+      unit_of_measurement: '%'
+    sensor.*_temperature:
+      device_class: temperature
+      unit_of_measurement: '°C'
+      # templates:
+      #   hs_color: >-
+      #     if (state > 25) return [0, 85];
+      #     else if (state > 23) return [40, 70];
+      #     else return [0, 0];
+    #
+    sensor.kitchen_*:
+      friendly_name: "Кухня"
+
   customize:
     sensor.owm_temperature:
       friendly_name: "На улице"
-
-  customize_glob:
-    sensor.kitchen_*:
-      friendly_name: "Кухня"
-    sensor.*temperature*:
-      templates:
-        hs_color: >-
-          if (state > 25) return [0, 85];
-          else if (state > 23) return [40, 70];
-          else return [0, 0];
+    sensor.outdoor_daily_avg_temperature:
+      friendly_name: "На улице (среднесуточно)"
 
 
 binary_sensor:
@@ -23,22 +31,24 @@ binary_sensor:
           {{ is_state('sun.sun', 'below_horizon') }}
 
 sensor:
-  # - platform: mqtt
-  #   state_topic: "owntracks/username/deviceid"
-  #   name: "Battery Tablet"
-  #   unit_of_measurement: "%"
-  #   value_template: '{{ value_json.batt }}'
-  #   device_class: battery
-  
   - platform: mqtt
     name: kitchen_temperature
     state_topic: "sensor/kitchen/temperature"
-    unit_of_measurement: '°C'
-    device_class: temperature
     availability_topic: "sensor/kitchen/status"
   - platform: mqtt
     name: kitchen_humidity
     state_topic: "sensor/kitchen/humidity"
-    unit_of_measurement: '%'
-    device_class: humidity
     availability_topic: "sensor/kitchen/status"
+
+  - platform: filter
+    name: outdoor_daily_avg_temperature
+    entity_id: sensor.owm_temperature
+    filters:
+      - filter: outlier
+        window_size: 4
+        radius: 2.0
+      - filter: lowpass
+        time_constant: 10
+      - filter: time_simple_moving_average
+        window_size: 24:00
+        precision: 3

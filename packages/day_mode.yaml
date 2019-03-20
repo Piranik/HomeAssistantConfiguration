@@ -16,7 +16,15 @@ sensor:
       - 'date_time'
       # - 'time_date'
       # - 'time_utc'
-
+  - platform: template
+    sensors:
+      date_day:
+        entity_id: sensor.date
+        value_template: >-
+          {%- set months = ["янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"] %}
+          {%- set wdays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]  %}
+          {{ wdays[now().weekday()] + ', ' + now().strftime('%d') + ' ' + months[now().month-1] }}          
+    
 group:
   owners_sleeping:
     name: "Хозяева спят"
