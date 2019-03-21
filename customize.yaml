@@ -1,6 +1,0 @@
-media_player.emby_dlna_kitchen:
-  hidden: true
-media_player.emby_sonarr_emby_nest:
-  hidden: true
-sensor.owm_pressure:
-  unit_of_measurement: hPa

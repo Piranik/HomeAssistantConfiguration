@@ -25,7 +25,7 @@ Now I have very few devices in the system. But I plan to gradually add new ones.
 <details>
     <summary>Click to expand!</summary>
 
-Now I am running Hass.io on my FreeNAS server into Bhyve virtual machine which emulates Raspberry Pi 3 Model B+ 32bit.
+Now I am running Hass.io on my NAS into Bhyve virtual machine which emulates [Raspberry Pi 3 Model B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/).
 
 * **Personal gadgets:**
     1. Android devices (Phones and Tablets);
@@ -35,7 +35,7 @@ Now I am running Hass.io on my FreeNAS server into Bhyve virtual machine which e
     1. [Emby](https://emby.media/) Media Server;
 * **Network:**
     1. [Transmission](https://transmissionbt.com/) BitTorrent Client;
-    1. [Sonarr](https://sonarr.tv/) Monitoring Server;
+    1. [Sonarr](https://sonarr.tv/) TV-series Monitoring Server;
     1. [Syncthing](https://syncthing.net/) Sync Client;
     1. [Gogs](https://gogs.io/) Git Server;
 * **Security:**
@@ -111,8 +111,8 @@ Automations view
 
 * [A better presence](https://github.com/helto4real/hassio-add-ons/tree/master/presence);
 * [Backup Hass.io to Google Drive](https://github.com/samccauley/addon-hassiogooglebackup#readme);
-* [Check Home Assistant Configuration](https://www.home-assistant.io/addons/check_config/) - official addon;
+* [Check Home Assistant Configuration](https://www.home-assistant.io/addons/check_config/) — official addon;
 * [IDE](https://github.com/hassio-addons/addon-ide/blob/master/README.md);
 * [Log Viewer](https://github.com/hassio-addons/addon-log-viewer);
 * [MQTT Server & Web Client](https://github.com/hassio-addons/addon-mqtt/blob/master/README.md);
-* [Samba Share](https://www.home-assistant.io/addons/samba/) - official addon;
+* [Samba Share](https://www.home-assistant.io/addons/samba/) — official addon;

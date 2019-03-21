@@ -1,13 +1,8 @@
-group:
-  owners:
-    name: "Хозяева"
-    entities:
-      - device_tracker.limych_presence
-
-#  motion:
-#    name: motion
-#    entities:
-#      - binary_sensor.home_occupancy
+# group:
+#   motion:
+#     name: motion
+#     entities:
+#       - binary_sensor.home_occupancy
 
 sensor:
   - platform: mqtt
@@ -21,7 +16,7 @@ binary_sensor:
         friendly_name: "Хозяева в Доме"
         device_class: occupancy
         value_template: >-
-          {{ is_state('group.owners', 'home') }}
+          {{ is_state('device_tracker.limych_presence', 'Дома') or is_state('device_tracker.limych_presence', 'Только пришёл') }}
 
       presence:
         friendly_name: "Люди в Доме"

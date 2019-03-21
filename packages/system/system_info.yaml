@@ -1,4 +1,19 @@
 homeassistant:
+  customize_glob:
+    sensor.system_*:
+      icon: mdi:server-network
+      templates:
+        hs_color: >-
+          if (state === 'Online') return [0, 0];
+          else if (state === 'Offline') return [0, 85];
+          else return [40, 70];
+    sensor.system_security_*:
+      icon: mdi:security
+    sensor.system_pc_*:
+      icon: mdi:laptop
+    sensor.system_media_*:
+      icon: mdi:music
+
   customize:
     sensor.connection_internet:
       icon: mdi:wan
@@ -22,17 +37,12 @@ homeassistant:
       icon: mdi:cloud-sync
     sensor.system_server_sonarr:
       icon: mdi:cloud-search
+    #
     sensor.system_security_intercom:
       icon: mdi:cctv
-
-  customize_glob:
-    sensor.system_*:
-      icon: mdi:server-network
-      templates:
-        hs_color: >-
-          if (state === 'Online') return [0, 0];
-          else if (state === 'Offline') return [0, 85];
-          else return [40, 70];
+    #
+    sensor.system_media_kitchen:
+      icon: mdi:speaker
 
 sensor:
   - platform: template
@@ -98,6 +108,18 @@ sensor:
         entity_id: device_tracker.security_intercom
         value_template: >-
           {{ 'Online' if is_state('device_tracker.security_intercom', 'home') else 'Offline' }}
+
+      system_pc_willy:
+        friendly_name: "Willy"
+        entity_id: device_tracker.limych_willy
+        value_template: >-
+          {{ 'Online' if is_state('device_tracker.limych_willy', 'home') else 'Offline' }}
+
+      system_media_kitchen:
+        friendly_name: "Колонки на Кухне"
+        entity_id: device_tracker.media_kitchen
+        value_template: >-
+          {{ 'Online' if is_state('device_tracker.media_kitchen', 'home') else 'Offline' }}
 
 
 automation:

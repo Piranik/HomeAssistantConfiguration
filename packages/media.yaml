@@ -5,17 +5,17 @@ homeassistant:
     media_player.living_room:
       friendly_name: "Колонки в гостиной"
 
+
 ffmpeg:
   ffmpeg_bin: /usr/bin/ffmpeg
 
 media_player:
   - platform: linkplay
-    name: "Kitchen"
+    devicename: "Kitchen"
     host: !secret speaker_kitchen_host
     lastfm_api_key: !secret lastfm_apikey
-
   - platform: linkplay
-    name: "Living Room"    # As Slave
+    devicename: "Living Room"    # As Slave
     host: !secret speaker_kitchen_host
     lastfm_api_key: !secret lastfm_apikey
 
@@ -58,4 +58,6 @@ automation:
         
     action:
       - service: media_player.media_pause
-        entity_id: media_player.emby_dlna_kitchen
+        entity_id: media_player.kitchen
+      - service: media_player.media_pause
+        entity_id: media_player.living_room

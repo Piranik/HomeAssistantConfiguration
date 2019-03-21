@@ -50,7 +50,6 @@ cards:
     cards:
       - type: custom:compact-custom-header
       - type: custom:layout-card
-        max_columns: 3
         cards:
           - type: vertical-stack
             cards:
@@ -65,6 +64,7 @@ cards:
                   include:
                     - entity_id: sensor.system_gateway
                     - entity_id: sensor.system_nas
+                    - entity_id: 'sensor.system_security_*'
                     - entity_id: 'sensor.system_server_*'
                     - entity_id: 'sensor.system_*'
                   exclude:

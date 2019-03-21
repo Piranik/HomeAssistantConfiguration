@@ -14,8 +14,6 @@ cards:
               - type: horizontal-stack
                 cards:
                   - type: custom:mini-graph-card
-#                    show:
-#                      icon: false
                     height: 75
                     hour24: true
                     entities:
@@ -38,15 +36,11 @@ cards:
                     #   - value: 26
                     #     color: "#ff0000"
                   - type: custom:mini-graph-card
-#                    show:
-#                      icon: false
                     height: 75
                     hour24: true
                     entities:
                       - sensor.owm_humidity
                   - type: custom:mini-graph-card
-    #                    show:
-    #                      icon: false
                     hour24: true
                     height: 75
                     decimals: 0
@@ -56,8 +50,6 @@ cards:
               - type: horizontal-stack
                 cards:
                   - type: custom:mini-graph-card
-#                    show:
-#                      icon: false
                     hour24: true
                     height: 75
                     entities:
@@ -80,8 +72,6 @@ cards:
                       - value: 26
                         color: "#ff0000"
                   - type: custom:mini-graph-card
-#                    show:
-#                      icon: false
                     height: 75
                     hour24: true
                     entities:
@@ -130,9 +120,7 @@ cards:
 #                      - sensor.ring_front_door_last_motion
 
                   - type: custom:fold-entity-row
-                    head:
-                      type: section
-                      label: Presence
+                    head: sensor.presence
                     group_config:
                       secondary_info: last-changed
                     items:

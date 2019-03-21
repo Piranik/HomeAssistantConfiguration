@@ -2,9 +2,14 @@ homeassistant:
   customize_glob:
     sensor.*pressure*:
       friendly_name: "Атм. Давление"
+      device_class: pressure
       icon: mdi:gauge
     sensor.*humidity*:
       icon: mdi:water-percent
+
+  customize:
+    sensor.owm_pressure:
+      unit_of_measurement: hPa
 
 weather:
   - platform: openweathermap
@@ -37,14 +42,11 @@ sensor:
     name: pressure
     state_topic: "sensor/kitchen/pressure"
     unit_of_measurement: 'hPa'
-    device_class: pressure
     availability_topic: "sensor/kitchen/status"
-
   - platform: mqtt
     name: pressure_mmhg
     state_topic: "sensor/kitchen/pressure_mmhg"
     unit_of_measurement: 'mmHg'
-    device_class: pressure
     availability_topic: "sensor/kitchen/status"
 
   # Template sensors
@@ -53,14 +55,13 @@ sensor:
       owm_pressure_mmhg:
         friendly_name: "OWM Pressure"
         unit_of_measurement: 'mmHg'
-        device_class: pressure
         entity_id: sensor.owm_pressure
-        value_template: >
-          {% if states.sensor.owm_pressure.state is defined %}
-            {{ (states('sensor.owm_pressure') | float / 1.33322) | round(0) }}
-          {% else %}
+        value_template: >-
+          {%- if states.sensor.owm_pressure.state is defined %}
+            {{ (states('sensor.owm_pressure') | float / 1.33322) | round(1) }}
+          {%- else %}
             {{ states('sensor.owm_pressure_mmhg') }}
-          {% endif %}
+          {%- endif %}
 
 
 camera:

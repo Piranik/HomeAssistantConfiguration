@@ -101,8 +101,8 @@ automation:
           before: '06:00:00'
         ## Someone of owners has to be home
         - condition: state
-          entity_id: group.owners
-          state: 'home'
+          entity_id: binary_sensor.presence_owners
+          state: 'on'
 
     action:
       - service: input_select.select_option
