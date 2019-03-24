@@ -1,0 +1,100 @@
+title: "Cameras"
+icon: mdi:cctv
+path: cameras
+panel: true
+cards:
+  - type: custom:layout-card
+    layout: horizontal
+    cards:
+      - type: custom:compact-custom-header
+      - type: vertical-stack
+        cards:
+          - type: picture-glance
+            title: "Latest Motion Front Door"
+            camera_image: camera.intercom_last
+            entities: []
+
+          - !include dev_card.yaml
+
+      - type: custom:vertical-stack-in-card
+        cards:
+          - type: custom:live-camera-card
+            update_interval: 0.5
+            camera: camera.intercom
+          # - type: picture-glance
+          #   title: Upstairs
+          #   camera_image: camera.upstairs
+          #   entities:
+          #     - switch.dafang_night_mode
+          #     - light.isa_ceiling_light
+          #     - switch.dafang_h264_rtsp_server
+          #     - entity: switch.dafang_motion
+          #       icon: mdi:run-fast
+      #     - type: glance
+      #       show_name: false
+      #       show_state: false
+      #       entities:
+      #         - entity: script.dafang_down
+      #           tap_action:
+      #             action: call-service
+      #             service: script.dafang_down
+      #         - entity: script.dafang_up
+      #           tap_action:
+      #             action: toggle
+      #         - entity: script.dafang_left
+      #           tap_action:
+      #             action: toggle
+      #         - entity: script.dafang_right
+      #           tap_action:
+      #             action: toggle
+      #         - entity: script.dafang_calibrate
+      #           tap_action:
+      #             action: toggle
+      #           icon: mdi:reload
+      #         - switch.dafang_night_mode
+      #         - light.isa_ceiling_light
+      #         - switch.dafang_h264_rtsp_server
+      #         - entity: switch.dafang_motion
+      #           icon: mdi:run-fast
+
+      # - type: custom:vertical-stack-in-card
+      #   cards:
+      #     - type: custom:live-camera-card
+      #       update_interval: 0.5
+      #       camera: camera.back_door
+      #     # - type: picture-glance
+      #     #   title: Back door
+      #     #   camera_image: camera.back_door
+      #     #   entities:
+      #     #     - light.living_room_ceiling_light_level
+      #     #     - light.living_room_spotlights_level
+      #     #     - entity: switch.sannce_motion
+      #     #       icon: mdi:run-fast
+      #     - type: glance
+      #       show_name: false
+      #       show_state: false
+      #       entities:
+      #         - entity: script.sannce_down
+      #           tap_action:
+      #             action: toggle
+      #           icon: mdi:chevron-down
+      #         - entity: script.sannce_up
+      #           tap_action:
+      #             action: toggle
+      #           icon: mdi:chevron-up
+      #         - entity: script.sannce_left
+      #           tap_action:
+      #             action: toggle
+      #           icon: mdi:chevron-left
+      #         - entity: script.sannce_right
+      #           tap_action:
+      #             action: toggle
+      #           icon: mdi:chevron-right
+      #         - entity: script.sannce_calibrate
+      #           tap_action:
+      #             action: toggle
+      #           icon: mdi:reload
+      #         - light.living_room_ceiling_light_level
+      #         - light.living_room_spotlights_level
+      #         - entity: switch.sannce_motion
+      #           icon: mdi:run-fast

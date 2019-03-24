@@ -45,7 +45,7 @@ cards:
         clock_format: 24
 
       - type: custom:layout-card
-        layout: vertical
+        max_columns: 2
         cards:
           - type: horizontal-stack
             cards:
@@ -326,36 +326,40 @@ cards:
                 entities:
                   - type: custom:mini-media-player
                     entity: media_player.kitchen
+                    artwork: cover
                     artwork_border: true
-                    toggle_power: false
+                    power: false
                     group: true
-                    show_source: true
-                    power_color: true
-                    show_progress: true
+                    source: true
+                    progress: true
                   - type: custom:mini-media-player
                     entity: media_player.living_room
+                    artwork: cover
                     artwork_border: true
-                    toggle_power: false
+                    power: false
                     group: true
-                    show_source: true
-                    power_color: true
-                    show_progress: true
+                    source: true
+                    progress: true
 
-          - break
+          # - break
 
           - type: custom:vertical-stack-in-card
             cards:
-            - type: picture-entity
-              entity: camera.moscow_meteogram
-              show_name: false
-              show_state: false
+              - type: custom:weather-card-chart
+                title: "Прогноз погоды"
+                weather: weather.gismeteo
+                mode: hourly
+              - type: picture-entity
+                entity: camera.moscow_meteogram
+                show_name: false
+                show_state: false
 
           - type: picture-glance
-            show_state: false
-            title: Latest Motion Front Door
-            entity: camera.intercom
+            title: "Latest Motion Front Door"
             camera_image: camera.intercom_last
-            entities:
-              -  sensor.ring_front_door_battery
+            entities: []
+            tap_action:
+              action: navigate
+              navigation_path: cameras
 
           - !include dev_card.yaml

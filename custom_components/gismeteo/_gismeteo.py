@@ -1,23 +1,27 @@
-# -*- coding: utf-8 -*-
-# Module: gismeteo
-# License: GPL v.3 https://www.gnu.org/copyleft/gpl.html
+#
+#  Copyright (c) 2018, Vladimir Maksimenko <vl.maksime@gmail.com>
+#  Copyright (c) 2019, Andrey "Limych" Khrolenok <andrey@khrolenok.ru>
+#  GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+#
+
+import calendar
+import os
+import time
+import xml.etree.cElementTree as etree
 
 from future.utils import (PY3, iteritems)
 
-import os
-import time
-import calendar
 if PY3:
     from urllib.request import (urlopen, quote)
     from io import open
 else:
     from urllib import (urlopen, quote)
 
-import xml.etree.cElementTree as etree
 try:
     etree.fromstring('<?xml version="1.0"?><foo><bar/></foo>')
 except TypeError:
     import xml.etree.ElementTree as etree
+
 
 class Cache(object):
     def __init__(self, params=None):
@@ -33,11 +37,11 @@ class Cache(object):
         now_time = time.time()
 
         if self._cache_dir != '' \
-          and os.path.exists(self._cache_dir):
+                and os.path.exists(self._cache_dir):
             files = os.listdir(self._cache_dir)
             for file_name in files:
                 file_path = self._get_file_path(file_name)
-                file_time = os.path.getmtime((file_path))
+                file_time = os.path.getmtime(file_path)
 
                 if (file_time + self._time_delta) <= now_time:
                     os.remove(file_path)
@@ -49,21 +53,19 @@ class Cache(object):
         result = False
 
         file_path = self._get_file_path(file_name)
-
         if os.path.exists(file_path) \
-           and os.path.isfile(file_path):
-                file_time = os.path.getmtime((file_path))
-                now_time = time.time()
+                and os.path.isfile(file_path):
+            file_time = os.path.getmtime(file_path)
+            now_time = time.time()
 
-                result = (file_time + self._time_delta) >= now_time
+            result = (file_time + self._time_delta) >= now_time
 
         return result
 
     def read_cache(self, file_name):
         file_path = self._get_file_path(file_name)
-
         if os.path.exists(file_path) \
-           and os.path.isfile(file_path):
+                and os.path.isfile(file_path):
             file = open(file_path)
             content = file.read()
             file.close()
@@ -86,24 +88,22 @@ class Cache(object):
                 file.write(content)
             file.close()
 
+
 class Gismeteo(object):
 
     def __init__(self, params=None):
         params = params or {}
-
-        self._lang = params.get('lang', 'en')
-
-        self._cache = Cache(params) if params.get('cache_dir') is not None else None
-
         base_url = 'https://services.gismeteo.ru/inform-service/inf_chrome'
 
+        self._lang = params.get('lang', 'en')
+        self._cache = Cache(params) if params.get('cache_dir') is not None else None
         self._actions = {'cities_search': base_url + '/cities/?startsWith=#keyword&lang=#lang',
-                         'cities_ip':     base_url + '/cities/?mode=ip&count=1&nocache=1&lang=#lang',
+                         'cities_ip': base_url + '/cities/?mode=ip&count=1&nocache=1&lang=#lang',
                          'cities_nearby': base_url + '/cities/?lat=#lat&lng=#lng&count=#count&nocache=1&lang=#lang',
-                         'forecast':      base_url + '/forecast/?city=#city_id&lang=#lang',
+                         'forecast': base_url + '/forecast/?city=#city_id&lang=#lang',
                          }
 
-    def _http_request( self, action, url_params=None ):
+    def _http_request(self, action, url_params=None):
         url_params = url_params or {}
 
         if self._use_cache(action):
@@ -125,19 +125,17 @@ class Gismeteo(object):
         req.close()
 
         if self._use_cache(action) \
-          and response:
+                and response:
             self._cache.save_cache(file_name, response)
 
         return response
 
-    def _get_locations_list( self, xml ):
-
+    @staticmethod
+    def _get_locations_list(xml):
         root = etree.fromstring(xml)
-
         if root is not None:
             for item in root:
-
-                location = {'name' : item.attrib['n'],
+                location = {'name': item.attrib['n'],
                             'id': item.attrib['id'],
                             'country': item.attrib['country_name'],
                             'district': item.attrib.get('district_name', ''),
@@ -148,8 +146,8 @@ class Gismeteo(object):
 
                 yield location
 
-    def _get_date(self, source, tzone):
-
+    @staticmethod
+    def _get_date(source, tzone):
         if isinstance(source, float):
             local_stamp = source
             local_date = time.strftime('%Y-%m-%dT%H:%M:%S', time.gmtime(local_stamp))
@@ -167,43 +165,40 @@ class Gismeteo(object):
                   'offset': tzone}
         return result
 
-    def _get_file_name(self, action, url_params):
-            file_name = action
-            for key, val in iteritems(url_params):
-                file_name = '{0}_{1}'.format(file_name, val)
+    @staticmethod
+    def _get_file_name(action, url_params):
+        file_name = action
+        for key, val in iteritems(url_params):
+            file_name = '{0}_{1}'.format(file_name, val)
 
-            return file_name + '.xml'
-
+        return file_name + '.xml'
 
     def _use_cache(self, action):
         cached_actions = ['forecast', 'cities_ip']
 
         return self._cache is not None \
-              and action in cached_actions
-
+               and action in cached_actions
 
     def _get_forecast_info(self, xml):
-
         root = etree.fromstring(xml)
-
         if root is not None:
-                xml_location = root[0]
+            xml_location = root[0]
 
-                return {'name' : xml_location.attrib['name'],
-                        'id': xml_location.attrib['id'],
-                        'kind': xml_location.attrib['kind'],
-                        'country': xml_location.attrib['country_name'],
-                        'district': xml_location.attrib.get('district_name', ''),
-                        'lat': xml_location.attrib['lat'],
-                        'lng': xml_location.attrib['lng'],
-                        'cur_time': self._get_date(xml_location.attrib['cur_time'], int(xml_location.attrib['tzone'])),
-                        'current': self._get_fact_forecast(xml_location),
-                        'days': self._get_days_forecast(xml_location),
-                        }
+            return {'name': xml_location.attrib['name'],
+                    'id': xml_location.attrib['id'],
+                    'kind': xml_location.attrib['kind'],
+                    'country': xml_location.attrib['country_name'],
+                    'district': xml_location.attrib.get('district_name', ''),
+                    'lat': xml_location.attrib['lat'],
+                    'lng': xml_location.attrib['lng'],
+                    'cur_time': self._get_date(xml_location.attrib['cur_time'], int(xml_location.attrib['tzone'])),
+                    'current': self._get_fact_forecast(xml_location),
+                    'days': self._get_days_forecast(xml_location),
+                    }
 
     def _get_item_forecast(self, xml_item, tzone):
-        xml_values = xml_item[0]
         result = {}
+        xml_values = xml_item[0]
 
         result['date'] = self._get_date(xml_item.attrib['valid'], tzone)
         if xml_item.attrib.get('sunrise') is not None:
@@ -213,26 +208,30 @@ class Gismeteo(object):
         result['temperature'] = {'air': int(xml_values.attrib['t']),
                                  'comfort': int(xml_values.attrib['hi']),
                                  }
+        if xml_values.attrib.get('tflt') is not None:
+            result['temperature']['air'] = float(xml_values.attrib['tflt'])
+        if xml_values.attrib.get('tcflt') is not None:
+            result['temperature']['comfort'] = float(xml_values.attrib['tcflt'])
         if xml_values.attrib.get('water_t') is not None:
-            result['temperature']['water'] = int(xml_values.attrib['water_t']),
+            result['temperature']['water'] = int(xml_values.attrib['water_t'])
         result['description'] = xml_values.attrib['descr']
         result['humidity'] = int(xml_values.attrib['hum'])
         result['pressure'] = int(xml_values.attrib['p'])
-        result['cloudiness'] = xml_values.attrib['cl']
+        result['cloudiness'] = int(xml_values.attrib['cl'])
         result['storm'] = (xml_values.attrib['ts'] == '1')
-        result['precipitation'] = {'type': xml_values.attrib['pt'],
+        result['precipitation'] = {'type': int(xml_values.attrib['pt']),
                                    'amount': xml_values.attrib.get('prflt'),
-                                   'intensity': xml_values.attrib['pr'],
+                                   'intensity': int(xml_values.attrib['pr']),
                                    }
         if xml_values.attrib.get('ph') is not None \
-          and xml_values.attrib['ph']:
+                and xml_values.attrib['ph']:
             result['phenomenon'] = int(xml_values.attrib['ph']),
         if xml_item.attrib.get('tod') is not None:
             result['tod'] = int(xml_item.attrib['tod'])
         result['icon'] = xml_values.attrib['icon']
-        result['gm'] = xml_values.attrib['grade']
+        result['gm'] = int(xml_values.attrib['grade'])
         result['wind'] = {'speed': float(xml_values.attrib['ws']),
-                          'direction': xml_values.attrib['wd'],
+                          'direction': int(xml_values.attrib['wd']),
                           }
 
         return result
@@ -301,20 +300,16 @@ class Gismeteo(object):
             return None
 
     def cities_ip(self):
-        locations = []
-
-        url_params = {'#lang': self._lang,
-                      }
+        url_params = {'#lang': self._lang}
 
         response = self._http_request('cities_ip', url_params)
-
         if response:
             locations = self._get_locations_list(response)
             for location in locations:
                 return location
         return None
 
-    def cities_nearby(self, lat, lng, count = 5):
+    def cities_nearby(self, lat, lng, count=5):
         url_params = {'#lat': lat,
                       '#lng': lng,
                       '#count': count,
@@ -322,7 +317,6 @@ class Gismeteo(object):
                       }
 
         response = self._http_request('cities_nearby', url_params)
-
         if response:
             return self._get_locations_list(response)
         else:
@@ -334,7 +328,6 @@ class Gismeteo(object):
                       }
 
         response = self._http_request('forecast', url_params)
-
         if response:
             return self._get_forecast_info(response)
         else:

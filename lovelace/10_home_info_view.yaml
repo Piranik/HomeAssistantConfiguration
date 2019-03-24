@@ -1,4 +1,4 @@
-title: Home info
+title: "Home info"
 icon: mdi:home-heart
 panel: true
 path: home-info
@@ -80,12 +80,12 @@ cards:
           - break
           - type: vertical-stack
             cards:
-#              - type: alarm-panel
-#                entity: alarm_control_panel.house
-#                states:
-#                  - arm_home
-#                  - arm_away
-#                  - arm_night
+              # - type: alarm-panel
+              #   entity: alarm_control_panel.house
+              #   states:
+              #     - arm_home
+              #     - arm_away
+              #     - arm_night
 
               - type: glance
                 show_header_toggle: false
@@ -98,29 +98,29 @@ cards:
 
               - type: entities
                 entities:
-#                  - type: custom:fold-entity-row
-#                    head:
-#                      type: section
-#                      label: Security
-#                    group_config:
-#                      secondary_info: last-changed
-#                    items:
-#                      - sensor.front_door
-#                      - sensor.back_door
-#                      - sensor.yard_door
-#                      - sensor.balcony_door
-#
-#                      - sensor.dining_area_window
-#                      - sensor.bedroom_window
-#                      - binary_sensor.bedroom_door
-#
-#                      - sensor.passage_movement
-#                      - sensor.upstairs_hallway_movement
-#                      - binary_sensor.stefans_room_motion
-#                      - sensor.ring_front_door_last_motion
+                  # - type: custom:fold-entity-row
+                  #   head:
+                  #     type: section
+                  #     label: Security
+                  #   group_config:
+                  #     secondary_info: last-changed
+                  #   items:
+                  #     - sensor.front_door
+                  #     - sensor.back_door
+                  #     - sensor.yard_door
+                  #     - sensor.balcony_door
+
+                  #     - sensor.dining_area_window
+                  #     - sensor.bedroom_window
+                  #     - binary_sensor.bedroom_door
+
+                  #     - sensor.passage_movement
+                  #     - sensor.upstairs_hallway_movement
+                  #     - binary_sensor.stefans_room_motion
+                  #     - sensor.ring_front_door_last_motion
 
                   - type: custom:fold-entity-row
-                    head: sensor.presence
+                    head: binary_sensor.presence
                     group_config:
                       secondary_info: last-changed
                     items:
@@ -141,32 +141,28 @@ cards:
 
                       - type: divider
                       
-#                      - entity: sensor.unlocked_by
-#                        name: "Front door last unlocked by"
-#                        secondary_info: last-changed
+                      # - entity: sensor.unlocked_by
+                      #   name: "Front door last unlocked by"
+                      #   secondary_info: last-changed
                       - entity: sensor.monitor
                         secondary_info: last-changed
 
           - break
-          - type: vertical-stack
-            cards: 
-              - type: history-graph
-                title: "Температура за 48ч"
-                hours_to_show: 48
-                entities:
-                  - sensor.kitchen_temperature
-                  - sensor.owm_temperature
-                  - sensor.outdoor_daily_avg_temperature
-              - type: history-graph
-                title: "Температура за 7 дней"
-                hours_to_show: 168
-                entities:
-                  - sensor.kitchen_temperature
-                  - sensor.owm_temperature
-                  - sensor.outdoor_daily_avg_temperature
-#              - type: history-graph
-#                title: Light 24 Hours
-#                hours_to_show: 24
-#                entities:
-#                  - sensor.passage_pir_luminance
-#                  - sensor.upstairs_hallway_pir_luminance
+          - type: history-graph
+            title: "Температура за 48ч"
+            hours_to_show: 48
+            entities:
+              - sensor.kitchen_temperature
+              - sensor.owm_temperature
+          - type: history-graph
+            title: "Температура за 7 дней"
+            hours_to_show: 168
+            entities:
+              - sensor.kitchen_temperature
+              - sensor.owm_temperature
+        #  - type: history-graph
+        #     title: Light 24 Hours
+        #     hours_to_show: 24
+        #     entities:
+        #      - sensor.passage_pir_luminance
+        #      - sensor.upstairs_hallway_pir_luminance

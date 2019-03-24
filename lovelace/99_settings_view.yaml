@@ -13,7 +13,7 @@ cards:
             trackers:
               - sensor.custom_card_tracker
               - sensor.custom_component_tracker
-  
+
           - type: custom:home-setter
             pages:
               - name: Default
@@ -37,15 +37,29 @@ cards:
                   #   icon: mdi:refresh
                   #   action_name: "Run"
                   #   service_data: {}
-        
-              - type: entities
-                title: "Debugging"
-                show_header_toggle: false
+
+              - type: custom:monster-card
+                show_empty: false
+                card:
+                  type: entities
+                  title: "Debugging"
+                  show_header_toggle: false
+                filter:
+                  include:
+                    - entity_id: input_boolean.test
+                    - entity_id: "*gismeteo*"
+                      options:
+                        secondary_info: last-changed
+              - type: history-graph
+                title: "Температура за 48ч"
+                hours_to_show: 48
                 entities:
-                  - input_boolean.test
-    
+                  - sensor.kitchen_temperature
+                  - sensor.owm_temperature
+                  - sensor.outdoor_daily_avg_temperature
+
           - !include links_card.yaml
-    
+
           # - type: custom:auto-entities
           #   card:
           #     type: entities
@@ -60,7 +74,7 @@ cards:
           #     exclude:
           #       - entity_id: "*_2"
           #       - entity_id: "*_management"
-    
+
           - type: custom:auto-entities
             card:
               type: entities
@@ -73,7 +87,7 @@ cards:
                   attributes:
                     battery: "< 50"
                     source_type: gps
-    
+
           # - type: vertical-stack
           #   cards:
           #     - type: custom:monster-card
@@ -95,7 +109,7 @@ cards:
           #           - domain: group
           #           - entity_id: "*pressure*"
           #           - entity_id: "*humidity*"
-    
+
           - type: vertical-stack
             cards:
               - type: custom:monster-card

@@ -31,6 +31,19 @@ binary_sensor:
           {{ is_state('sun.sun', 'below_horizon') }}
 
 sensor:
+  - platform: filter
+    name: outdoor_daily_avg_temperature
+    entity_id: sensor.owm_temperature
+    filters:
+      # - filter: outlier
+      #   window_size: 4
+      #   radius: 2.0
+      # - filter: lowpass
+      #   time_constant: 10
+      - filter: time_simple_moving_average
+        window_size: 24:00
+        precision: 3
+
   - platform: mqtt
     name: kitchen_temperature
     state_topic: "sensor/kitchen/temperature"
@@ -39,16 +52,3 @@ sensor:
     name: kitchen_humidity
     state_topic: "sensor/kitchen/humidity"
     availability_topic: "sensor/kitchen/status"
-
-  - platform: filter
-    name: outdoor_daily_avg_temperature
-    entity_id: sensor.owm_temperature
-    filters:
-      - filter: outlier
-        window_size: 4
-        radius: 2.0
-      - filter: lowpass
-        time_constant: 10
-      - filter: time_simple_moving_average
-        window_size: 24:00
-        precision: 3

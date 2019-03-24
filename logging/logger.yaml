@@ -26,6 +26,7 @@ logs:
   homeassistant.components.shell_command: debug
   homeassistant.components.telegram: error
   homeassistant.components.websocket_api: error
+  homeassistant.components.weather: debug
   # homeassistant.core: debug
   # homeassistant.helpers.entity: error
   homeassistant.helpers.script: debug

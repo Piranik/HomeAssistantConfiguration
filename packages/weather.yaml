@@ -12,11 +12,9 @@ homeassistant:
       unit_of_measurement: hPa
 
 weather:
+  - platform: gismeteo
   - platform: openweathermap
     api_key: !secret openweathermap_apikey
-#  - platform: yandex
-#    api_key: !secret yandex_apikey
-#  - platform: gismeteo
 
 sensor:
   - platform: openweathermap

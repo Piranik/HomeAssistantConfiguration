@@ -116,3 +116,7 @@ Automations view
 * [Log Viewer](https://github.com/hassio-addons/addon-log-viewer);
 * [MQTT Server & Web Client](https://github.com/hassio-addons/addon-mqtt/blob/master/README.md);
 * [Samba Share](https://www.home-assistant.io/addons/samba/) — official addon;
+
+# Get in contact
+
+[E-mail](mailto:andrey@khrolenok.ru)

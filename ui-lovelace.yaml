@@ -5,38 +5,44 @@ resources:
     type: js
   - url: https://fonts.googleapis.com/css?family=Roboto+Condensed
     type: css
-    
+
   # - url: https://cdn.jsdelivr.net/gh/bramkragten/custom-ui@master/swipe-card/swipe-card.min.js
   #   type: module
   # - url: https://cdn.jsdelivr.net/gh/bramkragten/custom-ui@master/weather-card/weather-card.min.js
   #   type: module
-#
-#  - url: /customcards/alarm_control_panel-card.js
-#    type: js
+
+  # - url: /customcards/alarm_control_panel-card.js
+  #   type: js
+  # - url: /customcards/custom-lovelace/atomic-calendar.js?track=true
+  #   type: module
   - url: /customcards/custom-lovelace/auto-entities.js?track=true
     type: js
   # - url: /customcards/custom-lovelace/bignumber-card.js
   #   type: js
   - url: /customcards/custom-lovelace/button-card.js?track=true
     type: module
-#  - url: /customcards/custom-lovelace/calendar-card.js
-#    type: module
+  # - url: /customcards/custom-lovelace/calendar-card.js
+  #   type: module
   - url: /customcards/custom-lovelace/card-modder.js?track=true
     type: js
   - url: /customcards/custom-lovelace/compact-custom-header.js?track=true
     type: module
-#  - url: /customcards/custom-lovelace/dual-gauge-card.js
-#    type: js
-#  - url: /customcards/custom-lovelace/entity-attributes-card.js
-#    type: js
+  - url: /customcards/custom-lovelace/custom-weather-card-chart.js
+    type: module
+  # - url: /customcards/custom-lovelace/dual-gauge-card.js
+  #   type: js
+  # - url: /customcards/custom-lovelace/entity-attributes-card.js
+  #   type: js
   - url: /customcards/custom-lovelace/fold-entity-row.js?track=true
     type: js
   - url: /customcards/custom-lovelace/home-setter.js?track=true
     type: js
   - url: /customcards/custom-lovelace/layout-card.js?track=true
     type: js
-#  - url: /customcards/custom-lovelace/light-card.js
-#    type: js
+  # - url: /customcards/custom-lovelace/light-card.js
+  #   type: js
+  - url: /customcards/custom-lovelace/live-camera-card.js?v.0.0.3
+    type: module
   - url: /customcards/custom-lovelace/mini-graph-card-bundle.js?track=true
     type: module
   - url: /customcards/custom-lovelace/mini-media-player-bundle.js?track=true
@@ -49,22 +55,22 @@ resources:
     type: js
   - url: /customcards/custom-lovelace/state-attribute-element.js?track=true
     type: js
-#  - url: /customcards/custom-lovelace/state-element.js
-#    type: js
-#  - url: /customcards/custom-lovelace/state-switch.js
-#    type: js
+  # - url: /customcards/custom-lovelace/state-element.js
+  #   type: js
+  # - url: /customcards/custom-lovelace/state-switch.js
+  #   type: js
   - url: /customcards/custom-lovelace/text-element.js?track=true
     type: js
-#  - url: /customcards/custom-lovelace/toggle-lock-entity-row.js
-#    type: js
+  # - url: /customcards/custom-lovelace/toggle-lock-entity-row.js
+  #   type: js
   - url: /customcards/custom-lovelace/tracker-card.js?track=true
     type: module
-#  - url: /customcards/custom-lovelace/upcoming-media-card.js
-#    type: js
+  # - url: /customcards/custom-lovelace/upcoming-media-card.js
+  #   type: js
   - url: /customcards/custom-lovelace/useful-markdown-card.js?track=true
     type: js
-#  - url: /customcards/custom-lovelace/username-element.js
-#    type: js
+  # - url: /customcards/custom-lovelace/username-element.js
+  #   type: js
   - url: /customcards/custom-lovelace/vertical-stack-in-card.js?track=true
     type: js
 
@@ -72,18 +78,18 @@ title: Home
 views:
   - !include lovelace/00_home_view.yaml
   - !include lovelace/10_home_info_view.yaml
-#  - !include lovelace/20_lights_view.yaml
+  # - !include lovelace/20_lights_view.yaml
   - !include lovelace/30_system_info_view.yaml
-#  - !include lovelace/31_system_graphs.yaml
-#  - !include lovelace/40_camera_view.yaml
-#  # - !include lovelace/50_cat_view.yaml
-#  - !include lovelace/60_traffic_view.yaml
-#  # - !include lovelace/60_floorplan_view.yaml
+  # - !include lovelace/31_system_graphs.yaml
+  - !include lovelace/40_camera_view.yaml
+  # # - !include lovelace/50_cat_view.yaml
+  # - !include lovelace/60_traffic_view.yaml
+  # # - !include lovelace/60_floorplan_view.yaml
   - !include lovelace/80_automations_view.yaml
-#  - !include lovelace/101_dashboard.yaml
-#  # - !include lovelace/minimal_dash.yaml
-#  # - !include lovelace/103_dashboard_test.yaml
-#  - !include lovelace/areas.yaml
-#
+  # - !include lovelace/101_dashboard.yaml
+  # # - !include lovelace/minimal_dash.yaml
+  # # - !include lovelace/103_dashboard_test.yaml
+  # - !include lovelace/areas.yaml
+
   - !include lovelace/99_settings_view.yaml
-#  - !include lovelace/102_tiny_dashboard.yaml
+  # - !include lovelace/102_tiny_dashboard.yaml

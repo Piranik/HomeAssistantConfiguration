@@ -1,0 +1,14 @@
+{
+  "gismeteo": {
+    "version": "0.1",
+    "local_location": "/custom_components/gismeteo/__init__.py",
+    "remote_location": "https://raw.githubusercontent.com/awesome-developer/my-awesome-repo/master/custom_components/gismeteo/__init__.py",
+    "visit_repo": "https://github.com/awesome-developer/my-awesome-repo",
+    "changelog": "https://github.com/awesome-developer/my-awesome-repo/releases/latest",
+    "resources": [
+      "https://raw.githubusercontent.com/awesome-developer/my-awesome-repo/master/custom_components/gismeteo/const.py",
+      "https://raw.githubusercontent.com/awesome-developer/my-awesome-repo/master/custom_components/gismeteo/_gismeteo.py",
+      "https://raw.githubusercontent.com/awesome-developer/my-awesome-repo/master/custom_components/gismeteo/weather.py"
+    ]
+  }
+}
