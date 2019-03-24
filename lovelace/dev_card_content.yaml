@@ -1,0 +1,32 @@
+type: custom:vertical-stack-in-card
+cards:
+  - type: entities
+    show_header_toggle: false
+    entities:
+      - type: weblink
+        name: HAss Host Console
+        url: !secret hass_console_url
+        icon: mdi:console
+      - input_boolean.hass_dev_mode
+  - type: horizontal-stack
+    cards:
+      - type: custom:button-card
+        color_type: card
+        color: rgb(223, 255, 97)
+        name: "Check Cfg"
+        action: service
+        service:
+          domain: homeassistant
+          action: check_config
+          data: {}
+      - type: custom:button-card
+        color_type: blank-card
+      - type: custom:button-card
+        color_type: card
+        color: rgb(255, 97, 97)
+        name: "Restart"
+        action: service
+        service:
+          domain: homeassistant
+          action: restart
+          data: {}

@@ -11,13 +11,16 @@ https://home-assistant.io/components/weather.gismeteo/
 
 from datetime import timedelta
 
-VERSION = '0.1'
+VERSION = '1.0'
 
 ATTRIBUTION = 'Data provided by Gismeteo'
 
-DEFAULT_NAME = 'Gismeteo'
+CONF_CACHE_DIR = 'cache_dir'
 
-MIN_TIME_BETWEEN_UPDATES = timedelta(minutes=30)
+DEFAULT_NAME = 'Gismeteo'
+DEFAULT_CACHE_DIR = '/tmp'
+
+MIN_TIME_BETWEEN_UPDATES = timedelta(minutes=5)
 
 CONDITION_FOG_CLASSES = [11, 12, 28, 40, 41, 42, 43, 44, 45, 46, 47, 48,
                          49, 120, 130, 131, 132, 133, 134, 135, 528]

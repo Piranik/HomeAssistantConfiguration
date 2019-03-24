@@ -5,16 +5,7 @@ conditions:
 card:
   type: custom:card-modder
   card:
-    type: entities
-    show_header_toggle: false
-    entities:
-      - input_boolean.hass_dev_mode
-      # - type: call-service
-      #   name: "Lovelace generator"
-      #   service: shell_command.lovelace_gen
-      #   icon: mdi:refresh
-      #   action_name: "Run"
-      #   service_data: {}
+    !include dev_card_content.yaml
   style:
     background-image: url("/local/lovelace_ui/bg_maintenance.png")
     background-position: left top

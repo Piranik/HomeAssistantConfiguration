@@ -10,6 +10,18 @@ import time
 import xml.etree.cElementTree as etree
 
 from future.utils import (PY3, iteritems)
+from homeassistant.components.weather import (
+    ATTR_FORECAST_CONDITION, ATTR_FORECAST_PRECIPITATION, ATTR_FORECAST_TEMP,
+    ATTR_FORECAST_TEMP_LOW, ATTR_FORECAST_TIME, ATTR_FORECAST_WIND_BEARING,
+    ATTR_FORECAST_WIND_SPEED)
+from homeassistant.const import (
+    STATE_UNKNOWN)
+from homeassistant.helpers import sun
+from homeassistant.util import dt as dt_util, Throttle
+
+from .const import (
+    ATTR_FORECAST_HUMIDITY, ATTR_FORECAST_PRESSURE, MIN_TIME_BETWEEN_UPDATES,
+    CONDITION_FOG_CLASSES)
 
 if PY3:
     from urllib.request import (urlopen, quote)
@@ -21,6 +33,8 @@ try:
     etree.fromstring('<?xml version="1.0"?><foo><bar/></foo>')
 except TypeError:
     import xml.etree.ElementTree as etree
+
+REQUIREMENTS = []
 
 
 class Cache(object):
@@ -124,8 +138,7 @@ class Gismeteo(object):
         response = req.read()
         req.close()
 
-        if self._use_cache(action) \
-                and response:
+        if self._use_cache(action) and response:
             self._cache.save_cache(file_name, response)
 
         return response
@@ -262,17 +275,17 @@ class Gismeteo(object):
                                 'max': int(xml_day.attrib['pmax']),
                                 'avg': int(xml_day.attrib['p']),
                                 },
-                   'cloudiness': xml_day.attrib['cl'],
+                   'cloudiness': int(xml_day.attrib['cl']),
                    'storm': (xml_day.attrib['ts'] == '1'),
                    'precipitation': {'type': xml_day.attrib['pt'],
                                      'amount': xml_day.attrib['prflt'],
                                      'intensity': xml_day.attrib['pr'],
                                      },
                    'icon': xml_day.attrib['icon'],
-                   'gm': xml_day.attrib['grademax'],
-                   'wind': {'speed': {'min': float(xml_day.attrib['wsmin']),
-                                      'max': float(xml_day.attrib['wsmax']),
-                                      'avg': float(xml_day.attrib['ws']),
+                   'gm': int(xml_day.attrib['grademax']),
+                   'wind': {'speed': {'min': round(float(xml_day.attrib['wsmin']), 1),
+                                      'max': round(float(xml_day.attrib['wsmax']), 1),
+                                      'avg': round(float(xml_day.attrib['ws']), 1),
                                       },
                             'direction': xml_day.attrib['wd'],
                             },
@@ -332,3 +345,167 @@ class Gismeteo(object):
             return self._get_forecast_info(response)
         else:
             return None
+
+
+class WeatherData:
+    """Get the latest data from Gismeteo."""
+
+    def __init__(self, hass, gismeteo, city_id):
+        """Initialize the data object."""
+        self._hass = hass
+        self.gm = gismeteo
+        self.city_id = city_id
+        self.data = None
+
+    @Throttle(MIN_TIME_BETWEEN_UPDATES)
+    def update(self):
+        """Get the latest data from Gismeteo."""
+        self.data = self.gm.forecast(self.city_id)
+        if self.data is None:
+            return
+
+        self.data['days'] = list(self.data['days'])
+        for day in self.data['days']:
+            if day.get('hourly') is not None:
+                day['hourly'] = list(day['hourly'])
+
+    def condition(self, src=None):
+        """Return the current condition."""
+        src = src or self.data['current']
+        cond = STATE_UNKNOWN
+
+        if src['cloudiness'] == 0:
+            if sun.is_up(self._hass, dt_util.utc_from_timestamp(src['date']['unix'])):
+                cond = "sunny"  # Sunshine
+            else:
+                cond = "clear-night"  # Clear night
+        elif src['cloudiness'] == 1:
+            cond = "partlycloudy"  # A few clouds
+        elif src['cloudiness'] == 2:
+            cond = "cloudy"  # Many clouds
+        elif src['cloudiness'] == 3:
+            cond = "cloudy"  # Many clouds
+
+        pr_type = src['precipitation']['type']
+        pr_int = src['precipitation']['intensity']
+        if src['storm']:
+            cond = "lightning"  # Lightning/ thunderstorms
+            if pr_type != 0:
+                cond = "lightning-rainy"  # Lightning/ thunderstorms and rain
+        elif pr_type == 1:
+            cond = "rainy"  # Rain
+            if pr_int == 3:
+                cond = "pouring"  # Pouring rain
+        elif pr_type == 2:
+            cond = "snowy"  # Snow
+        elif pr_type == 3:
+            cond = "snowy-rainy"  # Snow and Rain
+        elif self.wind_speed_ms(src) > 10.8:
+            if cond == "cloudy":
+                cond = "windy-variant"  # Wind and clouds
+            else:
+                cond = "windy"  # Wind
+        elif src['cloudiness'] == 0 and src.get('phenomenon') is not None \
+                and src['phenomenon'] in CONDITION_FOG_CLASSES:
+            cond = "fog"  # Fog
+
+        return cond
+
+    def temperature(self, src=None):
+        """Return the current temperature."""
+        src = src or self.data['current']
+        src = src['temperature']
+        if src.get('air') is not None:
+            return src['air']
+        else:
+            return src['max']
+
+    def pressure_hpa(self, src=None):
+        """Return the current pressure in hPa."""
+        return round(self.pressure_mmhg(src) * 1.33322, 1)
+
+    def pressure_mmhg(self, src=None):
+        """Return the current pressure in mmHg."""
+        src = src or self.data['current']
+        res = src['pressure']
+        if isinstance(res, dict):
+            res = res['avg']
+        return float(res)
+
+    def humidity(self, src=None):
+        """Return the name of the sensor."""
+        src = src or self.data['current']
+        res = src['humidity']
+        if isinstance(res, dict):
+            res = res['avg']
+        return int(res)
+
+    def wind_bearing(self, src=None):
+        """Return the current wind bearing."""
+        src = src or self.data['current']
+        w_dir = int(src['wind']['direction'])
+        if w_dir > 0:
+            return (w_dir - 1) * 45
+        else:
+            return STATE_UNKNOWN
+
+    def wind_speed_kmh(self, src=None):
+        """Return the current windspeed in km/h."""
+        return round(self.wind_speed_ms(src) * 3.6, 1)
+
+    def wind_speed_ms(self, src=None):
+        """Return the current windspeed in m/s."""
+        src = src or self.data['current']
+        res = src['wind']['speed']
+        if isinstance(res, dict):
+            res = res['avg']
+        return float(res)
+
+    def forecast(self, src=None):
+        """Return the forecast array."""
+        src = src or self.data['days']
+        data = []
+        for entry in src:
+            if entry.get('hourly') is None:
+                data.append({
+                    ATTR_FORECAST_TIME:
+                        entry['date']['local'],
+                    ATTR_FORECAST_CONDITION:
+                        self.condition(entry),
+                    ATTR_FORECAST_TEMP:
+                        entry['temperature']['max'],
+                    ATTR_FORECAST_TEMP_LOW:
+                        entry['temperature']['min'],
+                    ATTR_FORECAST_PRESSURE:
+                        self.pressure_hpa(entry),
+                    ATTR_FORECAST_HUMIDITY:
+                        self.humidity(entry),
+                    ATTR_FORECAST_WIND_SPEED:
+                        self.wind_speed_kmh(entry),
+                    ATTR_FORECAST_WIND_BEARING:
+                        self.wind_bearing(entry),
+                    ATTR_FORECAST_PRECIPITATION:
+                        int(entry['precipitation']['type'] != 0),
+                })
+            else:
+                for part in entry['hourly']:
+                    if dt_util.utcnow() < dt_util.utc_from_timestamp(part['date']['unix']):
+                        data.append({
+                            ATTR_FORECAST_TIME:
+                                part['date']['local'],
+                            ATTR_FORECAST_CONDITION:
+                                self.condition(part),
+                            ATTR_FORECAST_TEMP:
+                                self.temperature(part),
+                            ATTR_FORECAST_PRESSURE:
+                                self.pressure_hpa(part),
+                            ATTR_FORECAST_HUMIDITY:
+                                self.humidity(part),
+                            ATTR_FORECAST_WIND_SPEED:
+                                self.wind_speed_kmh(part),
+                            ATTR_FORECAST_WIND_BEARING:
+                                self.wind_bearing(part),
+                            ATTR_FORECAST_PRECIPITATION:
+                                int(part['precipitation']['type'] != 0),
+                        })
+        return data

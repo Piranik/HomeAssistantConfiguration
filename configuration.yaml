@@ -10,8 +10,8 @@ homeassistant:
   unit_system: metric
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   time_zone: !secret home_timezone
-#  whitelist_external_dirs:
-#    - '/config/www/motion'
+  whitelist_external_dirs:
+    - /tmp
   packages: !include_dir_named packages
   # Customization
   auth_providers:
