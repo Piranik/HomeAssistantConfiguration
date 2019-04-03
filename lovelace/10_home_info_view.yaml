@@ -17,7 +17,7 @@ cards:
                     height: 75
                     hour24: true
                     entities:
-                      - sensor.owm_temperature
+                      - sensor.gismeteo_temperature
                     # color_thresholds:
                     #   - value: 0
                     #     color: "#CCE5FF"
@@ -39,13 +39,13 @@ cards:
                     height: 75
                     hour24: true
                     entities:
-                      - sensor.owm_humidity
+                      - sensor.gismeteo_humidity
                   - type: custom:mini-graph-card
                     hour24: true
                     height: 75
                     decimals: 0
                     entities:
-                      - sensor.pressure_mmhg
+                      - sensor.gismeteo_pressure
 
               - type: horizontal-stack
                 cards:
@@ -153,13 +153,13 @@ cards:
             hours_to_show: 48
             entities:
               - sensor.kitchen_temperature
-              - sensor.owm_temperature
+              - sensor.gismeteo_temperature
           - type: history-graph
             title: "Температура за 7 дней"
             hours_to_show: 168
             entities:
               - sensor.kitchen_temperature
-              - sensor.owm_temperature
+              - sensor.gismeteo_temperature
         #  - type: history-graph
         #     title: Light 24 Hours
         #     hours_to_show: 24

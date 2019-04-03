@@ -1,0 +1,65 @@
+type: vertical-stack
+cards:
+  - type: custom:vertical-stack-in-card
+    cards:
+      - type: entities
+        title: "HAss сервер"
+        show_header_toggle: false
+        entities:
+          - entity: sensor.last_boot
+            name: "Last boot"
+          - entity: sensor.cert
+            # name: "SSL Cert"
+
+      # - type: custom:useful-markdown-card
+      #   content: |
+      #     [[ sensor.hass_alerts ]]
+
+  - type: horizontal-stack
+    cards:
+      - type: custom:mini-graph-card
+        show:
+          icon: false
+        name: "CPU use"
+        hour24: true
+        entities:
+          - sensor.processor_use
+        color_thresholds:
+          - value: -1
+            color: green
+          - value: 70
+            color: lightgreen
+          - value: 100
+            color: orange
+          - value: 300
+            color: red
+        tap_action:
+          action: more-info
+      - type: custom:mini-graph-card
+        name: "RAM use"
+        show:
+          icon: false
+        hour24: true
+        entities:
+          - sensor.memory_use_percent
+        color_thresholds:
+          - value: -1
+            color: green
+          - value: 70
+            color: orange
+        tap_action:
+          action: more-info
+      - type: custom:mini-graph-card
+        name: "Disk use"
+        show:
+          icon: false
+        hour24: true
+        entities:
+          - sensor.disk_use_percent
+        color_thresholds:
+          - value: -1
+            color: green
+          - value: 75
+            color: orange
+          - value: 90
+            color: red

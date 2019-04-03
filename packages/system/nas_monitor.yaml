@@ -41,9 +41,13 @@ homeassistant:
     sensor.nas_pool_*_health:
       templates:
         hs_color: >-
-          if (state == "HEALTHY" or state == "ONLINE") return [0, 0];
-          if (state == "DEGRADED") return [40, 70];
+          if (state === 'ONLINE') return [0, 0];
+          else if (state === 'DEGRADED') return [40, 70];
           else return [0, 85];
+        card_bg_color: >-
+          if (state === 'ONLINE') return 'var(--paper-card-background-color)';
+          else if (state === 'DEGRADED') return 'rgb(200, 150, 0)';
+          else return 'rgb(250, 0, 0)';
 
   customize:
     sensor.nas_last_boot:
@@ -186,4 +190,4 @@ sensor:
     name: nas_alerts
     state_topic: "sensor/nas_state"
     value_template: >-
-      {{ value_json.alerts | regex_replace(find='^\[([^\]]+)\]', replace='<img alt="\\1" src="/local/lovelace_ui/info/icon_\\1.svg" width="30">') }}
+      {{ value_json.alerts | regex_replace(find='\[([A-Z]+)\]', replace='<img alt="\\1" src="/local/lovelace_ui/info/icon_\\1.svg" width="30">') }}

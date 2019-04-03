@@ -1,12 +1,13 @@
 #
 #  Copyright (c) 2019, Andrey "Limych" Khrolenok <andrey@khrolenok.ru>
-#  GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+#  Creative Commons BY-NC-SA 4.0 International Public License
+#  (see LICENSE.md or https://creativecommons.org/licenses/by-nc-sa/4.0/)
 #
 """
-Support for Gismeteo.
+The Gismeteo component.
 
 For more details about this platform, please refer to the documentation at
-https://home-assistant.io/components/weather.gismeteo/
+https://github.com/Limych/HomeAssistantComponents/
 """
 import logging
 import os

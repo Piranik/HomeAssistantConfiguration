@@ -1,7 +1,8 @@
 #
 #  Copyright (c) 2018, Vladimir Maksimenko <vl.maksime@gmail.com>
 #  Copyright (c) 2019, Andrey "Limych" Khrolenok <andrey@khrolenok.ru>
-#  GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+#  Creative Commons BY-NC-SA 4.0 International Public License
+#  (see LICENSE.md or https://creativecommons.org/licenses/by-nc-sa/4.0/)
 #
 
 import calendar
@@ -43,7 +44,6 @@ class Cache(object):
 
         self._cache_dir = params.get('cache_dir', '')
         self._cache_time = params.get('cache_time', 0)
-        self._time_delta = self._cache_time * 60
 
         self._clear_dir()
 
@@ -57,7 +57,7 @@ class Cache(object):
                 file_path = self._get_file_path(file_name)
                 file_time = os.path.getmtime(file_path)
 
-                if (file_time + self._time_delta) <= now_time:
+                if (file_time + self._cache_time) <= now_time:
                     os.remove(file_path)
 
     def _get_file_path(self, file_name):
@@ -72,7 +72,7 @@ class Cache(object):
             file_time = os.path.getmtime(file_path)
             now_time = time.time()
 
-            result = (file_time + self._time_delta) >= now_time
+            result = (file_time + self._cache_time) >= now_time
 
         return result
 

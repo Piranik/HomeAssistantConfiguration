@@ -1,0 +1,77 @@
+type: vertical-stack
+cards:
+  - type: custom:card-modder
+    style:
+      background: "[[ sensor.nas_pool_pool1_health.attributes.card_bg_color ]]"
+    card:
+      type: custom:vertical-stack-in-card
+      cards:
+        - type: entities
+          title: "NAS сервер"
+          show_header_toggle: false
+          entities:
+            - entity: sensor.nas_last_boot
+              name: "Last boot"
+            - entity: sensor.nas_pool_pool1_health
+  
+        - type: custom:useful-markdown-card
+          content: |
+            [[ sensor.nas_alerts ]]
+
+  - type: horizontal-stack
+    cards:
+      - type: custom:mini-graph-card
+        show:
+          icon: false
+        name: "CPU use"
+        hour24: true
+        entities:
+          - sensor.nas_cpu_use_percent
+        color_thresholds:
+          - value: -1
+            color: green
+          - value: 70
+            color: lightgreen
+          - value: 100
+            color: orange
+          - value: 300
+            color: red
+        tap_action:
+          action: more-info
+      - type: custom:mini-graph-card
+        name: "RAM use"
+        show:
+          icon: false
+        hour24: true
+        entities:
+          - sensor.nas_memory_use_percent
+        color_thresholds:
+          - value: -1
+            color: green
+          - value: 70
+            color: orange
+        tap_action:
+          action: more-info
+      - type: custom:mini-graph-card
+        name: "Pool use"
+        show:
+          icon: false
+        hour24: true
+        lower_bound: 0
+        entities:
+          - sensor.nas_pool_pool1_use_percent
+        color_thresholds:
+          - value: -1
+            color: green
+          - value: 75
+            color: orange
+          - value: 80
+            color: red
+
+  - type: custom:monster-card
+    show_empty: false
+    card:
+      type: glance
+    filter:
+      include:
+        - entity_id: 'sensor.nas_disk_*_temperature'

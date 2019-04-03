@@ -1,7 +1,6 @@
 homeassistant:
   customize_glob:
     sensor.*pressure*:
-      friendly_name: "Атм. Давление"
       device_class: pressure
       icon: mdi:gauge
     sensor.*humidity*:
@@ -33,7 +32,6 @@ sensor:
       - snow
       - weather_code
   - platform: gismeteo
-    # language: ru
     forecast: true
     monitored_conditions:
       - weather
@@ -72,3 +70,10 @@ sensor:
           {%- else %}
             {{ states('sensor.owm_pressure_mmhg') }}
           {%- endif %}
+
+
+camera:
+  - platform: generic
+    name: "Moscow meteogram"
+    still_image_url: https://www.foreca.ru/meteogram.php?loc_id=100819827&lang=ru
+    content_type: 'image/png'

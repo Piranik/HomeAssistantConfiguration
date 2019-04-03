@@ -176,58 +176,6 @@ cards:
           #         "Put out": /local/lovelace_ui/home/trash_square.jpg
           #         "Take in": /local/lovelace_ui/home/trash_square.jpg
 
-          - type: horizontal-stack
-            cards:
-              - type: custom:mini-graph-card
-                entities:
-                  - sensor.kitchen_temperature
-                show:
-                  icon: false
-                height: 75
-                hour24: true
-                color_thresholds:
-                  - value: 0
-                    color: "#CCE5FF"
-                  - value: 10
-                    color: "#66B2FF"
-                  - value: 15
-                    color: "#0080FF"
-                  - value: 18
-                    color: "#87c087"
-                  - value: 21
-                    color: "#389638"
-                  - value: 24
-                    color: "#FF9932"
-                  - value: 25
-                    color: "#FF8000"
-                  - value: 26
-                    color: "#FF0000"
-
-              - type: custom:mini-graph-card
-                entities:
-                  - sensor.owm_temperature
-                show:
-                  icon: false
-                height: 75
-                hour24: true
-                color_thresholds:
-                  - value: 0
-                    color: "#CCE5FF"
-                  - value: 10
-                    color: "#66B2FF"
-                  - value: 15
-                    color: "#0080FF"
-                  - value: 18
-                    color: "#87c087"
-                  - value: 21
-                    color: "#389638"
-                  - value: 24
-                    color: "#FF9932"
-                  - value: 25
-                    color: "#FF8000"
-                  - value: 26
-                    color: "#FF0000"
-
           # - type: vertical-stack
           #   cards:
           #     - type: custom:vertical-stack-in-card
@@ -327,6 +275,10 @@ cards:
                 title: "Прогноз погоды"
                 mode: hourly
                 pressure2mmhg: True
+              - type: picture-entity
+                entity: camera.moscow_meteogram
+                show_name: false
+                show_state: false
 
           - type: picture-glance
             title: "Latest Motion Front Door"

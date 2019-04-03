@@ -14,12 +14,12 @@ cards:
               - sensor.custom_card_tracker
               - sensor.custom_component_tracker
 
-          - type: custom:home-setter
-            pages:
-              - name: Default
-                path: lovelace/home
-              - name: Dashboard
-                path: lovelace/dashboard
+          # - type: custom:home-setter
+          #   pages:
+          #     - name: Default
+          #       path: lovelace/home
+          #     - name: Dashboard
+          #       path: lovelace/dashboard
 
           - type: vertical-stack
             cards:
@@ -33,7 +33,7 @@ cards:
                 filter:
                   include:
                     - entity_id: input_boolean.test
-                    - entity_id: "*forecast*"
+                    - entity_id: "*temperature*"
                       options:
                         secondary_info: last-changed
               - type: history-graph
@@ -42,7 +42,6 @@ cards:
                 entities:
                   - sensor.owm_temperature
                   - sensor.gismeteo_temperature
-                  - sensor.outdoor_daily_avg_temperature
 
           - !include links_card.yaml
 
