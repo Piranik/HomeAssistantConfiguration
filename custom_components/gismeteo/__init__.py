@@ -11,3 +11,17 @@ https://github.com/Limych/HomeAssistantComponents/
 """
 
 from .const import VERSION
+
+
+class TestLogger():
+    @staticmethod
+    def debug(format, *args):
+        print('[DEBUG] ' + format % args)
+
+    @staticmethod
+    def warning(format, *args):
+        print('[WARNING] ' + format % args)
+
+    @staticmethod
+    def error(format, *args):
+        print('[ERROR] ' + format % args)

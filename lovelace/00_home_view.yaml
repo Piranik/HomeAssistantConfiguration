@@ -133,12 +133,23 @@ cards:
                 show_name: false
                 tap_action:
                   action: toggle
+
+          - type: horizontal-stack
+            cards:
+              - type: picture-entity
+                entity: binary_sensor.car_wash
+                show_name: false
+                show_state: false
+                state_image:
+                  "on": /local/lovelace_ui/home/car_wash_square.jpg
+                  "off": /local/lovelace_ui/home/car_wash_bw_square.jpg
               - type: picture-entity
                 entity: input_boolean.cleaning_day
                 image: /local/lovelace_ui/home/cleaning_square.jpg
                 show_name: false
                 tap_action:
                   action: toggle
+              - !include empty_card.yaml
 
           # - type: horizontal-stack
           #   cards:

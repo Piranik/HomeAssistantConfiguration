@@ -33,15 +33,9 @@ cards:
                 filter:
                   include:
                     - entity_id: input_boolean.test
-                    - entity_id: "*temperature*"
+                    - entity_id: "*car_wash*"
                       options:
                         secondary_info: last-changed
-              - type: history-graph
-                title: "Температура за 48ч"
-                hours_to_show: 48
-                entities:
-                  - sensor.owm_temperature
-                  - sensor.gismeteo_temperature
 
           - !include links_card.yaml
 

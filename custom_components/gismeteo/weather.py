@@ -16,46 +16,49 @@ import voluptuous as vol
 from homeassistant.components.weather import (
     PLATFORM_SCHEMA, WeatherEntity)
 from homeassistant.const import (
-    TEMP_CELSIUS, CONF_LATITUDE, CONF_LONGITUDE, CONF_NAME)
+    TEMP_CELSIUS, CONF_LATITUDE, CONF_LONGITUDE, CONF_NAME, CONF_API_KEY, CONF_MODE)
 from homeassistant.helpers import config_validation as cv
 
+from . import gismeteo
 from .const import (
     ATTRIBUTION,
     DEFAULT_NAME, MIN_TIME_BETWEEN_UPDATES, CONF_CACHE_DIR, DEFAULT_CACHE_DIR)
 
 REQUIREMENTS = []
 
-_LOGGER = logging.getLogger(__name__)
+if __name__ == '__main__':
+    from custom_components.gismeteo import TestLogger
+
+    _LOGGER = TestLogger()
+else:
+    _LOGGER = logging.getLogger(__name__)
+
+FORECAST_MODE = ['hourly', 'daily']
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
+    vol.Optional(CONF_API_KEY): cv.string,
     vol.Optional(CONF_LATITUDE): cv.latitude,
     vol.Optional(CONF_LONGITUDE): cv.longitude,
+    vol.Optional(CONF_MODE, default='hourly'): vol.In(FORECAST_MODE),
+    vol.Optional(CONF_CACHE_DIR, default=DEFAULT_CACHE_DIR): cv.string,
 })
 
 
-def setup_platform(hass, config, add_entities,
-                   discovery_info=None):
+def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the Gismeteo weather platform."""
     name = config.get(CONF_NAME)
     latitude = config.get(CONF_LATITUDE, round(hass.config.latitude, 6))
     longitude = config.get(CONF_LONGITUDE, round(hass.config.longitude, 6))
-    cache_dir = config.get(CONF_CACHE_DIR, DEFAULT_CACHE_DIR)
+    cache_dir = config.get(CONF_CACHE_DIR)
+    mode = config.get(CONF_MODE)
 
-    _LOGGER.debug("Initializing for coordinates %s, %s", latitude, longitude)
-
-    from . import _gismeteo
-    gm = _gismeteo.Gismeteo(params={
+    gm = gismeteo.Gismeteo(latitude, longitude, mode, params={
         'cache_dir': str(cache_dir) + '/gismeteo' if os.access(cache_dir, os.X_OK | os.W_OK) else None,
         'cache_time': MIN_TIME_BETWEEN_UPDATES.total_seconds(),
     })
 
-    city = list(gm.cities_nearby(latitude, longitude, 1))[0]
-    _LOGGER.debug("Nearby detected city is %s", city.get("name"))
-
-    wd = _gismeteo.WeatherData(hass, gm, city.get("id"))
-
-    add_entities([GismeteoWeather(name, wd)], True)
+    add_entities([GismeteoWeather(name, gm)], True)
 
 
 class GismeteoWeather(WeatherEntity):
@@ -119,3 +122,20 @@ class GismeteoWeather(WeatherEntity):
     def forecast(self):
         """Return the forecast array."""
         return self._wd.forecast()
+
+
+if __name__ == '__main__':
+    gm = GismeteoWeather('Gismeteo', gismeteo.Gismeteo(55.59, 37.74, 'hourly', {
+        'cache_dir': os.path.dirname(os.path.abspath(__file__)) + '/../../tmp',
+        'cache_time': 300,
+    }))
+    gm.update()
+
+    print(gm.condition)
+    print(gm.temperature)
+    print(gm.pressure)
+    print(gm.humidity)
+    print(gm.wind_bearing)
+    print(gm.wind_speed)
+
+    print(gm.forecast)

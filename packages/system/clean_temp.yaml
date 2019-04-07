@@ -1,5 +1,5 @@
 shell_command:
-  clean_temp: 'find /config/www/tmp -type f -mtime +7 -exec rm {} \;'
+  clean_temp: 'find /config/www/tmp -type f -mtime +7 -exec rm {} \; find /tmp -type f -mtime +7 -exec rm {} \;'
 
 automation:
   - alias: "[System] Clean temp"

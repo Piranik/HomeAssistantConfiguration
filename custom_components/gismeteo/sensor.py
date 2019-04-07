@@ -16,17 +16,24 @@ import voluptuous as vol
 from homeassistant.components.weather import (
     ATTR_FORECAST_CONDITION, PLATFORM_SCHEMA)
 from homeassistant.const import (
-    ATTR_ATTRIBUTION, CONF_MONITORED_CONDITIONS, CONF_NAME, TEMP_CELSIUS)
+    ATTR_ATTRIBUTION, CONF_MONITORED_CONDITIONS, CONF_NAME, TEMP_CELSIUS, CONF_API_KEY)
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.entity import Entity
 
+from . import gismeteo
 from .const import (
     ATTRIBUTION, DEFAULT_NAME, MIN_TIME_BETWEEN_UPDATES, CONF_CACHE_DIR,
-    DEFAULT_CACHE_DIR)
+    DEFAULT_CACHE_DIR, ATTR_WEATHER_CLOUDINESS, ATTR_WEATHER_PRECIPITATION_TYPE, ATTR_WEATHER_PRECIPITATION_AMOUNT,
+    ATTR_WEATHER_PRECIPITATION_INTENSITY, ATTR_WEATHER_STORM, ATTR_WEATHER_GEOMAGNETIC_FIELD)
 
 REQUIREMENTS = []
 
-_LOGGER = logging.getLogger(__name__)
+if __name__ == '__main__':
+    from custom_components.gismeteo import TestLogger
+
+    _LOGGER = TestLogger()
+else:
+    _LOGGER = logging.getLogger(__name__)
 
 CONF_FORECAST = 'forecast'
 CONF_LANGUAGE = 'language'
@@ -49,14 +56,16 @@ SENSOR_TYPES = {
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
+    vol.Optional(CONF_API_KEY): cv.string,
     vol.Optional(CONF_MONITORED_CONDITIONS, default=[]):
         vol.All(cv.ensure_list, [vol.In(SENSOR_TYPES)]),
     vol.Optional(CONF_FORECAST, default=False): cv.boolean,
+    vol.Optional(CONF_CACHE_DIR, default=DEFAULT_CACHE_DIR): cv.string,
+    vol.Optional(CONF_LANGUAGE): cv.string,
 })
 
 
-def setup_platform(hass, config, add_entities,
-                   discovery_info=None):
+def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the Gismeteo weather platform."""
 
     if None in (hass.config.latitude, hass.config.longitude):
@@ -67,30 +76,22 @@ def setup_platform(hass, config, add_entities,
 
     name = config.get(CONF_NAME)
     forecast = config.get(CONF_FORECAST)
-    cache_dir = config.get(CONF_CACHE_DIR, DEFAULT_CACHE_DIR)
+    cache_dir = config.get(CONF_CACHE_DIR)
 
-    _LOGGER.debug("Initializing for coordinates %s, %s", latitude, longitude)
-
-    from . import _gismeteo
-    gm = _gismeteo.Gismeteo(params={
+    gm = gismeteo.Gismeteo(latitude, longitude, params={
         'cache_dir': str(cache_dir) + '/gismeteo' if os.access(cache_dir, os.X_OK | os.W_OK) else None,
         'cache_time': MIN_TIME_BETWEEN_UPDATES.total_seconds(),
     })
 
-    city = list(gm.cities_nearby(latitude, longitude, 1))[0]
-    _LOGGER.debug("Nearby detected city is %s", city.get("name"))
-
-    wd = _gismeteo.WeatherData(hass, gm, city.get("id"))
-
     dev = []
     for variable in config[CONF_MONITORED_CONDITIONS]:
         dev.append(GismeteoSensor(
-            name, wd, variable, SENSOR_TYPES[variable][1]))
+            name, gm, variable, SENSOR_TYPES[variable][1]))
 
     if forecast:
         SENSOR_TYPES['forecast'] = ['Forecast', None]
         dev.append(GismeteoSensor(
-            name, wd, 'forecast', SENSOR_TYPES['forecast'][1]))
+            name, gm, 'forecast', SENSOR_TYPES['forecast'][1]))
 
     add_entities(dev, True)
 
@@ -112,10 +113,10 @@ class GismeteoSensor(Entity):
         """Get the latest data from Gismeteo and updates the states."""
         self._wd.update()
 
-        if self._wd.data is None:
+        if self._wd._current is None:
             return
 
-        data = self._wd.data['current']
+        data = self._wd._current
         try:
             if self.type == 'weather':
                 self._state = self._wd.condition()
@@ -132,27 +133,27 @@ class GismeteoSensor(Entity):
             elif self.type == 'pressure':
                 self._state = self._wd.pressure_hpa()
             elif self.type == 'clouds':
-                self._state = int(round(data['cloudiness'] * 33.33, 0))
+                self._state = int(data.get(ATTR_WEATHER_CLOUDINESS) * 33.33)
             elif self.type == 'rain':
-                if data['precipitation']['type'] in [1, 3]:
-                    self._state = round(data['precipitation']['amount']
-                                        or PRECIPITATION_AMOUNT[data['precipitation']['intensity']], 0)
+                if data.get(ATTR_WEATHER_PRECIPITATION_TYPE) in [1, 3]:
+                    self._state = data.get(ATTR_WEATHER_PRECIPITATION_AMOUNT) \
+                                  or PRECIPITATION_AMOUNT[data.get(ATTR_WEATHER_PRECIPITATION_INTENSITY)]
                     self._unit_of_measurement = SENSOR_TYPES['rain'][1]
                 else:
                     self._state = 'not raining'
                     self._unit_of_measurement = ''
             elif self.type == 'snow':
-                if data['precipitation']['type'] in [2, 3]:
-                    self._state = round(data['precipitation']['amount']
-                                        or PRECIPITATION_AMOUNT[data['precipitation']['intensity']], 0)
+                if data.get(ATTR_WEATHER_PRECIPITATION_TYPE) in [2, 3]:
+                    self._state = data.get(ATTR_WEATHER_PRECIPITATION_AMOUNT) \
+                                  or PRECIPITATION_AMOUNT[data.get(ATTR_WEATHER_PRECIPITATION_INTENSITY)]
                     self._unit_of_measurement = SENSOR_TYPES['snow'][1]
                 else:
                     self._state = 'not snowing'
                     self._unit_of_measurement = ''
             elif self.type == 'storm':
-                self._state = data['storm']
+                self._state = data.get(ATTR_WEATHER_STORM)
             elif self.type == 'geomagnetic':
-                self._state = int(data['gm'])
+                self._state = data.get(ATTR_WEATHER_GEOMAGNETIC_FIELD)
         except KeyError:
             self._state = None
             _LOGGER.warning("Condition is currently not available: %s", self.type)
@@ -178,3 +179,16 @@ class GismeteoSensor(Entity):
     def unit_of_measurement(self):
         """Return the unit of measurement of this entity, if any."""
         return self._unit_of_measurement
+
+
+if __name__ == '__main__':
+    wd = gismeteo.Gismeteo(55.59, 37.74, {
+        'cache_dir': os.path.dirname(os.path.abspath(__file__)) + '/../../tmp',
+        'cache_time': 300,
+    })
+
+    SENSOR_TYPES['forecast'] = ['Forecast', None]
+    for sensor_type, unit in SENSOR_TYPES.items():
+        gm = GismeteoSensor('Gismeteo', wd, sensor_type, unit)
+        gm.update()
+        print('\t'.join([str(gm.name), str(gm.state), str(gm.unit_of_measurement)]))
