@@ -18,6 +18,8 @@ This configuration is broken down into [packages](https://www.home-assistant.io/
 
 But while using packages you can no longer reload your config with the buttons in the ui.
 
+*NB. In this configuration, I've use several custom components. Those of them that I wrote myself, you can find in a [separate repository](https://github.com/Limych/HomeAssistantComponents).*
+
 ## Ecosystem
 
 Now I have very few devices in the system. But I plan to gradually add new ones.

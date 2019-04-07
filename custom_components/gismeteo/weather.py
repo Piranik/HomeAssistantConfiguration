@@ -22,12 +22,12 @@ from homeassistant.helpers import config_validation as cv
 from . import gismeteo
 from .const import (
     ATTRIBUTION,
-    DEFAULT_NAME, MIN_TIME_BETWEEN_UPDATES, CONF_CACHE_DIR, DEFAULT_CACHE_DIR)
+    DEFAULT_NAME, MIN_TIME_BETWEEN_UPDATES, CONF_CACHE_DIR, DEFAULT_CACHE_DIR, VERSION)
 
 REQUIREMENTS = []
 
 if __name__ == '__main__':
-    from custom_components.gismeteo import TestLogger
+    from debugger import TestLogger
 
     _LOGGER = TestLogger()
 else:
@@ -47,6 +47,10 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the Gismeteo weather platform."""
+    _LOGGER.debug('Version %s', VERSION)
+    _LOGGER.info('if you have ANY issues with this, please report them here:'
+                 ' https://github.com/Limych/HomeAssistantComponents')
+
     name = config.get(CONF_NAME)
     latitude = config.get(CONF_LATITUDE, round(hass.config.latitude, 6))
     longitude = config.get(CONF_LONGITUDE, round(hass.config.longitude, 6))

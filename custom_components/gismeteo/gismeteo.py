@@ -5,7 +5,6 @@
 #  (see LICENSE.md or https://creativecommons.org/licenses/by-nc-sa/4.0/)
 #
 
-import calendar
 import logging
 import os
 import time
@@ -21,7 +20,8 @@ from homeassistant.components.weather import (
     ATTR_WEATHER_WIND_SPEED, ATTR_WEATHER_WIND_BEARING)
 from homeassistant.const import (
     STATE_UNKNOWN)
-from homeassistant.util import Throttle
+from homeassistant.util import (
+    Throttle, dt as dt_util)
 
 from .const import (
     ATTR_FORECAST_HUMIDITY, ATTR_FORECAST_PRESSURE, MIN_TIME_BETWEEN_UPDATES,
@@ -43,10 +43,8 @@ BASE_URL = 'https://services.gismeteo.ru/inform-service/inf_chrome'
 MMHG2HPA = 1.333223684
 MS2KMH = 3.6
 
-SECONDS_IN_DAY = 86400
-
 if __name__ == '__main__':
-    from custom_components.gismeteo import TestLogger
+    from debugger import TestLogger
 
     _LOGGER = TestLogger()
 else:
@@ -193,7 +191,7 @@ class Gismeteo:
         elif cl == 1:
             cond = "partlycloudy"  # A few clouds
         elif cl == 2:
-            cond = "cloudy"  # Many clouds
+            cond = "partlycloudy"  # A some clouds
         else:
             cond = "cloudy"  # Many clouds
 
@@ -267,8 +265,6 @@ class Gismeteo:
         now = int(time.time())
         for e in src:
             if self._mode == 'hourly':
-                if e.get(ATTR_FORECAST_TIME) < now:
-                    continue
                 data = {
                     ATTR_FORECAST_TIME:
                         datetime.fromtimestamp(e.get(ATTR_FORECAST_TIME)).strftime('%FT%T'),
@@ -287,11 +283,8 @@ class Gismeteo:
                     ATTR_FORECAST_PRECIPITATION:
                         int(e.get(ATTR_FORECAST_PRECIPITATION_TYPE) != 0),
                 }
-                forecast.append(data)
 
             else:  # self._mode == 'daily'
-                if e.get(ATTR_FORECAST_TIME) + SECONDS_IN_DAY < now:
-                    continue
                 data = {
                     ATTR_FORECAST_TIME:
                         datetime.fromtimestamp(e.get(ATTR_FORECAST_TIME)).strftime('%FT%T'),
@@ -312,6 +305,10 @@ class Gismeteo:
                 }
                 if e.get(ATTR_FORECAST_TEMP_LOW) is not None:
                     data[ATTR_FORECAST_TEMP_LOW] = e.get(ATTR_FORECAST_TEMP_LOW)
+
+            if e.get(ATTR_FORECAST_TIME) < now:
+                forecast = [data]
+            else:
                 forecast.append(data)
 
         return forecast
@@ -319,9 +316,7 @@ class Gismeteo:
     @staticmethod
     def _get_utime(source, tzone):
         local_date = source if len(source) > 10 else source + 'T00:00:00'
-        local_stamp = 0
-        while local_stamp == 0:
-            local_stamp = calendar.timegm(time.strptime(local_date, '%Y-%m-%dT%H:%M:%S'))
+        local_stamp = dt_util.as_timestamp(local_date)
 
         return local_stamp - tzone * 60
 

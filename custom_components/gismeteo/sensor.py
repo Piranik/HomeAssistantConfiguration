@@ -24,12 +24,12 @@ from . import gismeteo
 from .const import (
     ATTRIBUTION, DEFAULT_NAME, MIN_TIME_BETWEEN_UPDATES, CONF_CACHE_DIR,
     DEFAULT_CACHE_DIR, ATTR_WEATHER_CLOUDINESS, ATTR_WEATHER_PRECIPITATION_TYPE, ATTR_WEATHER_PRECIPITATION_AMOUNT,
-    ATTR_WEATHER_PRECIPITATION_INTENSITY, ATTR_WEATHER_STORM, ATTR_WEATHER_GEOMAGNETIC_FIELD)
+    ATTR_WEATHER_PRECIPITATION_INTENSITY, ATTR_WEATHER_STORM, ATTR_WEATHER_GEOMAGNETIC_FIELD, VERSION)
 
 REQUIREMENTS = []
 
 if __name__ == '__main__':
-    from custom_components.gismeteo import TestLogger
+    from debugger import TestLogger
 
     _LOGGER = TestLogger()
 else:
@@ -67,6 +67,9 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the Gismeteo weather platform."""
+    _LOGGER.debug('Version %s', VERSION)
+    _LOGGER.info('if you have ANY issues with this, please report them here:'
+                 ' https://github.com/Limych/HomeAssistantComponents')
 
     if None in (hass.config.latitude, hass.config.longitude):
         _LOGGER.error("Latitude or longitude not set in Home Assistant config")

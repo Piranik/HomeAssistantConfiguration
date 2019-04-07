@@ -24,24 +24,22 @@ from homeassistant.helpers.event import async_track_state_change
 
 REQUIREMENTS = []
 
-VERSION = '0.0.2'
+VERSION = '1.0.0'
 
 DEFAULT_NAME = 'Car Wash'
 DEFAULT_ICON = 'mdi:car-wash'
-DEFAULT_THRESHOLD = 70
-
-PREDICTION_DAYS = 3
+DEFAULT_DAYS = 2
 
 _LOGGER = logging.getLogger(__name__)
 
 CONF_WEATHER = 'weather'
-CONF_THRESHOLD = 'threshold'
+CONF_DAYS = 'days'
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_WEATHER): cv.entity_id,
     vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
     vol.Optional(CONF_ICON, default=DEFAULT_ICON): cv.icon,
-    vol.Optional(CONF_THRESHOLD, default=DEFAULT_THRESHOLD): vol.Coerce(int),
+    vol.Optional(CONF_DAYS, default=DEFAULT_DAYS): vol.Coerce(int),
 })
 
 
@@ -54,21 +52,21 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
     name = config.get(CONF_NAME)
     weather = config.get(CONF_WEATHER)
     icon = config.get(CONF_ICON)
-    threshold = config.get(CONF_THRESHOLD)
+    days = config.get(CONF_DAYS)
 
-    async_add_entities([CarWashBinarySensor(hass, name, weather, icon, threshold)])
+    async_add_entities([CarWashBinarySensor(hass, name, weather, icon, days)])
 
 
 class CarWashBinarySensor(BinarySensorDevice):
     """Implementation of an Car Wash binary sensor."""
 
-    def __init__(self, hass, friendly_name, weather_entity, icon, threshold):
+    def __init__(self, hass, friendly_name, weather_entity, icon, days):
         """Initialize the sensor."""
         self._hass = hass
         self._name = friendly_name
         self._weather_entity = weather_entity
         self._icon = icon
-        self._threshold = threshold
+        self._days = days
         self._state = None
 
     async def async_added_to_hass(self):
@@ -101,10 +99,7 @@ class CarWashBinarySensor(BinarySensorDevice):
     @property
     def is_on(self):
         """Return True is sensor is on."""
-        if self._state is None:
-            return None
-
-        return self._state >= self._threshold
+        return self._state
 
     @property
     def icon(self):
@@ -121,31 +116,27 @@ class CarWashBinarySensor(BinarySensorDevice):
             _LOGGER.error('Can\'t get forecast data from weather provider!')
             return
 
-        stop_date = datetime.fromtimestamp(datetime.now().timestamp() + 86400 * PREDICTION_DAYS).strftime('%F')
+        stop_date = datetime.fromtimestamp(
+            datetime.now().timestamp() + 86400 * (self._days + 1)
+        ).strftime('%F')
         _LOGGER.debug('Inspect weather forecast from now till %s', stop_date)
 
-        prediction = []
         for fc in forecast:
             if fc.get(ATTR_FORECAST_TIME)[:10] == stop_date:
                 break
 
-            wash = True
-            if t <= 0 and fc.get(ATTR_FORECAST_TEMP_LOW) is not None:
+            if fc.get(ATTR_FORECAST_PRECIPITATION):
+                self._state = False
+                return
+            if t < 0 and fc.get(ATTR_FORECAST_TEMP_LOW) is not None:
                 t = fc.get(ATTR_FORECAST_TEMP_LOW)
-                wash &= t < 0
-            if t <= 0 and fc.get(ATTR_FORECAST_TEMP) is not None:
+                if t >= 0:
+                    self._state = False
+                    return
+            if t < 0 and fc.get(ATTR_FORECAST_TEMP) is not None:
                 t = fc.get(ATTR_FORECAST_TEMP)
-                wash &= t < 0
-            wash &= not bool(fc.get(ATTR_FORECAST_PRECIPITATION, False))
+                if t >= 0:
+                    self._state = False
+                    return
 
-            prediction.append(int(wash))
-
-        _LOGGER.debug('Car wash forecast vector: %s', ''.join(str(x) for x in prediction))
-
-        wash = 1
-        for i in range(0, len(prediction)):
-            if not prediction[i]:
-                wash *= 0.95 - 0.9 * i / (len(prediction) - 1)
-
-        self._state = int(round(wash * 100, 0))
-        _LOGGER.debug('Car wash forecast %s%% while threshold is %s%%', self._state, self._threshold)
+        self._state = True
