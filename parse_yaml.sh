@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 # Source: https://gist.github.com/pkuczynski/8665367
 

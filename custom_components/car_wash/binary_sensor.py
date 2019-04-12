@@ -15,25 +15,28 @@ from datetime import datetime
 import voluptuous as vol
 from homeassistant.components.binary_sensor import BinarySensorDevice
 from homeassistant.components.weather import (
-    PLATFORM_SCHEMA, ATTR_FORECAST_PRECIPITATION, ATTR_FORECAST_TIME, ATTR_FORECAST_TEMP, ATTR_FORECAST_TEMP_LOW)
+    PLATFORM_SCHEMA, ATTR_FORECAST_PRECIPITATION, ATTR_FORECAST_TIME, ATTR_FORECAST_TEMP, ATTR_FORECAST_TEMP_LOW,
+    ATTR_FORECAST_CONDITION)
 from homeassistant.const import (
-    CONF_NAME, EVENT_HOMEASSISTANT_START, CONF_ICON)
+    CONF_NAME, EVENT_HOMEASSISTANT_START, CONF_ICON, TEMP_FAHRENHEIT)
 from homeassistant.core import callback
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.event import async_track_state_change
 
 REQUIREMENTS = []
 
-VERSION = '1.0.0'
-
-DEFAULT_NAME = 'Car Wash'
-DEFAULT_ICON = 'mdi:car-wash'
-DEFAULT_DAYS = 2
+VERSION = '1.1.0'
 
 _LOGGER = logging.getLogger(__name__)
 
 CONF_WEATHER = 'weather'
 CONF_DAYS = 'days'
+
+DEFAULT_NAME = 'Car Wash'
+DEFAULT_ICON = 'mdi:car-wash'
+DEFAULT_DAYS = 2
+
+BAD_CONDITIONS = ["lightning-rainy", "rainy", "pouring", "snowy", "snowy-rainy"]
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_WEATHER): cv.entity_id,
@@ -98,7 +101,7 @@ class CarWashBinarySensor(BinarySensorDevice):
 
     @property
     def is_on(self):
-        """Return True is sensor is on."""
+        """Return True if sensor is on."""
         return self._state
 
     @property
@@ -106,20 +109,39 @@ class CarWashBinarySensor(BinarySensorDevice):
         """Return the icon to use in the frontend, if any."""
         return self._icon
 
+    @staticmethod
+    def _temp2c(t, tu):
+        """Convert weather temperature to Celsius degree."""
+        if tu == TEMP_FAHRENHEIT:
+            return (t - 32) * 5 / 9
+        else:
+            return t
+
     async def async_update(self):
-        """Update the state from the template."""
-        wd = self._hass.states.get(self._weather_entity).attributes
-        t = wd.get('temperature')
-        forecast = wd.get('forecast')
+        """Update the sensor state."""
+        wd = self._hass.states.get(self._weather_entity)
+
+        if wd is None:
+            _LOGGER.error('There are no entity with ID "%s" in a system', self._weather_entity)
+            return
+
+        tu = wd.attributes.get('temperature_unit')
+        t = self._temp2c(wd.attributes.get('temperature'), tu)
+        cond = wd.attributes.get('condition')
+        forecast = wd.attributes.get('forecast')
 
         if forecast is None:
-            _LOGGER.error('Can\'t get forecast data from weather provider!')
+            _LOGGER.error('Can\'t get forecast data! Are you sure it\'s the weather provider?')
             return
 
         stop_date = datetime.fromtimestamp(
             datetime.now().timestamp() + 86400 * (self._days + 1)
         ).strftime('%F')
         _LOGGER.debug('Inspect weather forecast from now till %s', stop_date)
+
+        if cond in BAD_CONDITIONS:
+            self._state = False
+            return
 
         for fc in forecast:
             if fc.get(ATTR_FORECAST_TIME)[:10] == stop_date:
@@ -128,13 +150,16 @@ class CarWashBinarySensor(BinarySensorDevice):
             if fc.get(ATTR_FORECAST_PRECIPITATION):
                 self._state = False
                 return
+            if fc.get(ATTR_FORECAST_CONDITION) in BAD_CONDITIONS:
+                self._state = False
+                return
             if t < 0 and fc.get(ATTR_FORECAST_TEMP_LOW) is not None:
-                t = fc.get(ATTR_FORECAST_TEMP_LOW)
+                t = self._temp2c(fc.get(ATTR_FORECAST_TEMP_LOW), tu)
                 if t >= 0:
                     self._state = False
                     return
             if t < 0 and fc.get(ATTR_FORECAST_TEMP) is not None:
-                t = fc.get(ATTR_FORECAST_TEMP)
+                t = self._temp2c(fc.get(ATTR_FORECAST_TEMP), tu)
                 if t >= 0:
                     self._state = False
                     return
