@@ -21,7 +21,7 @@ cards:
       title: House
     filter:
       include:
-        - entity_id: 'automation.house*'
+        - entity_id: 'automation.house_*'
 
   - type: custom:monster-card
     show_empty: false
@@ -31,7 +31,7 @@ cards:
       title: Lights
     filter:
       include:
-        - entity_id: 'automation.lights*'
+        - entity_id: 'automation.lights_*'
 
   - type: custom:monster-card
     show_empty: false
@@ -41,7 +41,7 @@ cards:
       title: Presence
     filter:
       include:
-        - entity_id: 'automation.presence*'
+        - entity_id: 'automation.presence_*'
 
   - type: custom:monster-card
     show_empty: false
@@ -51,7 +51,7 @@ cards:
       title: Security
     filter:
       include:
-        - entity_id: 'automation.security*'
+        - entity_id: 'automation.security_*'
 
   - type: custom:monster-card
     show_empty: false
@@ -61,7 +61,7 @@ cards:
       title: System
     filter:
       include:
-        - entity_id: 'automation.system*'
+        - entity_id: 'automation.system_*'
 
   - type: custom:monster-card
     show_empty: false
@@ -71,7 +71,7 @@ cards:
       title: Media
     filter:
       include:
-        - entity_id: 'automation.media*'
+        - entity_id: 'automation.media_*'
 
   - type: custom:monster-card
     show_empty: false
@@ -81,7 +81,7 @@ cards:
       title: Temperature
     filter:
       include:
-        - entity_id: 'automation.temperature*'
+        - entity_id: 'automation.temperature_*'
 
   # - type: custom:monster-card
   #   show_empty: false
@@ -102,3 +102,13 @@ cards:
     filter:
       include:
         - entity_id: 'alert.*'
+
+  - type: custom:monster-card
+    show_empty: false
+    card:
+      type: entities
+      show_header_toggle: false
+      title: Miscellaneous
+    filter:
+      include:
+        - entity_id: 'automation.misc_*'

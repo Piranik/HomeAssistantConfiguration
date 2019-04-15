@@ -49,3 +49,18 @@ camera:
     name: "Moscow meteogram"
     still_image_url: https://www.foreca.ru/meteogram.php?loc_id=100819827&lang=ru
     content_type: 'image/png'
+
+
+automation:
+  - alias: '[MISC] When I can Clear the Car'
+    initial_state: 'on'
+    trigger:
+      - entity_id: binary_sensor.car_wash
+        platform: state
+        from: 'off'
+        to: 'on'
+    action:
+      - service: notify.limych
+        data_template:
+          message: "Пора запланировать мойку машины."
+        
