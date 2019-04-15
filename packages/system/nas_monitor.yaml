@@ -35,9 +35,9 @@ homeassistant:
       icon: mdi:gauge
       templates:
         hs_color: >-
-          if (state < 75) return [0, 0];
-          else if (state < 80) return [40, 70];
-          else return [0, 85];
+          if (state >= 90) return [0, 85];
+          else if (state >= 80) return [40, 70];
+          else return [0, 0];
     sensor.nas_pool_*_health:
       templates:
         hs_color: >-
@@ -96,6 +96,48 @@ homeassistant:
       icon: mdi:message-alert
 
 sensor:
+  - platform: template
+    sensors:
+      nas_cpu_alert_level:
+        value_template: >-
+          {{ (states("sensor.nas_cpu_use_percent")|int > 100)|int
+           + (states("sensor.nas_cpu_use_percent")|int > 300)|int }}
+      nas_memory_alert_level:
+        value_template: >-
+          {{ (states("sensor.nas_memory_use_percent")|int > 70)|int }}
+      nas_disks_alert_level:
+        value_template: >-
+          {{ [
+            (states("sensor.nas_disk_ada0_temperature")|int < 25)|int
+              + (states("sensor.nas_disk_ada0_temperature")|int > 45)|int
+              + (states("sensor.nas_disk_ada0_temperature")|int > 55)|int,
+            (states("sensor.nas_disk_ada1_temperature")|int < 25)|int
+              + (states("sensor.nas_disk_ada1_temperature")|int > 45)|int
+              + (states("sensor.nas_disk_ada1_temperature")|int > 55)|int,
+            (states("sensor.nas_disk_ada2_temperature")|int < 25)|int
+              + (states("sensor.nas_disk_ada2_temperature")|int > 45)|int
+              + (states("sensor.nas_disk_ada2_temperature")|int > 55)|int,
+            (states("sensor.nas_disk_ada3_temperature")|int < 25)|int
+              + (states("sensor.nas_disk_ada3_temperature")|int > 45)|int
+              + (states("sensor.nas_disk_ada3_temperature")|int > 55)|int,
+          ]|max }}
+      nas_pools_alert_level:
+        value_template: >-
+          {{ [
+            (states("sensor.nas_pool_pool1_use_percent")|int >= 80)|int
+              + (states("sensor.nas_pool_pool1_use_percent")|int >= 90)|int,
+            2 - 2 * (states("sensor.nas_pool_pool1_health") == 'ONLINE')|int
+              - (states("sensor.nas_pool_pool1_health") == 'DEGRADED')|int,
+          ]|max }}
+      nas_alert_level:
+        value_template: >-
+          {{ [
+            states("sensor.nas_cpu_alert_level"),
+            states("sensor.nas_memory_alert_level"),
+            states("sensor.nas_disks_alert_level"),
+            states("sensor.nas_pools_alert_level"),
+          ]|max }}
+
   - platform: mqtt
     name: nas_last_boot
     state_topic: "sensor/nas_state"

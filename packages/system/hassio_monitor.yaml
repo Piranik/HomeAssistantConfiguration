@@ -36,7 +36,28 @@ sensor:
     command: "cat /sys/class/thermal/thermal_zone0/temp"
     unit_of_measurement: "°C"
     value_template: '{{ ( value | multiply(0.001) ) | round(1) }}'
-    
+
+  - platform: template
+    sensors:
+      hassio_cpu_alert_level:
+        value_template: >-
+          {{ (states("sensor.processor_use")|int > 100)|int
+           + (states("sensor.processor_use")|int > 300)|int }}
+      hassio_memory_alert_level:
+        value_template: >-
+          {{ (states("sensor.memory_use_percent")|int > 70)|int }}
+      hassio_disks_alert_level:
+        value_template: >-
+          {{ (states("sensor.disk_use_percent")|int >= 75)|int
+           + (states("sensor.disk_use_percent")|int >= 90)|int }}
+      hassio_alert_level:
+        value_template: >-
+          {{ [
+            states("sensor.hassio_cpu_alert_level"),
+            states("sensor.hassio_memory_alert_level"),
+            states("sensor.hassio_disks_alert_level"),
+          ]|max }}
+
 rest_command:
   google_backup:
     url: 'http://localhost:8055/gb/doBackup'

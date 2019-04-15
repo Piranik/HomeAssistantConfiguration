@@ -63,9 +63,9 @@ cards:
         color_thresholds:
           - value: -1
             color: green
-          - value: 75
-            color: orange
           - value: 80
+            color: orange
+          - value: 90
             color: red
 
   - type: custom:monster-card

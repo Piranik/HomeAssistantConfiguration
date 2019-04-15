@@ -33,7 +33,7 @@ cards:
                 filter:
                   include:
                     - entity_id: input_boolean.test
-                    - entity_id: "*car_wash*"
+                    - entity_id: "*_alert_level"
                       options:
                         secondary_info: last-changed
 
