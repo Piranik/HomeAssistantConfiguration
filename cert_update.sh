@@ -1,7 +1,9 @@
 #!/usr/bin/env sh
 
+WDIR=$(cd `dirname $0` && pwd)
+
 # include parse_yaml function
-. parse_yaml.sh
+. ${WDIR}/parse_yaml.sh
 
 # read yaml file
 eval $(parse_yaml secrets.yaml "secret_")
