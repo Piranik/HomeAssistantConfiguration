@@ -42,6 +42,12 @@ sensor:
     state_topic: "sensor/kitchen/pressure_mmhg"
     unit_of_measurement: 'mmHg'
     availability_topic: "sensor/kitchen/status"
+    
+  - platform: average_temperature
+    duration:
+      days: 2
+    entities:
+      - sensor.gismeteo_temperature
 
 
 camera:
@@ -52,7 +58,7 @@ camera:
 
 
 automation:
-  - alias: '[MISC] When I can Clear the Car'
+  - alias: '[Misc] When I can Clear the Car'
     initial_state: 'on'
     trigger:
       - entity_id: binary_sensor.car_wash

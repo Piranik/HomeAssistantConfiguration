@@ -37,6 +37,21 @@ cards:
                       options:
                         secondary_info: last-changed
 
+          - type: history-graph
+            title: "Temperature 48h"
+            hours_to_show: 48
+            entities:
+              - entity_id: sensor.gismeteo_temperature
+                name: "Outdoor Temperature"
+              - sensor.average_temperature
+          - type: history-graph
+            title: "Temperature 48h"
+            hours_to_show: 48
+            entities:
+              - sensor.gismeteo_temperature
+              - sensor.owm_temperature
+              - sensor.average_temperature_test
+
           - !include links_card.yaml
 
           # - type: custom:auto-entities

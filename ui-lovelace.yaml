@@ -12,13 +12,15 @@ resources:
   #   type: module
   - url: /customcards/custom-lovelace/auto-entities.js?track=true
     type: js
-  - url: /customcards/custom-lovelace/bar-card.js?track=true
-    type: js
+  # - url: /customcards/custom-lovelace/bar-card.js?track=true
+  #   type: js
   # - url: /customcards/custom-lovelace/bignumber-card.js
   #   type: js
   - url: /customcards/custom-lovelace/button-card.js?track=true
     type: module
   # - url: /customcards/custom-lovelace/calendar-card.js
+  #   type: module
+  # - url: /customcards/custom-lovelace/camera-card.js?track=true
   #   type: module
   - url: /customcards/custom-lovelace/card-modder.js?track=true
     type: js

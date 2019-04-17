@@ -14,7 +14,7 @@ from datetime import timedelta
 
 from homeassistant.components.weather import ATTR_FORECAST_CONDITION
 
-VERSION = '2.0.2'
+VERSION = '2.0.3'
 
 ATTRIBUTION = 'Data provided by Gismeteo'
 

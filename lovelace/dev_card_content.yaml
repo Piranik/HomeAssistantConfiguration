@@ -7,6 +7,10 @@ cards:
         name: HAss Host Console
         url: !secret hass_console_url
         icon: mdi:console
+      - type: weblink
+        name: HAss Logs
+        url: !secret hass_logs_url
+        icon: mdi:format-list-bulleted-type
       - input_boolean.hass_dev_mode
   - type: horizontal-stack
     cards:

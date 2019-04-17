@@ -41,17 +41,17 @@ CONF_LANGUAGE = 'language'
 PRECIPITATION_AMOUNT = (0, 2, 6, 16)
 
 SENSOR_TYPES = {
-    'weather': ['Condition', None],
-    'temperature': ['Temperature', TEMP_CELSIUS],
-    'wind_speed': ['Wind speed', 'm/s'],
-    'wind_bearing': ['Wind bearing', '°'],
-    'humidity': ['Humidity', '%'],
-    'pressure': ['Pressure', 'hPa'],
-    'clouds': ['Cloud coverage', '%'],
-    'rain': ['Rain', 'mm'],
-    'snow': ['Snow', 'mm'],
-    'storm': ['Storm', None],
-    'geomagnetic': ['Geomagnetic field', ''],
+    'weather': ['Condition', None, None],
+    'temperature': ['Temperature', TEMP_CELSIUS, None],
+    'wind_speed': ['Wind speed', 'm/s', 'mdi:weather-windy'],
+    'wind_bearing': ['Wind bearing', '°', 'mdi:weather-windy'],
+    'humidity': ['Humidity', '%', None],
+    'pressure': ['Pressure', 'hPa', None],
+    'clouds': ['Cloud coverage', '%', 'mdi:weather-partlycloudy'],
+    'rain': ['Rain', 'mm', 'mdi:weather-rainy'],
+    'snow': ['Snow', 'mm', 'mdi:weather-snowy'],
+    'storm': ['Storm', None, 'mdi:weather-lightning'],
+    'geomagnetic': ['Geomagnetic field', '', 'mdi:magnet-on'],
 }
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
@@ -89,12 +89,12 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     dev = []
     for variable in config[CONF_MONITORED_CONDITIONS]:
         dev.append(GismeteoSensor(
-            name, gm, variable, SENSOR_TYPES[variable][1]))
+            name, gm, variable, SENSOR_TYPES[variable][1], SENSOR_TYPES[variable][2]))
 
     if forecast:
-        SENSOR_TYPES['forecast'] = ['Forecast', None]
+        SENSOR_TYPES['forecast'] = ['Forecast', None, None]
         dev.append(GismeteoSensor(
-            name, gm, 'forecast', SENSOR_TYPES['forecast'][1]))
+            name, gm, 'forecast', SENSOR_TYPES['forecast'][1], SENSOR_TYPES['forecast'][2]))
 
     add_entities(dev, True)
 
@@ -102,7 +102,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
 class GismeteoSensor(Entity):
     """Implementation of an Gismeteo sensor."""
 
-    def __init__(self, station_name, weather_data, sensor_type, temp_unit):
+    def __init__(self, station_name, weather_data, sensor_type, temp_unit, icon):
         """Initialize the sensor."""
         self.client_name = station_name
         self._name = SENSOR_TYPES[sensor_type][0]
@@ -111,6 +111,7 @@ class GismeteoSensor(Entity):
         self.type = sensor_type
         self._state = None
         self._unit_of_measurement = SENSOR_TYPES[sensor_type][1]
+        self._icon = icon
 
     def update(self):
         """Get the latest data from Gismeteo and updates the states."""
@@ -183,6 +184,11 @@ class GismeteoSensor(Entity):
         """Return the unit of measurement of this entity, if any."""
         return self._unit_of_measurement
 
+    @property
+    def icon(self):
+        """Return the icon to use in the frontend, if any."""
+        return self._icon
+
 
 if __name__ == '__main__':
     wd = gismeteo.Gismeteo(55.59, 37.74, {
@@ -192,6 +198,6 @@ if __name__ == '__main__':
 
     SENSOR_TYPES['forecast'] = ['Forecast', None]
     for sensor_type, unit in SENSOR_TYPES.items():
-        gm = GismeteoSensor('Gismeteo', wd, sensor_type, unit)
+        gm = GismeteoSensor('Gismeteo', wd, sensor_type, unit, None)
         gm.update()
         print('\t'.join([str(gm.name), str(gm.state), str(gm.unit_of_measurement)]))

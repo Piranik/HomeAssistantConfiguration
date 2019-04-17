@@ -154,12 +154,14 @@ cards:
             entities:
               - sensor.kitchen_temperature
               - sensor.gismeteo_temperature
+              - sensor.average_temperature
           - type: history-graph
             title: "Температура за 7 дней"
             hours_to_show: 168
             entities:
               - sensor.kitchen_temperature
               - sensor.gismeteo_temperature
+              - sensor.average_temperature
         #  - type: history-graph
         #     title: Light 24 Hours
         #     hours_to_show: 24

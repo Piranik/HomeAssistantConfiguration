@@ -8,7 +8,8 @@
 
 default: error
 logs:
-  # custom_components.car_wash: debug
+  # custom_components.average_temperature: debug
+  custom_components.car_wash: debug
   homeassistant.components.api: error
   homeassistant.components.automation: error
   # homeassistant.components.binary_sensor: debug
