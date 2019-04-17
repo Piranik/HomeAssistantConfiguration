@@ -1,7 +1,7 @@
 # Update SSL certificates from NAS
 
 shell_command:
-  cert_update: '/usr/bin/env sh /config/cert_update.sh'
+  cert_update: '/usr/bin/env sh /config/.bin/cert_update.sh'
 
 automation:
   - alias: '[System] Update SSL Certificates'

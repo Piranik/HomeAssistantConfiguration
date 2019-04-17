@@ -1,3 +1,5 @@
+*Please :star: this repo if you find it useful*
+
 # My Home Assistant Configuration
 
 This [Home Assistant](https://www.home-assistant.io/) configuration is based on [configuration by Isabella Gross Alström](https://isabellaalstrom.github.io/).

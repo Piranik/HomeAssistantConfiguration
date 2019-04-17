@@ -21,6 +21,7 @@ secrets.*
 
 !.gitignore
 !.gitkeep
+!/.bin/
 
 ip_bans.yaml
 google_calendars.yaml
