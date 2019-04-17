@@ -8,3 +8,25 @@ sensor:
     host: !secret hass_domain
     port: 8123
     name: Cert
+
+binary_sensor:
+  - platform: rest
+    name: Travis Status
+    resource: https://api.travis-ci.org/repos/Limych/HomeAssistantConfiguration/cc.json?branch=master
+    scan_interval: 60
+    value_template: "{{ value_json.last_build_status|int(1) == 0 }}"
+
+
+automation:
+  - alias: '[System] Notify when Travis-CI build is successful'
+    initial_state: 'on'
+    trigger:
+      platform: state
+      entity_id: binary_sensor.travis_status
+      to: 'on'
+    action:
+      - service: notify.hass_info
+        data:
+          title: 'Travis-CI'
+          message: 'Build was successful'
+#      - service: script.restart_hass

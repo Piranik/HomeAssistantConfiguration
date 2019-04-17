@@ -19,9 +19,10 @@ secrets.*
 /www/
 !/www/custom-lovelace/
 
+!/.bin/
 !.gitignore
 !.gitkeep
-!/.bin/
+!.travis.yml
 
 ip_bans.yaml
 google_calendars.yaml

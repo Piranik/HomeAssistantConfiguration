@@ -41,7 +41,7 @@ cards:
             title: "Temperature 48h"
             hours_to_show: 48
             entities:
-              - entity_id: sensor.gismeteo_temperature
+              - entity: sensor.gismeteo_temperature
                 name: "Outdoor Temperature"
               - sensor.average_temperature
           - type: history-graph
