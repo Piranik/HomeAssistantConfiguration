@@ -2,7 +2,7 @@ language: python
 python:
   - "3.6"
 before_install:
-  - mv testing/fake_secrets.yaml secrets.yaml
+  - mv test/fake_secrets.yaml secrets.yaml
 install:
   - pip3 install homeassistant
 script:

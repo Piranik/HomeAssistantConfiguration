@@ -15,9 +15,9 @@ faker() {
   local key=$2 value=$3
 
   if [ "$key" == "ssl_certificate" ]; then
-    value='testing/example.com.fake_crt'
+    value='test/example.com.fake_crt'
   elif [ "$key" == "ssl_key" ]; then
-    value='testing/example.com.fake_key'
+    value='test/example.com.fake_key'
   elif [ "$key" == "home_timezone" ]; then
     value='America/Los_Angeles'
   elif echo ${key} | grep -q '\(login\|username\|password\)$'; then
