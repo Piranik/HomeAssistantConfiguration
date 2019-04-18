@@ -19,7 +19,6 @@ secrets.*
 /www/
 !/www/custom-lovelace/
 
-!/.bin/
 !.gitignore
 !.gitkeep
 !.travis.yml

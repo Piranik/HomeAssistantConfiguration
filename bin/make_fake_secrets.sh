@@ -1,10 +1,14 @@
 #!/usr/bin/env sh
 
 WDIR=$(cd `dirname $0` && pwd)
-ROOT=$(cd `dirname ${WDIR}` && pwd)
+ROOT=$(dirname ${WDIR})
 SEED=$$
 
-
+##############################################
+## This script parse real secrets.yaml-file ##
+## and based on it generate fake one for    ##
+## testing reasons.                         ##
+##############################################
 
 # Define faker callback
 faker() {
@@ -29,7 +33,7 @@ faker() {
 
 
 # Include parse_yaml function
-. ${WDIR}/parse_yaml.sh
+. ${WDIR}/_parse_yaml.sh
 
 # Read real yaml file and make fake one
 FPATH=${ROOT}/testing/fake_secrets.yaml
