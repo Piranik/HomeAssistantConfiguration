@@ -7,11 +7,11 @@ This [Home Assistant](https://www.home-assistant.io/) configuration is based on 
 *Описание проекта будет вестись полностью на английском, но я готов помогать и русскоязычным пользователям Home Assistant. Буду рад, если смогу быть полезен в настройке вашего умного дома.*
 
 ![](https://img.shields.io/maintenance/yes/2019.svg?style=popout)
-![](https://img.shields.io/travis/Limych/HomeAssistantConfiguration.svg?style=popout&label=Config+Check)
+![](https://img.shields.io/travis/Limych/HomeAssistantConfiguration.svg?style=popout&label=config+check)
 ![](https://img.shields.io/github/last-commit/Limych/HomeAssistantConfiguration.svg?style=popout)
-![](https://img.shields.io/github/issues-raw/Limych/HomeAssistantConfiguration.svg?label=Open%20todos&style=popout)
-![](https://img.shields.io/github/issues-closed-raw/Limych/HomeAssistantConfiguration.svg?colorB=green&label=Closed%20todos&style=popout)
-![](https://img.shields.io/github/issues/Limych/HomeAssistantConfiguration/bug.svg?colorB=red&label=Bugs&style=popout)
+![](https://img.shields.io/github/issues-raw/Limych/HomeAssistantConfiguration.svg?label=open%20todos&style=popout)
+![](https://img.shields.io/github/issues-closed-raw/Limych/HomeAssistantConfiguration.svg?colorB=green&label=closed%20todos&style=popout)
+![](https://img.shields.io/github/issues/Limych/HomeAssistantConfiguration/bug.svg?colorB=red&label=bugs&style=popout)
 
 Like the Isabella I'm using the GitHub [issues](https://github.com/Limych/HomeAssistantConfiguration/issues) and [project](https://github.com/Limych/HomeAssistantConfiguration/projects/1) to keep track of bugs in my configuration and new features I want to make/use.
 
@@ -26,7 +26,7 @@ But while using packages you can no longer reload your config with the buttons i
 ## Ecosystem
 
 <details>
-    <summary><p>Now I have very few devices in the system. But I plan to gradually add new ones. Click to expand!</p></summary>
+    <p><summary>Now I have very few devices in the system. But I plan to gradually add new ones. Click to expand!</summary></p>
 
 Now I am running Hass.io on my NAS into Bhyve virtual machine which emulates [Raspberry Pi 3 Model B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/).
 
@@ -68,7 +68,7 @@ Click on the images to get to the corresponding YAML-file.
 #### Mobile
 
 <details>
-    <summary><p>Click to expand!</p></summary>
+    <p><summary>Click to expand!</summary></p>
 
 Home view
 
@@ -91,7 +91,7 @@ Automations view
 #### Desktop
 
 <details>
-    <summary><p>Click to expand!</p></summary>
+    <p><summary>Click to expand!</summary></p>
 
 Home view
 
