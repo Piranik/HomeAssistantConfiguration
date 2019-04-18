@@ -28,6 +28,6 @@ faker() {
 . ${WDIR}/parse_yaml.sh
 
 # read yaml file
-eval $(parse_yaml ${ROOT}/secrets.yaml '' 'faker \"%2$s\" \"%3$s\" \"%4$s\";') >${ROOT}/fake_secrets.yaml
+eval $(parse_yaml ${ROOT}/secrets.yaml '' 'faker \"%2$s\" \"%3$s\" \"%4$s\";') >${ROOT}/testing/fake_secrets.yaml
 
 exit
