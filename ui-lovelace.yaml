@@ -6,7 +6,9 @@ resources:
   - url: https://fonts.googleapis.com/css?family=Roboto+Condensed
     type: css
 
-  # - url: /customcards/alarm_control_panel-card.js
+  - url: /customcards/custom-lovelace/air-visual-card.js?track=true
+    type: js
+  # - url: /customcards/custom-lovelace/alarm_control_panel-card.js
   #   type: js
   # - url: /customcards/custom-lovelace/atomic-calendar.js?track=true
   #   type: module
@@ -72,7 +74,9 @@ resources:
   #   type: js
   - url: /customcards/custom-lovelace/vertical-stack-in-card.js?track=true
     type: js
-
+  - url: /customcards/custom-lovelace/vertical-style-card.js?track=true
+    type: js
+    
 title: Home
 views:
   - !include lovelace/00_home_view.yaml
@@ -90,5 +94,5 @@ views:
   # # - !include lovelace/103_dashboard_test.yaml
   # - !include lovelace/areas.yaml
 
-  - !include lovelace/99_settings_view.yaml
-  # - !include lovelace/102_tiny_dashboard.yaml
+  - !include lovelace/90_settings_view.yaml
+  - !include lovelace/99_test_view.yaml

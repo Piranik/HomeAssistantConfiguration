@@ -1,6 +1,6 @@
 type: conditional
 conditions:
-  - entity: input_boolean.hass_dev_mode
+  - entity: input_boolean.maintenance_mode
     state: "on"
 card:
   type: custom:card-modder

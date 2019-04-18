@@ -44,6 +44,13 @@ homeassistant:
     sensor.system_media_kitchen:
       icon: mdi:speaker
 
+
+input_boolean:
+  test:
+    name: "Test stuff"
+    initial: off
+
+
 sensor:
   - platform: template
     sensors:

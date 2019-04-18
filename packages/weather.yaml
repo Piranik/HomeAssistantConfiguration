@@ -49,6 +49,11 @@ sensor:
     entities:
       - sensor.gismeteo_temperature
 
+  - platform: airvisual
+    api_key: !secret airvisual_apikey
+    monitored_conditions:
+      - us
+    show_on_map: false
 
 camera:
   - platform: generic

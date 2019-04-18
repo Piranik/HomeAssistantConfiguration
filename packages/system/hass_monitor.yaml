@@ -1,7 +1,7 @@
 input_boolean:
-  hass_dev_mode:
-    name: HAss developer mode
-    icon: mdi:code-braces
+  maintenance_mode:
+    name: Maintenance mode
+    icon: mdi:auto-fix
 
 sensor:
   - platform: cert_expiry
@@ -12,7 +12,7 @@ sensor:
 binary_sensor:
   - platform: rest
     name: Travis Status
-    resource: https://api.travis-ci.org/repos/Limych/HomeAssistantConfiguration/cc.json?branch=master
+    resource: https://api.travis-ci.org/repos/Limych/HomeAssistantConfiguration?branch=master
     scan_interval: 60
     value_template: "{{ value_json.last_build_status|int(1) == 0 }}"
 

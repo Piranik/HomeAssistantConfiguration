@@ -26,7 +26,7 @@ But while using packages you can no longer reload your config with the buttons i
 ## Ecosystem
 
 <details>
-    <p><summary>Now I have very few devices in the system. But I plan to gradually add new ones. Click to expand!</summary></p>
+    <p><summary>Now I have very few devices in the system. But I plan to gradually add new ones. Click to expand and read more.</summary></p>
 
 Now I am running Hass.io on my NAS into Bhyve virtual machine which emulates [Raspberry Pi 3 Model B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/).
 

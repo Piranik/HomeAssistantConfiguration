@@ -11,7 +11,7 @@ cards:
         name: HAss Logs
         url: !secret hass_logs_url
         icon: mdi:format-list-bulleted-type
-      - input_boolean.hass_dev_mode
+      - input_boolean.maintenance_mode
   - type: horizontal-stack
     cards:
       - type: custom:button-card

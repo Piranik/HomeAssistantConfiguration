@@ -28,6 +28,8 @@ google_calendars.yaml
 known_devices.yaml
 
 /lovelace/links_card.yaml
+/lovelace/99_test_view.yaml
+/packages/test_package.yaml
 
 # Python byte-compiled / optimized / DLL files
 __pycache__/

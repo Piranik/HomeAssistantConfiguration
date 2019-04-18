@@ -228,8 +228,8 @@ sensor:
     value_template: >-
       {{ value_json.pools_stat.pool1.health }}
 
-  - platform: mqtt
-    name: nas_alerts
-    state_topic: "sensor/nas_state"
-    value_template: >-
-      {{ value_json.alerts | regex_replace(find='\[([A-Z]+)\]', replace='<img alt="\\1" src="/local/lovelace_ui/info/icon_\\1.svg" width="30">') }}
+#  - platform: mqtt
+#    name: nas_alerts
+#    state_topic: "sensor/nas_state"
+#    value_template: >-
+#      {{ value_json.alerts | regex_replace(find='\[([A-Z]+)\]', replace='<img alt="\\1" src="/local/lovelace_ui/info/icon_\\1.svg" width="30">') }}
