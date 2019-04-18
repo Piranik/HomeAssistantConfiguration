@@ -7,6 +7,7 @@ This [Home Assistant](https://www.home-assistant.io/) configuration is based on 
 *Описание проекта будет вестись полностью на английском, но я готов помогать и русскоязычным пользователям Home Assistant. Буду рад, если смогу быть полезен в настройке вашего умного дома.*
 
 ![](https://img.shields.io/maintenance/yes/2019.svg?style=popout)
+![](https://img.shields.io/travis/Limych/HomeAssistantConfiguration.svg?style=popout&label=Config+Check)
 ![](https://img.shields.io/github/last-commit/Limych/HomeAssistantConfiguration.svg?style=popout)
 ![](https://img.shields.io/github/issues-raw/Limych/HomeAssistantConfiguration.svg?label=Open%20todos&style=popout)
 ![](https://img.shields.io/github/issues-closed-raw/Limych/HomeAssistantConfiguration.svg?colorB=green&label=Closed%20todos&style=popout)
@@ -24,10 +25,8 @@ But while using packages you can no longer reload your config with the buttons i
 
 ## Ecosystem
 
-Now I have very few devices in the system. But I plan to gradually add new ones.
-
 <details>
-    <summary>Click to expand!</summary>
+    <summary><p>Now I have very few devices in the system. But I plan to gradually add new ones. Click to expand!</p></summary>
 
 Now I am running Hass.io on my NAS into Bhyve virtual machine which emulates [Raspberry Pi 3 Model B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/).
 
@@ -69,7 +68,7 @@ Click on the images to get to the corresponding YAML-file.
 #### Mobile
 
 <details>
-    <summary>Click to expand!</summary>
+    <summary><p>Click to expand!</p></summary>
 
 Home view
 
@@ -92,7 +91,7 @@ Automations view
 #### Desktop
 
 <details>
-    <summary>Click to expand!</summary>
+    <summary><p>Click to expand!</p></summary>
 
 Home view
 
