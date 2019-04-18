@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 WDIR=$(cd `dirname $0` && pwd)
-ROOT=$(cd `dirname ${WDIR}/..` && pwd)
+ROOT=$(cd `dirname ${WDIR}` && pwd)
 
 ####################################
 ## This script pushes my selected ##

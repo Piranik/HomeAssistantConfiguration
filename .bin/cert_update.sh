@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 WDIR=$(cd `dirname $0` && pwd)
-ROOT=$(cd `dirname ${WDIR}/..` && pwd)
+ROOT=$(cd `dirname ${WDIR}` && pwd)
 
 # include parse_yaml function
 . ${WDIR}/parse_yaml.sh
