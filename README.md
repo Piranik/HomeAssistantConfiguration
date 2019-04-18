@@ -7,11 +7,11 @@ This [Home Assistant](https://www.home-assistant.io/) configuration is based on 
 *Описание проекта будет вестись полностью на английском, но я готов помогать и русскоязычным пользователям Home Assistant. Буду рад, если смогу быть полезен в настройке вашего умного дома.*
 
 ![](https://img.shields.io/maintenance/yes/2019.svg?style=popout)
-![](https://img.shields.io/travis/Limych/HomeAssistantConfiguration.svg?style=popout&label=config+check)
-![](https://img.shields.io/github/last-commit/Limych/HomeAssistantConfiguration.svg?style=popout)
-![](https://img.shields.io/github/issues-raw/Limych/HomeAssistantConfiguration.svg?label=open%20todos&style=popout)
-![](https://img.shields.io/github/issues-closed-raw/Limych/HomeAssistantConfiguration.svg?colorB=green&label=closed%20todos&style=popout)
-![](https://img.shields.io/github/issues/Limych/HomeAssistantConfiguration/bug.svg?colorB=red&label=bugs&style=popout)
+[![](https://img.shields.io/travis/Limych/HomeAssistantConfiguration.svg?style=popout&label=config+check)](https://travis-ci.org/Limych/HomeAssistantConfiguration)
+[![](https://img.shields.io/github/last-commit/Limych/HomeAssistantConfiguration.svg?style=popout)](https://github.com/Limych/HomeAssistantConfiguration/commits/master)
+[![](https://img.shields.io/github/issues-raw/Limych/HomeAssistantConfiguration.svg?label=open%20todos&style=popout)](https://github.com/Limych/HomeAssistantConfiguration/issues)
+[![](https://img.shields.io/github/issues-closed-raw/Limych/HomeAssistantConfiguration.svg?colorB=green&label=closed%20todos&style=popout)](https://github.com/Limych/HomeAssistantConfiguration/issues?q=is%3Aissue+is%3Aclosed)
+[![](https://img.shields.io/github/issues/Limych/HomeAssistantConfiguration/bug.svg?colorB=red&label=bugs&style=popout)](https://github.com/Limych/HomeAssistantConfiguration/issues?q=is%3Aopen+is%3Aissue+label%3ABug)
 
 Like the Isabella I'm using the GitHub [issues](https://github.com/Limych/HomeAssistantConfiguration/issues) and [project](https://github.com/Limych/HomeAssistantConfiguration/projects/1) to keep track of bugs in my configuration and new features I want to make/use.
 
