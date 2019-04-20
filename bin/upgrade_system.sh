@@ -12,7 +12,7 @@ WDIR=$(cd `dirname $0` && pwd)
 ROOT=$(dirname ${WDIR})
 
 cd ${ROOT}
-git config core.sshCommand "ssh -qi ${ROOT}/.ssh/id_rsa"
+git config core.sshCommand "ssh -i ${ROOT}/.ssh/id_rsa -oStrictHostKeyChecking=no"
 git fetch origin master
 git reset --hard origin/master
 hassio hassos update
