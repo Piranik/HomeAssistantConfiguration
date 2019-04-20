@@ -11,7 +11,7 @@ WDIR=$(cd `dirname $0` && pwd)
 ROOT=$(dirname ${WDIR})
 
 cd ${ROOT}
-git config core.sshCommand "ssh -i ${ROOT}/.ssh/id_rsa"
+git config core.sshCommand "ssh -qi ${ROOT}/.ssh/id_rsa"
 git add .
 git commit -m "$1"
 git push origin master
