@@ -11,7 +11,15 @@
 WDIR=$(cd `dirname $0` && pwd)
 ROOT=$(dirname ${WDIR})
 
+# Include parse_yaml function
+. ${WDIR}/_parse_yaml.sh
+
+# Read yaml file
+eval $(parse_yaml ${ROOT}/secrets.yaml)
+
 cd ${ROOT}
+git config user.name "${secret_git_user_name}"
+git config user.email "${secret_git_user_email}"
 git config core.sshCommand "ssh -i ${ROOT}/.ssh/id_rsa -oStrictHostKeyChecking=no"
 git fetch origin master
 git reset --hard origin/master
