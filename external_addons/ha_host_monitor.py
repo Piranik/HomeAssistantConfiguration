@@ -137,7 +137,7 @@ if __name__ == '__main__':
     parser.add_argument('-v', '--verbose', help='turns on verbose mode', action='store_true')
     parser.add_argument('-n', '--name', default=re.sub(r"[^a-z0-9_]", "_", hostname.lower()),
                         help='device name for Home Assistant sensor: [a-z0-9_]. Default current host name: %(default)s')
-    parser.add_argument('-s', '--server', default="https://" + re.sub(r"^[^.]+", "hass", hostname) + ":8123",
+    parser.add_argument('-s', '--server', default="https://" + re.sub(r"^[^.]+", "hassio", hostname) + ":8123",
                         help='HTTP server URL: http[s]://host.domain[:port] Default: %(default)s')
     parser.add_argument('-c', '--no-check-ssl', help='disable SSL certificate check', action='store_false')
     parser.add_argument('token', metavar='TOKEN', help='token to access to Home Assistant API')

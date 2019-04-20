@@ -1,9 +1,7 @@
 #!/usr/bin/env sh
-
-###############################################
-## This is service function which can parse  ##
-## YAML-file.                                ##
-###############################################
+##
+## This is service function which can parse YAML-file.                                ##
+##
 
 # Source: https://gist.github.com/pkuczynski/8665367
 

@@ -39,8 +39,8 @@ upnp:
 #  sensors: false
 http:
   base_url: !secret hass_base_url
-  ssl_certificate: /ssl/fullchain.pem
-  ssl_key: /ssl/privkey.pem
+  ssl_certificate: !secret ssl_certificate
+  ssl_key: !secret ssl_key
   ip_ban_enabled: true
   login_attempts_threshold: 3
 customizer:

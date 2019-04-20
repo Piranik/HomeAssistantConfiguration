@@ -138,7 +138,7 @@ automation:
           - sensor.connection_internet
           - sensor.system_uplink
           - sensor.system_gateway
-          # - sensor.system_nas
+          - sensor.system_nas
           - sensor.connection_wifi_ap
           - sensor.connection_lan_router
           - sensor.system_server_emby

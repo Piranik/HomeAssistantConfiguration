@@ -4,7 +4,7 @@ cards:
     style:
       background: "[[ sensor.nas_pool_pool1_health.attributes.card_bg_color ]]"
     card:
-      type: custom:vertical-stack-in-card
+      type: custom:vertical-style-card
       cards:
         - type: entities
           title: "NAS сервер"

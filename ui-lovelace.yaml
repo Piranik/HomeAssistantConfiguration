@@ -16,8 +16,8 @@ resources:
     type: js
   # - url: /customcards/custom-lovelace/bar-card.js?track=true
   #   type: js
-  # - url: /customcards/custom-lovelace/bignumber-card.js
-  #   type: js
+  - url: /customcards/custom-lovelace/bignumber-card.js
+    type: js
   - url: /customcards/custom-lovelace/button-card.js?track=true
     type: module
   # - url: /customcards/custom-lovelace/calendar-card.js
@@ -72,8 +72,6 @@ resources:
     type: js
   # - url: /customcards/custom-lovelace/username-element.js
   #   type: js
-  - url: /customcards/custom-lovelace/vertical-stack-in-card.js?track=true
-    type: js
   - url: /customcards/custom-lovelace/vertical-style-card.js?track=true
     type: js
     
@@ -85,13 +83,9 @@ views:
   - !include lovelace/30_system_info_view.yaml
   # - !include lovelace/31_system_graphs.yaml
   - !include lovelace/40_camera_view.yaml
-  # # - !include lovelace/50_cat_view.yaml
   # - !include lovelace/60_traffic_view.yaml
-  # # - !include lovelace/60_floorplan_view.yaml
   - !include lovelace/80_automations_view.yaml
   # - !include lovelace/101_dashboard.yaml
-  # # - !include lovelace/minimal_dash.yaml
-  # # - !include lovelace/103_dashboard_test.yaml
   # - !include lovelace/areas.yaml
 
   - !include lovelace/90_settings_view.yaml

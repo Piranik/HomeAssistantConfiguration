@@ -16,7 +16,7 @@ cards:
 
           - !include dev_card.yaml
 
-      - type: custom:vertical-stack-in-card
+      - type: custom:vertical-style-card
         cards:
           - type: custom:live-camera-card
             update_interval: 0.5

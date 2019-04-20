@@ -3,10 +3,8 @@ conditions:
   - entity: input_boolean.maintenance_mode
     state: "on"
 card:
-  type: custom:card-modder
-  card:
-    !include dev_card_content.yaml
-  style:
-    background-image: url("/local/lovelace_ui/bg_maintenance.png")
-    background-position: left top
-    background-repeat: repeat-x
+  type: vertical-stack
+  cards:
+    - type: picture
+      image: /local/lovelace_ui/bg_maintenance.png
+    - !include dev_card_content.yaml

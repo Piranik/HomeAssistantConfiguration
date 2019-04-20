@@ -189,7 +189,7 @@ cards:
 
           # - type: vertical-stack
           #   cards:
-          #     - type: custom:vertical-stack-in-card
+          #     - type: custom:vertical-style-card
           #       cards:
           #       - type: entity-filter
           #         show_empty: false
@@ -279,7 +279,7 @@ cards:
                 source: true
                 progress: true
 
-          - type: custom:vertical-stack-in-card
+          - type: custom:vertical-style-card
             cards:
               - type: custom:weather-card-chart
                 entity: weather.gismeteo

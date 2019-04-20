@@ -59,13 +59,13 @@ homeassistant:
     sensor.nas_cpu_use_percent:
       friendly_name: 'CPU use'
     sensor.nas_cpu_load_1m:
-      unit_of_measurement: ''
+      unit_of_measurement: ' '
       friendly_name: 'Load (1m)'
     sensor.nas_cpu_load_5m:
-      unit_of_measurement: ''
+      unit_of_measurement: ' '
       friendly_name: 'Load (5m)'
     sensor.nas_cpu_load_15m:
-      unit_of_measurement: ''
+      unit_of_measurement: ' '
       friendly_name: 'Load (15m)'
     sensor.nas_cpu_temperature:
       device_class: 'temperature'

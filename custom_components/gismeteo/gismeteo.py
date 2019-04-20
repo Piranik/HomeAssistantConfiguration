@@ -71,10 +71,12 @@ class Cache(object):
             files = os.listdir(self._cache_dir)
             for file_name in files:
                 file_path = self._get_file_path(file_name)
-                file_time = os.path.getmtime(file_path)
-
-                if (file_time + self._cache_time) <= now_time:
-                    os.remove(file_path)
+                try:
+                    file_time = os.path.getmtime(file_path)
+                    if (file_time + self._cache_time) <= now_time:
+                            os.remove(file_path)
+                except FileNotFoundError:
+                    pass
 
     def _get_file_path(self, file_name):
         return os.path.join(self._cache_dir, file_name)
