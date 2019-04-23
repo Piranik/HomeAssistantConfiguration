@@ -115,21 +115,19 @@ automation:
         data:
           message: "Hass.io Offline"
 
-  - alias: '[System] Hass New Device Tracked'
+  - alias: '[System] Notify when Travis-CI build is successful'
     initial_state: 'on'
     trigger:
-      platform: event
-      event_type: device_tracker_new_device
+      platform: state
+      entity_id: binary_sensor.travis_ci_status
+      from: 'off'
+      to: 'on'
     action:
       - service: notify.hass_info
-<<<<<<<<< saved version
-
-=========
         data:
           title: 'Travis-CI'
           message: 'Build was successful'
 #      - service: script.restart_hass
->>>>>>>>> local version
 
   - alias: '[System] Hass Updater'
     initial_state: 'on'
