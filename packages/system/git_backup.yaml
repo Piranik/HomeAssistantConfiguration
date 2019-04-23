@@ -6,3 +6,9 @@ input_text:
 shell_command:
   git_commit: '/usr/bin/env sh /config/bin/git_commit.sh "{{ states.input_text.git_commit_message.state }}"'
   git_fetch: '/usr/bin/env sh /config/bin/git_fetch.sh'
+
+script:
+  git_fetch:
+    sequence:
+      - service: shell_command.git_fetch
+      - service: homeassistant.restart

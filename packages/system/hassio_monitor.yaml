@@ -84,11 +84,6 @@ rest_command:
     url: 'http://localhost:8055/gb/doBackup'
     timeout: '300'
 
-shell_command:
-  system_upgrade: '/usr/bin/env sh /config/bin/upgrade_system.sh'
-  host_reboot: '/usr/bin/env hassio host reboot'
-
-
 
 
 automation:

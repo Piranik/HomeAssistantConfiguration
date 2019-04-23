@@ -34,6 +34,10 @@ cards:
         tap_action:
           action: call-service
           service: homeassistant.restart
+  - type: entities
+    show_header_toggle: false
+    entities:
+     - input_text.git_commit_message
   - type: horizontal-stack
     cards:
       - type: custom:button-card
@@ -62,24 +66,4 @@ cards:
         layout: icon_name
         tap_action:
           action: call-service
-          service: shell_command.git_fetch
-  - type: entities
-    show_header_toggle: false
-    entities:
-     - input_text.git_commit_message
-  - type: horizontal-stack
-    cards:
-      - type: custom:button-card
-        name: "Upgrade HA"
-        color: rgb(255, 97, 97)
-        color_type: card
-        tap_action:
-          action: call-service
-          service: shell_command.system_upgrade
-      - type: custom:button-card
-        name: "Reboot Host"
-        color: rgb(255, 97, 97)
-        color_type: card
-        tap_action:
-          action: call-service
-          service: shell_command.host_reboot
+          service: script.git_fetch
