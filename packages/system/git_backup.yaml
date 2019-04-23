@@ -4,5 +4,5 @@ input_text:
     initial: "Commit from Hassio"
 
 shell_command:
-  git_commit: '/usr/bin/env sh /config/bin/git_commit.sh {{ states.input_text.git_commit_message.state }}'
+  git_commit: '/usr/bin/env sh /config/bin/git_commit.sh "{{ states.input_text.git_commit_message.state }}"'
   git_fetch: '/usr/bin/env sh /config/bin/git_fetch.sh'
