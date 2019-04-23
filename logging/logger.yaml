@@ -1,34 +1,37 @@
-############################################################
+############################################################################
 #
 # Logger  You can filter anything betwen the []'s in the logger.
 #
-############################################################
+############################################################################
 
 # Log Severities: notset, debug, info, warn, warning, error, fatal, critical
 
 default: error
+#default: debug
 logs:
   # custom_components.average_temperature: debug
-  custom_components.car_wash: debug
-  homeassistant.components.api: error
-  homeassistant.components.automation: error
+  # custom_components.car_wash: debug
+  
+  # homeassistant.components.api: error
+  # homeassistant.components.automation: error
   # homeassistant.components.binary_sensor: debug
   homeassistant.components.camera: debug
   homeassistant.components.device_tracker: warn
-  homeassistant.components.device_tracker.owntracks: error
+  # homeassistant.components.device_tracker.owntracks: error
   homeassistant.components.discovery: warn
   # homeassistant.components.ffmpeg: debug
-  homeassistant.components.http: error
+  # homeassistant.components.http: error
   # homeassistant.components.light: warn
-  homeassistant.components.media_player: error
+  # homeassistant.components.media_player: error
   # homeassistant.components.mqtt: debug
-  homeassistant.components.notify: error
+  # homeassistant.components.notify: error
   # homeassistant.components.python_script: debug
   homeassistant.components.sensor: fatal
+  homeassistant.components.sensor.travisci: debug
   homeassistant.components.shell_command: debug
-  homeassistant.components.telegram: error
-  homeassistant.components.websocket_api: error
-  homeassistant.components.weather: debug
+  # homeassistant.components.telegram: error
+  # homeassistant.components.websocket_api: error
+  # homeassistant.components.weather: debug
   # homeassistant.core: debug
   # homeassistant.helpers.entity: error
   homeassistant.helpers.script: debug

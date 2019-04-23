@@ -9,7 +9,7 @@ device_tracker:
   - platform: nmap_tracker
     hosts: !secret nmap_tracker_hosts
     scan_options: "-sn -T5 -n"
-    interval_seconds: 20
+    interval_seconds: 30
     consider_home: 360
     home_interval: 3
     new_device_defaults:
@@ -22,3 +22,17 @@ device_tracker:
   #  username: !secret google_location_username
   #  password: !secret google_location_password
   #  max_gps_accuracy: 150
+
+
+
+automation:
+  - alias: '[System] Hass New Device Tracked'
+    initial_state: 'on'
+    trigger:
+      platform: event
+      event_type: device_tracker_new_device
+    action:
+      - service: notify.hass_info
+        data_template:
+          title: "New Device Tracked"
+          message: "{{trigger.event.data.host_name}} ({{trigger.event.data.mac}})"

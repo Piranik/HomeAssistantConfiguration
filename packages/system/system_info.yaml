@@ -43,6 +43,9 @@ homeassistant:
     #
     sensor.system_media_kitchen:
       icon: mdi:speaker
+    #
+    input_boolean.test:
+      icon: mdi:test-tube
 
 
 input_boolean:

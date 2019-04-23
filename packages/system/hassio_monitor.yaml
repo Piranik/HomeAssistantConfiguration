@@ -7,7 +7,24 @@ homeassistant:
           else if (state > 60) return [40, 70];
           else return [0, 0];
 
+input_boolean:
+  maintenance_mode:
+    name: Maintenance mode
+    icon: mdi:auto-fix
+
+binary_sensor:
+  - platform: rest
+    name: Travis-CI Status
+    resource: https://api.travis-ci.org/repos/Limych/HomeAssistantConfiguration?branch=master
+    scan_interval: 60
+    value_template: "{{ value_json.last_build_status|int(1) == 0 }}"
+
 sensor:
+  - platform: cert_expiry
+    host: !secret hass_domain
+    port: 8123
+    name: Cert
+
   - platform: version
   - platform: version
     name: available_version
@@ -41,8 +58,12 @@ sensor:
     sensors:
       hassio_cpu_alert_level:
         value_template: >-
-          {{ (states("sensor.processor_use")|int > 100)|int
-           + (states("sensor.processor_use")|int > 300)|int }}
+          {{ [
+            (states("sensor.processor_use")|int > 100)|int
+              + (states("sensor.processor_use")|int > 300)|int,
+            (states("sensor.cpu_temperature")|int > 60)|int
+              + (states("sensor.cpu_temperature")|int > 80)|int,
+           ]|max }}
       hassio_memory_alert_level:
         value_template: >-
           {{ (states("sensor.memory_use_percent")|int > 70)|int }}
@@ -62,6 +83,13 @@ rest_command:
   google_backup:
     url: 'http://localhost:8055/gb/doBackup'
     timeout: '300'
+
+shell_command:
+  system_upgrade: '/usr/bin/env sh /config/bin/upgrade_system.sh'
+  host_reboot: '/usr/bin/env hassio host reboot'
+
+
+
 
 automation:
   - alias: '[System] Hass Started'
@@ -87,16 +115,19 @@ automation:
         data:
           message: "Hass.io Offline"
 
-  - alias: '[System] Hass New Device Tracked'
+  - alias: '[System] Notify when Travis-CI build is successful'
     initial_state: 'on'
     trigger:
-      platform: event
-      event_type: device_tracker_new_device
+      platform: state
+      entity_id: binary_sensor.travis_ci_status
+      from: 'off'
+      to: 'on'
     action:
       - service: notify.hass_info
-        data_template:
-          message: >-
-            New Device Tracked: {{trigger.event.data.host_name}} ({{trigger.event.data.entity_id}})
+        data:
+          title: 'Travis-CI'
+          message: 'Build was successful'
+#      - service: script.restart_hass
 
   - alias: '[System] Hass Updater'
     initial_state: 'on'

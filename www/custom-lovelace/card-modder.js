@@ -1,5 +1,5 @@
 customElements.whenDefined('card-tools').then(() => {
-class CardModder extends cardTools.litElement() {
+class CardModder extends cardTools.LitElement {
 
   constructor() {
     super();
@@ -44,7 +44,7 @@ class CardModder extends cardTools.litElement() {
     return this;
   }
   render() {
-    return cardTools.litHtml()`
+    return cardTools.LitHtml`
     <div id="root">${this.card}</div>
     `;
   }
@@ -54,7 +54,7 @@ class CardModder extends cardTools.litElement() {
   }
 
   async _cardMod() {
-    if(!this._config.style) return;
+    if(!this._config.style && !this._config.extra_styles) return;
 
     let root = this.card;
     let target = null;

@@ -13,6 +13,10 @@ include:
     - sensor.owm_humidity
     - sensor.owm_pressure
     - sensor.owm_wind_speed
+    - sensor.gismeteo_temperature
+    - sensor.gismeteo_humidity
+    - sensor.gismeteo_pressure
+    - sensor.gismeteo_wind_speed
     - sensor.pressure
     - sensor.kitchen_temperature
     - sensor.kitchen_humidity

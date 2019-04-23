@@ -1,4 +1,4 @@
-type: vertical-stack
+type: custom:vertical-style-card
 cards:
   - type: horizontal-stack
     cards:
@@ -6,6 +6,7 @@ cards:
         entity: input_boolean.maintenance_mode
         color: rgb(117, 189, 111)
         color_type: card
+        show_name: False
         state:
           - value: "off"
             color: rgba(255, 255, 255, 0.1)
@@ -13,6 +14,7 @@ cards:
         icon: mdi:format-list-bulleted-type
         color: rgb(117, 189, 111)
         color_type: card
+        show_name: False
         tap_action:
           action: url
           url: !secret hass_logs_url
@@ -20,6 +22,7 @@ cards:
         icon: mdi:clipboard-check-outline
         color: rgb(223, 255, 97)
         color_type: card
+        show_name: False
         tap_action:
           action: call-service
           service: homeassistant.check_config
@@ -27,6 +30,7 @@ cards:
         icon: mdi:reload
         color: rgb(255, 97, 97)
         color_type: card
+        show_name: False
         tap_action:
           action: call-service
           service: homeassistant.restart
@@ -34,8 +38,48 @@ cards:
     cards:
       - type: custom:button-card
         icon: mdi:github-circle
+        name: "Repo"
         color: rgb(117, 189, 111)
         color_type: card
+        layout: icon_name
         tap_action:
           action: url
           url: https://github.com/Limych/HomeAssistantConfiguration
+      - type: custom:button-card
+        icon: mdi:arrow-top-right
+        name: "Commit"
+        color: rgb(117, 189, 111)
+        color_type: card
+        layout: icon_name
+        tap_action:
+          action: call-service
+          service: shell_command.git_commit
+      - type: custom:button-card
+        icon: mdi:arrow-bottom-left
+        name: "Fetch"
+        color: rgb(94, 175, 237)
+        color_type: card
+        layout: icon_name
+        tap_action:
+          action: call-service
+          service: shell_command.git_fetch
+  - type: entities
+    show_header_toggle: false
+    entities:
+     - input_text.git_commit_message
+  - type: horizontal-stack
+    cards:
+      - type: custom:button-card
+        name: "Upgrade HA"
+        color: rgb(255, 97, 97)
+        color_type: card
+        tap_action:
+          action: call-service
+          service: shell_command.system_upgrade
+      - type: custom:button-card
+        name: "Reboot Host"
+        color: rgb(255, 97, 97)
+        color_type: card
+        tap_action:
+          action: call-service
+          service: shell_command.host_reboot

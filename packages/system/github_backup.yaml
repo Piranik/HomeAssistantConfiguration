@@ -1,4 +1,0 @@
-sensor:
-  - platform: travisci
-    api_key: !secret github_apikey
-    repository: "HomeAssistantConfiguration"

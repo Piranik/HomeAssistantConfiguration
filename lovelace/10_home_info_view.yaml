@@ -176,3 +176,5 @@ cards:
         #     entities:
         #      - sensor.passage_pir_luminance
         #      - sensor.upstairs_hallway_pir_luminance
+
+          - !include dev_card.yaml
