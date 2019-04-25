@@ -79,7 +79,8 @@ custom_updater:
     - https://raw.githubusercontent.com/sgttrs/lovelace-weather-card-chart/master/custom-updater.json
   component_urls:
     - https://raw.githubusercontent.com/Limych/HomeAssistantComponents/master/custom_components.json
-
+    - https://raw.githubusercontent.com/Limych/media_player.linkplay/master/custom_components.json
+   
 
 # ########################################
 # ###              LOGGING             ###

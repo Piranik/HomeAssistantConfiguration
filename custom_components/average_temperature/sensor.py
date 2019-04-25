@@ -12,7 +12,6 @@ https://github.com/Limych/HomeAssistantComponents/
 import logging
 import math
 import re
-from datetime import datetime
 
 import homeassistant.util.dt as dt_util
 import voluptuous as vol
@@ -21,14 +20,14 @@ from homeassistant.const import (
     CONF_NAME, CONF_ENTITIES, EVENT_HOMEASSISTANT_START, ATTR_UNIT_OF_MEASUREMENT, TEMP_CELSIUS, TEMP_FAHRENHEIT,
     UNIT_NOT_RECOGNIZED_TEMPLATE, TEMPERATURE, ATTR_TEMPERATURE)
 from homeassistant.core import callback
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers.config_validation import PLATFORM_SCHEMA
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.event import async_track_state_change
 from homeassistant.util.temperature import convert as convert_temperature
 
-REQUIREMENTS = []
-
-__version__ = '1.1.0'
+VERSION = '1.1.1'
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -36,16 +35,16 @@ CONF_DURATION = 'duration'
 
 DEFAULT_NAME = 'Average Temperature'
 
-PLATFORM_SCHEMA = vol.Schema({
+PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_ENTITIES): cv.entity_ids,
     vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
     vol.Optional(CONF_DURATION): cv.time_period,
-}, extra=vol.ALLOW_EXTRA)
+})
 
 
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
     """Set up the Gismeteo weather platform."""
-    _LOGGER.debug('Version %s', __version__)
+    _LOGGER.debug('Version %s', VERSION)
     _LOGGER.info('if you have ANY issues with this, please report them here:'
                  ' https://github.com/Limych/HomeAssistantComponents')
 
@@ -124,7 +123,7 @@ class AverageTemperatureSensor(Entity):
         """Update the sensor state."""
         start = now = start_timestamp = now_timestamp = unit = None
         if self._duration is not None:
-            now = datetime.now()
+            now = dt_util.now()
             start = dt_util.as_utc(now - self._duration)
             now = dt_util.as_utc(now)
 
@@ -138,6 +137,11 @@ class AverageTemperatureSensor(Entity):
             _LOGGER.debug('Processing entity \'%s\'', entity_id)
 
             entity = self._hass.states.get(entity_id)
+
+            if entity is None:
+                raise HomeAssistantError(
+                    'Unable to find an entity called {}'.format(entity_id))
+
             as_attribute = re.match(r'weather\.', entity_id)
             if not as_attribute:
                 unit = entity.attributes.get(ATTR_UNIT_OF_MEASUREMENT)

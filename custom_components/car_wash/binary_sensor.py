@@ -4,7 +4,7 @@
 #  (see LICENSE.md or https://creativecommons.org/licenses/by-nc-sa/4.0/)
 #
 """
-The Gismeteo component.
+The Car Wash binary sensor.
 
 For more details about this platform, please refer to the documentation at
 https://github.com/Limych/HomeAssistantComponents/
@@ -20,13 +20,13 @@ from homeassistant.components.weather import (
 from homeassistant.const import (
     CONF_NAME, EVENT_HOMEASSISTANT_START, TEMP_CELSIUS)
 from homeassistant.core import callback
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers.config_validation import PLATFORM_SCHEMA
 from homeassistant.helpers.event import async_track_state_change
 from homeassistant.util.temperature import convert as convert_temperature
 
-REQUIREMENTS = []
-
-__version__ = '1.2.4'
+VERSION = '1.2.5'
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -38,16 +38,16 @@ DEFAULT_DAYS = 2
 
 BAD_CONDITIONS = ["lightning-rainy", "rainy", "pouring", "snowy", "snowy-rainy"]
 
-PLATFORM_SCHEMA = vol.Schema({
+PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_WEATHER): cv.entity_id,
     vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
     vol.Optional(CONF_DAYS, default=DEFAULT_DAYS): vol.Coerce(int),
-}, extra=vol.ALLOW_EXTRA)
+})
 
 
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
     """Set up the Car Wash sensor."""
-    _LOGGER.debug('Version %s', __version__)
+    _LOGGER.debug('Version %s', VERSION)
     _LOGGER.info('if you have ANY issues with this, please report them here:'
                  ' https://github.com/Limych/HomeAssistantComponents')
 
@@ -120,8 +120,8 @@ class CarWashBinarySensor(BinarySensorDevice):
         wd = self._hass.states.get(self._weather_entity)
 
         if wd is None:
-            _LOGGER.error('There are no entity with ID "%s" in a system', self._weather_entity)
-            return
+            raise HomeAssistantError(
+                'Unable to find an entity called {}'.format(self._weather_entity))
 
         tu = self._hass.config.units.temperature_unit
         t = wd.attributes.get(ATTR_WEATHER_TEMPERATURE)
@@ -133,8 +133,8 @@ class CarWashBinarySensor(BinarySensorDevice):
         t = self._temp2c(t, tu)
 
         if forecast is None:
-            _LOGGER.error('Can\'t get forecast data! Are you sure it\'s the weather provider?')
-            return
+            raise HomeAssistantError(
+                'Can\'t get forecast data! Are you sure it\'s the weather provider?')
 
         cur_date = datetime.now().strftime('%F')
         stop_date = datetime.fromtimestamp(

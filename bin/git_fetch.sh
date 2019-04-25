@@ -25,6 +25,5 @@ git config user.email "${secret_git_user_email}"
 git config core.sshCommand "ssh -i ${ROOT}/.ssh/id_rsa -oStrictHostKeyChecking=no"
 git fetch origin master
 git reset --hard origin/master
-hassio homeassistant restart
 
 exit
