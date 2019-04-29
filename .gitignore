@@ -15,6 +15,7 @@ secrets.*
 /deps/
 /gh-pages/
 /tts/
+/ssl/
 
 /www/
 !/www/custom-lovelace/
