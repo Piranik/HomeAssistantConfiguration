@@ -7,32 +7,31 @@ homeassistant:
           else if (state > 60) return [40, 70];
           else return [0, 0];
 
+
 input_boolean:
   maintenance_mode:
-    name: Maintenance mode
+    name: "Maintenance Mode"
     icon: mdi:auto-fix
+
 
 binary_sensor:
   - platform: rest
-    name: Travis-CI Status
+    name: "Travis-CI Status"
     resource: https://api.travis-ci.org/repos/Limych/HomeAssistantConfiguration?branch=master
     scan_interval: 60
     value_template: "{{ value_json.last_build_status|int(1) == 0 }}"
 
+
 sensor:
+  - platform: uptime
+    unit_of_measurement: minutes
+  - platform: version
+  - platform: version
+    source: hassio
   - platform: cert_expiry
     host: !secret hass_domain
     port: 8123
-    name: Cert
 
-  - platform: version
-  - platform: version
-    name: available_version
-    source: hassio
-  - platform: uptime
-    name: Uptime
-    unit_of_measurement: minutes
-    
   - platform: systemmonitor
     resources:
       - type: last_boot
@@ -79,11 +78,11 @@ sensor:
             states("sensor.hassio_disks_alert_level"),
           ]|max }}
 
+
 rest_command:
   google_backup:
     url: 'http://localhost:8055/gb/doBackup'
     timeout: '300'
-
 
 
 automation:
@@ -95,7 +94,7 @@ automation:
     action:
       - service: frontend.set_theme
         data:
-          name: midnight
+          name: "midnight"
       - service: notify.hass_info
         data:
           message: "Hass.io Online"
@@ -128,16 +127,19 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: sensor.available_version
+        entity_id: sensor.latest_version
     condition:
+      - condition: numeric_state
+        entity_id: sensor.uptime
+        above: 1
       - condition: template
-        value_template: "{{ states('sensor.available_version') != states('sensor.current_version') }}"
+        value_template: "{{ states('sensor.latest_version') != states('sensor.current_version') }}"
     action:
       - service: notify.hass_info
         data_template:
           title: Upgrade time!
           message: >-
-            Hass.io version {{ states('sensor.available_version') }} is now available!
+            Hass.io version {{ states('sensor.latest_version') }} is now available!
 
   - alias: '[System] Weekly Backup Monday at 5:00'
     initial_state: 'on'

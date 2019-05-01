@@ -18,17 +18,17 @@ telegram_bot:
 
 
 notify:
-  - name: All
+  - name: "All"
     platform: group
     services:
       - service: limych
 
-  - name: Hass_Info
+  - name: "Hass Info"
     platform: group
     services:
       - service: limych
 
-  - name: Limych
+  - name: "Limych"
     platform: telegram
     chat_id: !secret telegram_chat_limych
 

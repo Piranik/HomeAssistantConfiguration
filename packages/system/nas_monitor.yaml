@@ -95,6 +95,7 @@ homeassistant:
       friendly_name: 'Alert Message'
       icon: mdi:message-alert
 
+
 sensor:
   - platform: template
     sensors:

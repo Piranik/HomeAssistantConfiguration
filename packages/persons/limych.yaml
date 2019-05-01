@@ -25,10 +25,6 @@ binary_sensor:
     name: limych_sleeping
     state_topic: 'sleep/limych/tracking'
 
-input_boolean:
-  limych_home:
-    name: Limych Homekit
-#    icon: mdi:
 
 sensor:
   - platform: template

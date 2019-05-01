@@ -53,7 +53,7 @@ cards:
                 main_pollutant: sensor.u_s_main_pollutant
                 temp: weather.gismeteo
                 city: "Nest @Moscow"
-                svg_location: "/local/lovelace_ui/home"
+                svg_location: "/local/lovelace/home"
 
               - type: horizontal-stack
                 cards:
@@ -170,11 +170,27 @@ cards:
               - sensor.kitchen_temperature
               - sensor.gismeteo_temperature
               - sensor.average_temperature
-        #  - type: history-graph
-        #     title: Light 24 Hours
-        #     hours_to_show: 24
-        #     entities:
-        #      - sensor.passage_pir_luminance
-        #      - sensor.upstairs_hallway_pir_luminance
+
+          - break
+          - type: history-graph
+            title: "Влажность за 48ч"
+            hours_to_show: 48
+            entities:
+              - sensor.kitchen_humidity
+              - sensor.gismeteo_humidity
+          - type: history-graph
+            title: "Влажность за 7 дней"
+            hours_to_show: 168
+            entities:
+              - sensor.kitchen_humidity
+              - sensor.gismeteo_humidity
+
+          # - break
+          # - type: history-graph
+          #   title: Light 24 Hours
+          #   hours_to_show: 24
+          #   entities:
+          #     - sensor.passage_pir_luminance
+          #     - sensor.upstairs_hallway_pir_luminance
 
           - !include dev_card.yaml

@@ -50,7 +50,7 @@ cards:
           - type: horizontal-stack
             cards:
               - type: picture-elements    
-                image: /local/lovelace_ui/home/time_square.jpg
+                image: /local/lovelace/home/time_square.jpg
                 elements:      
                   - type: state-label
                     entity: sensor.time
@@ -68,7 +68,7 @@ cards:
 
               - type: picture-entity
                 entity: device_tracker.limych_presence
-                image: /local/lovelace_ui/home/limych_square.jpg
+                image: /local/lovelace/home/limych_square.jpg
                 show_name: false
                 tap_action:
                   action: more-info
@@ -79,15 +79,15 @@ cards:
           #       states:
           #         Stefan:
           #           type: picture-elements
-          #           image: /local/lovelace_ui/bg_transparent.png
+          #           image: /local/lovelace/bg_transparent.png
           #           elements:
           #             - type: image
           #               entity: switch.stefan_radiator_3
           #               tap_action:
           #                 action: more-info
           #               state_image:
-          #                 "on": /local/lovelace_ui/home/radiator_on.jpg
-          #                 "off": /local/lovelace_ui/home/radiator_off.jpg
+          #                 "on": /local/lovelace/home/radiator_on.jpg
+          #                 "off": /local/lovelace/home/radiator_off.jpg
           #               style:
           #                 top: 50%
           #                 left: 50%
@@ -100,7 +100,7 @@ cards:
 
           #         default:
           #           type: picture-elements
-          #           image: /local/lovelace_ui/bg_transparent.png
+          #           image: /local/lovelace/bg_transparent.png
           #           elements:
           #             - type: state-icon
           #               entity: light.inside_lights
@@ -126,10 +126,10 @@ cards:
           #       name: Alarm
           #       show_name: false
           #       entity: alarm_control_panel.house
-          #       image: /local/lovelace_ui/home/house_square.jpg
+          #       image: /local/lovelace/home/house_square.jpg
               - type: picture-entity
                 entity: input_boolean.guest_mode
-                image: /local/lovelace_ui/home/guests_square.jpg
+                image: /local/lovelace/home/guests_square.jpg
                 show_name: false
                 tap_action:
                   action: toggle
@@ -141,11 +141,11 @@ cards:
                 show_name: false
                 show_state: false
                 state_image:
-                  "on": /local/lovelace_ui/home/car_wash_square.jpg
-                  "off": /local/lovelace_ui/home/car_wash_bw_square.jpg
+                  "on": /local/lovelace/home/car_wash_square.jpg
+                  "off": /local/lovelace/home/car_wash_bw_square.jpg
               - type: picture-entity
                 entity: input_boolean.cleaning_day
-                image: /local/lovelace_ui/home/cleaning_square.jpg
+                image: /local/lovelace/home/cleaning_square.jpg
                 show_name: false
                 tap_action:
                   action: toggle
@@ -169,23 +169,23 @@ cards:
           #         show_name: false
           #         entity: input_select.washing_machine_status
           #         state_image:
-          #           "Idle": /local/lovelace_ui/home/washer_square.jpg
-          #           "Running": /local/lovelace_ui/home/laundry_running_square.jpg
-          #           "Clean": /local/lovelace_ui/home/laundry_clean_2_square.jpg
+          #           "Idle": /local/lovelace/home/washer_square.jpg
+          #           "Running": /local/lovelace/home/laundry_running_square.jpg
+          #           "Clean": /local/lovelace/home/laundry_clean_2_square.jpg
           #     - type: picture-entity
           #       name: Cleaner
           #       show_name: false
           #       entity: input_boolean.cleaning_day
-          #       image: /local/lovelace_ui/home/cleaner_square.jpg
+          #       image: /local/lovelace/home/cleaner_square.jpg
           #       state_image:
-          #         "Not Today": /local/lovelace_ui/home/cleaner_bw_square.jpg
+          #         "Not Today": /local/lovelace/home/cleaner_bw_square.jpg
           #     - type: picture-entity
           #       entity: sensor.trash_status
-          #       image: /local/lovelace_ui/home/trash_bear_bw_square.jpg
+          #       image: /local/lovelace/home/trash_bear_bw_square.jpg
           #       show_name: false
           #       state_image:
-          #         "Put out": /local/lovelace_ui/home/trash_square.jpg
-          #         "Take in": /local/lovelace_ui/home/trash_square.jpg
+          #         "Put out": /local/lovelace/home/trash_square.jpg
+          #         "Take in": /local/lovelace/home/trash_square.jpg
 
           # - type: vertical-stack
           #   cards:
@@ -260,24 +260,44 @@ cards:
           #           show_state: false
           #     - type: shopping-list
 
-          - type: entities
-            entities:
-              - type: custom:mini-media-player
-                entity: media_player.kitchen
-                artwork: cover
-                artwork_border: true
-                power: false
-                group: true
-                source: true
-                progress: true
-              - type: custom:mini-media-player
-                entity: media_player.living_room
-                artwork: cover
-                artwork_border: true
-                power: false
-                group: true
-                source: true
-                progress: true
+          - type: custom:card-modder
+            style:
+              background-image: url("/local/lovelace/home/bg_sound.jpg")
+              background-size: cover
+              background-position: center
+            card:
+              type: entities
+              show_header_toggle: false
+              entities:
+                - type: custom:mini-media-player
+                  entity: media_player.multiroom_player
+                  group: true
+                  source: icon
+                  info: short
+                  hide:
+                    volume: true
+                    power: true
+                    source: true
+                - type: custom:mini-media-player
+                  entity: media_player.kitchen
+                  name: "Кухня"
+                  group: true
+                  hide:
+                    controls: true
+                    power: true
+                    source: true
+                    progress: true
+                - type: custom:mini-media-player
+                  entity: media_player.living_room
+                  name: "Гостиная"
+                  group: true
+                  hide:
+                    controls: true
+                    power: true
+                    source: true
+                    progress: true
+                - input_boolean.play_radio
+                - input_select.radio_station
 
           - type: custom:vertical-style-card
             cards:

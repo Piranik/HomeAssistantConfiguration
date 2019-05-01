@@ -8,8 +8,7 @@ cards:
         entities:
           - entity: sensor.last_boot
             name: "Last boot"
-          - entity: sensor.cert
-            # name: "SSL Cert"
+          - entity: sensor.ssl_certificate_expiry
 
       # - type: custom:useful-markdown-card
       #   content: |

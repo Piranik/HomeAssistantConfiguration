@@ -3,6 +3,7 @@
 shell_command:
   cert_update: '/usr/bin/env sh /config/bin/cert_update.sh'
 
+
 automation:
   - alias: '[System] Update SSL Certificates'
     initial_state: 'on'

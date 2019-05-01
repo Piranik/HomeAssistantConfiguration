@@ -11,14 +11,16 @@ https://github.com/Limych/HomeAssistantComponents/
 """
 import logging
 import math
-import re
 
 import homeassistant.util.dt as dt_util
 import voluptuous as vol
 from homeassistant.components import history
+from homeassistant.components.climate import ClimateDevice
+from homeassistant.components.water_heater import WaterHeaterDevice
+from homeassistant.components.weather import WeatherEntity
 from homeassistant.const import (
-    CONF_NAME, CONF_ENTITIES, EVENT_HOMEASSISTANT_START, ATTR_UNIT_OF_MEASUREMENT, TEMP_CELSIUS, TEMP_FAHRENHEIT,
-    UNIT_NOT_RECOGNIZED_TEMPLATE, TEMPERATURE, ATTR_TEMPERATURE)
+    CONF_NAME, CONF_ENTITIES, EVENT_HOMEASSISTANT_START, ATTR_UNIT_OF_MEASUREMENT,
+    TEMP_CELSIUS, TEMP_FAHRENHEIT, UNIT_NOT_RECOGNIZED_TEMPLATE, TEMPERATURE)
 from homeassistant.core import callback
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import config_validation as cv
@@ -27,7 +29,7 @@ from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.event import async_track_state_change
 from homeassistant.util.temperature import convert as convert_temperature
 
-VERSION = '1.1.1'
+VERSION = '1.2.1'
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -108,20 +110,33 @@ class AverageTemperatureSensor(Entity):
         """Return the icon to use in the frontend, if any."""
         return 'mdi:thermometer'
 
-    def _convert_temp(self, temperature, temperature_unit: str) -> float:
-        """Convert temperature to Home Assistant common configured units."""
-        if temperature is not None:
-            ha_unit = self._hass.config.units.temperature_unit
-            temperature = float(temperature)
+    def _get_temperature(self, entity) -> float:
+        """Get temperature value from entity and convert it to Home Assistant common configured units."""
+        if isinstance(entity, WeatherEntity):
+            temperature = entity.temperature
+            entity_unit = entity.temperature_unit
+        elif isinstance(entity, (ClimateDevice, WaterHeaterDevice)):
+            temperature = entity.current_temperature
+            entity_unit = entity.temperature_unit
+        else:
+            temperature = entity.state
+            entity_unit = entity.attributes.get(ATTR_UNIT_OF_MEASUREMENT)
 
-            if temperature_unit != ha_unit:
-                temperature = convert_temperature(temperature, temperature_unit, ha_unit)
+        if temperature is not None:
+            if entity_unit not in (TEMP_CELSIUS, TEMP_FAHRENHEIT):
+                raise ValueError(UNIT_NOT_RECOGNIZED_TEMPLATE.format(entity_unit, TEMPERATURE))
+
+            temperature = float(temperature)
+            ha_unit = self._hass.config.units.temperature_unit
+
+            if entity_unit != ha_unit:
+                temperature = convert_temperature(temperature, entity_unit, ha_unit)
 
         return temperature
 
     async def async_update(self):
         """Update the sensor state."""
-        start = now = start_timestamp = now_timestamp = unit = None
+        start = now = start_timestamp = now_timestamp = None
         if self._duration is not None:
             now = dt_util.now()
             start = dt_util.as_utc(now - self._duration)
@@ -142,21 +157,12 @@ class AverageTemperatureSensor(Entity):
                 raise HomeAssistantError(
                     'Unable to find an entity called {}'.format(entity_id))
 
-            as_attribute = re.match(r'weather\.', entity_id)
-            if not as_attribute:
-                unit = entity.attributes.get(ATTR_UNIT_OF_MEASUREMENT)
-                if unit not in (TEMP_CELSIUS, TEMP_FAHRENHEIT):
-                    raise ValueError(UNIT_NOT_RECOGNIZED_TEMPLATE.format(unit, TEMPERATURE))
-
             value = 0
             elapsed = 0
 
             if self._duration is None:
                 # Get current state
-                if as_attribute:
-                    value = entity.attributes.get(ATTR_TEMPERATURE)
-                else:
-                    value = self._convert_temp(entity.state, unit)
+                value = self._get_temperature(entity)
                 _LOGGER.debug('Current temperature: %s', value)
 
             else:
@@ -165,45 +171,41 @@ class AverageTemperatureSensor(Entity):
                     self.hass, start, now, str(entity_id))
 
                 if entity_id not in history_list.keys():
-                    continue
+                    value = self._get_temperature(entity)
+                    _LOGGER.warning('Historical data not found for entity \'%s\'.'
+                                    ' Current temperature used: %s', entity_id, value)
+                else:
+                    # Get the first state
+                    item = history.get_state(self.hass, start, entity_id)
+                    _LOGGER.debug('Initial historical state: %s', item)
+                    last_state = None
+                    last_time = start_timestamp
+                    if item is not None and item.state is not None:
+                        last_state = self._get_temperature(item)
 
-                # Get the first state
-                item = history.get_state(self.hass, start, entity_id)
-                _LOGGER.debug('Initial historical state: %s', item)
-                last_state = None
-                last_time = start_timestamp
-                if item is not None and item.state is not None:
-                    if as_attribute:
-                        last_state = item.attributes.get(ATTR_TEMPERATURE)
-                    else:
-                        last_state = self._convert_temp(item.state, unit)
+                    # Get the other states
+                    for item in history_list.get(entity_id):
+                        _LOGGER.debug('Historical state: %s', item)
+                        if item.state is not None:
+                            current_state = self._get_temperature(item)
+                            current_time = item.last_changed.timestamp()
 
-                # Get the other states
-                for item in history_list.get(entity_id):
-                    _LOGGER.debug('Historical state: %s', item)
-                    if item.state is not None:
-                        if as_attribute:
-                            current_state = item.attributes.get(ATTR_TEMPERATURE)
-                        else:
-                            current_state = self._convert_temp(item.state, unit)
-                        current_time = item.last_changed.timestamp()
+                            if last_state:
+                                last_elapsed = current_time - last_time
+                                value += last_state * last_elapsed
+                                elapsed += last_elapsed
 
-                        if last_state:
-                            last_elapsed = current_time - last_time
-                            value += last_state * last_elapsed
-                            elapsed += last_elapsed
+                            last_state = current_state
+                            last_time = current_time
 
-                        last_state = current_state
-                        last_time = current_time
+                    # Count time elapsed between last history state and now
+                    if last_state:
+                        last_elapsed = now_timestamp - last_time
+                        value += last_state * last_elapsed
+                        elapsed += last_elapsed
 
-                # Count time elapsed between last history state and now
-                if last_state:
-                    last_elapsed = now_timestamp - last_time
-                    value += last_state * last_elapsed
-                    elapsed += last_elapsed
-
-                value /= elapsed
-                _LOGGER.debug('Historical average temperature: %s', value)
+                    value /= elapsed
+                    _LOGGER.debug('Historical average temperature: %s', value)
 
             values.append(value)
 

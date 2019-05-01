@@ -10,4 +10,5 @@ automation:
     action:
       - service: notify.hass_info
         data_template:
-          message: "{{ trigger.state.attributes.message }}. IP address has been banned."
+          title: "IP address has been banned!"
+          message: "{{ trigger.state.attributes.message }}"

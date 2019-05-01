@@ -23,10 +23,10 @@ KEYFILE=${secret_nas_host_ip}:/mnt/pool1/Certs/${secret_hass_domain}/${secret_ha
 
 SSH_OPT="-oStrictHostKeyChecking=no"
 
-mkdir $(dirname $secret_ssl_certificate) 2>/dev/null
+mkdir "$(dirname $secret_ssl_certificate)" 2>/dev/null
 
 # Copy certs to store
-scp ${SSH_OPT} -i ${SSH_CERT} ${CERTFILE} ${secret_ssl_certificate}
-scp ${SSH_OPT} -i ${SSH_CERT} ${KEYFILE} ${secret_ssl_key}
+scp ${SSH_OPT} -i "${SSH_CERT}" "${CERTFILE}" "${secret_ssl_certificate}"
+scp ${SSH_OPT} -i "${SSH_CERT}" "${KEYFILE}" "${secret_ssl_key}"
 
 exit

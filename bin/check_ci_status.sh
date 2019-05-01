@@ -26,7 +26,7 @@ fi
 repo_id=`cat ${REPO_ID_FPATH}`
 last_build=`cat ${LAST_BUILD_FPATH}`
 
-report=`curl -s -H "Travis-API-Version: 3" https://api.travis-ci.org/repo/${repo_id}/branch/master`
+report=`curl -s -H "Travis-API-Version: 3" "https://api.travis-ci.org/repo/${repo_id}/branch/master"`
 
 current_build=`echo "${report}" | jq .last_build.number`
 current_build="${current_build%\"}"

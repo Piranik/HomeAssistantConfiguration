@@ -91,3 +91,4 @@ cards:
                     - domain: input_text
                     - domain: history_graph
                     - entity_id: customizer.customizer
+                    - entity_id: "media_player.emby_*"
