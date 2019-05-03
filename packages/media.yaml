@@ -138,8 +138,6 @@ automation:
         to: 'playing'
         
     action:
-      # - service: media_player.media_pause
-      #   entity_id: media_player.multiroom_player
       - service: input_boolean.turn_off
         entity_id: input_boolean.play_radio
 
@@ -152,12 +150,14 @@ automation:
       - platform: state
         entity_id: input_select.radio_station
 
-    condition:
-      - condition: state
-        entity_id: input_boolean.play_radio
-        state: 'on'
+    # condition:
+    #   - condition: state
+    #     entity_id: input_boolean.play_radio
+    #     state: 'on'
 
     action:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.play_radio
       - service: media_player.play_media
         data_template:
           entity_id: media_player.multiroom_player
@@ -236,6 +236,11 @@ automation:
       - platform: state
         entity_id: input_boolean.play_radio
         to: 'off'
+      - platform: state
+        entity_id: media_player.multiroom_player
+        to: 'paused'
+        for:
+          seconds: 15
     #   - platform: state
     #     entity_id: switch.google_music
     #     to: 'off'
@@ -251,5 +256,7 @@ automation:
     #       state: 'off'
 
     action:
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.play_radio
       - service: media_player.media_pause
         entity_id: media_player.multiroom_player
