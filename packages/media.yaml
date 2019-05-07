@@ -47,7 +47,7 @@ media_player:
 input_boolean:
   play_radio:
     name: "Радио"
-    icon: mdi:play
+    icon: mdi:radio
 
 
 input_select:
@@ -172,7 +172,7 @@ automation:
           entity_id: group.all_speakers
           media_content_type: 'music'
           media_content_id: >-
-            {# AUTOMATION_BEGIN}
+            {# AUTOMATION_BEGIN #}
             {% if is_state("input_select.radio_station", "Free Radio CW") %} http://tx.whatson.com/http_live_bauer.php?i=freecoventry.aac&awparams=loggedin:false&amsparams=playerid:BMUK_tunein
             {% elif is_state("input_select.radio_station", "Free Radio 80s") %} http://tx.whatson.com/http_live_bauer.php?i=free80s.aac&awparams=loggedin:false&amsparams=playerid:BMUK_tunein
             {% elif is_state("input_select.radio_station", "Absolute Radio") %} http://player.absoluteradio.co.uk/tunein.php?i=ar24.aac
@@ -235,7 +235,7 @@ automation:
             {% elif is_state("input_select.radio_station", "Radio Margherita") %} http://onair20.xdevel.com:8011/
             {% elif is_state("input_select.radio_station", "Radio Margherita Giovane") %} http://onair20.xdevel.com:8018/
             {% elif is_state("input_select.radio_station", "R.L.B.") %} http://nr5.newradio.it:8767/stream.mp3
-            {# AUTOMATION_END}
+            {# AUTOMATION_END #}
             {% endif %}
 
   - alias: "[Media] Stop Radio"

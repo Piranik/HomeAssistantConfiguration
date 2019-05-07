@@ -274,7 +274,6 @@ cards:
                   name: "Кухня"
                   group: true
                   source: icon
-                  info: short
                   hide:
                     power: true
                     source: true
@@ -283,7 +282,6 @@ cards:
                   name: "Гостиная"
                   group: true
                   source: icon
-                  info: short
                   hide:
                     power: true
                     source: true

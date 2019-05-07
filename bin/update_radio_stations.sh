@@ -54,7 +54,7 @@ eval $(parse ${STATIONS_FPATH} 'stations \"%s\" \"%s\";')
 
 TMP_FPATH=${MEDIA_FPATH}.tmp
 sed ":a;N;\$!ba;s/\($s# INPUT_BEGIN$s\n\).*\n\($s# INPUT_END\)/\1${INPUT}\2/g" "$MEDIA_FPATH" |
-sed ":a;N;\$!ba;s/\($s{# AUTOMATION_BEGIN}$s\n\).*\n\($s{# AUTOMATION_END}\)/\1${AUTOMATION}\2/g" >"$TMP_FPATH"
+sed ":a;N;\$!ba;s/\($s{# AUTOMATION_BEGIN #}$s\n\).*\n\($s{# AUTOMATION_END #}\)/\1${AUTOMATION}\2/g" >"$TMP_FPATH"
 mv -f "$TMP_FPATH" "$MEDIA_FPATH"
 
 exit
