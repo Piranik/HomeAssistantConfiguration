@@ -1,8 +1,5 @@
 homeassistant:
   customize:
-    media_player.multiroom_player:
-      friendly_name: "Аудио проигрыватель"
-      icon: mdi:speaker-multiple
     media_player.kitchen:
       friendly_name: "Колонки на кухне"
       icon: mdi:speaker-wireless
@@ -15,20 +12,30 @@ ffmpeg:
   ffmpeg_bin: /usr/bin/ffmpeg
 
 
-media_player:
-  - platform: universal
-    name: multiroom_player
-    children:
+group:
+  all_media_players:
+    view: true
+    icon: mdi:speaker-multiple
+    entities:
       - media_player.kitchen
       - media_player.living_room
 
+  all_speakers:
+    view: true
+    icon: mdi:speaker-multiple
+    entities:
+      - media_player.kitchen
+      - media_player.living_room
+
+
+media_player:
   - platform: linkplay
     devicename: "Kitchen"
     host: !secret speaker_kitchen_host
     lastfm_api_key: !secret lastfm_apikey
   - platform: linkplay
-    devicename: "Living Room"    # As Slave
-    host: !secret speaker_kitchen_host
+    devicename: "Living Room"
+    host: !secret speaker_livingroom_host
     lastfm_api_key: !secret lastfm_apikey
 
   - platform: emby
@@ -47,6 +54,7 @@ input_select:
   radio_station:
     name: "Радио-станция"
     options:
+      # INPUT_BEGIN
       - Free Radio CW
       - Free Radio 80s
       - Absolute Radio
@@ -109,6 +117,7 @@ input_select:
       - Radio Margherita
       - Radio Margherita Giovane
       - R.L.B.
+      # INPUT_END
     icon: mdi:radio
 
 
@@ -160,10 +169,11 @@ automation:
         entity_id: input_boolean.play_radio
       - service: media_player.play_media
         data_template:
-          entity_id: media_player.multiroom_player
+          entity_id: group.all_speakers
           media_content_type: 'music'
           media_content_id: >-
-            {% if is_state("input_select.radio_station", "Free Radio CW") %}  http://tx.whatson.com/http_live_bauer.php?i=freecoventry.aac&awparams=loggedin:false&amsparams=playerid:BMUK_tunein
+            {# AUTOMATION_BEGIN}
+            {% if is_state("input_select.radio_station", "Free Radio CW") %} http://tx.whatson.com/http_live_bauer.php?i=freecoventry.aac&awparams=loggedin:false&amsparams=playerid:BMUK_tunein
             {% elif is_state("input_select.radio_station", "Free Radio 80s") %} http://tx.whatson.com/http_live_bauer.php?i=free80s.aac&awparams=loggedin:false&amsparams=playerid:BMUK_tunein
             {% elif is_state("input_select.radio_station", "Absolute Radio") %} http://player.absoluteradio.co.uk/tunein.php?i=ar24.aac
             {% elif is_state("input_select.radio_station", "Absolute 80s") %} http://player.absoluteradio.co.uk/tunein.php?i=a824.aac
@@ -171,8 +181,6 @@ automation:
             {% elif is_state("input_select.radio_station", "Heart") %} http://media-ice.musicradio.com/HeartWestMids
             {% elif is_state("input_select.radio_station", "Heart 80s") %} http://media-ice.musicradio.com/Heart80s
             {% elif is_state("input_select.radio_station", "Sleep Radio") %} http://37.59.28.208:8453/stream
-          
-            {# Italian Radios #}
             {% elif is_state("input_select.radio_station", "Rai Radio 1") %} http://icestreaming.rai.it/1.mp3
             {% elif is_state("input_select.radio_station", "Rai Radio 2") %} http://icestreaming.rai.it/2.mp3
             {% elif is_state("input_select.radio_station", "Rai Radio 3") %} http://icestreaming.rai.it/3.mp3
@@ -184,7 +192,7 @@ automation:
             {% elif is_state("input_select.radio_station", "Rai IsoRadio") %} http://icestreaming.rai.it/6.mp3
             {% elif is_state("input_select.radio_station", "Rai GrParlamento") %} http://icestreaming.rai.it/7.mp3
             {% elif is_state("input_select.radio_station", "RTL") %} http://shoutcast.rtl.it:3010/
-            {% elif is_state("input_select.radio_station", "RTL Best") %} http://shoutcast.rtl.it:3020
+            {% elif is_state("input_select.radio_station", "RTL Best") %} http://shoutcast.rtl.it:3020/
             {% elif is_state("input_select.radio_station", "RTL ItalianStyle") %} http://shoutcast.rtl.it:3030/
             {% elif is_state("input_select.radio_station", "RTL Groove") %} http://shoutcast.rtl.it:3040/
             {% elif is_state("input_select.radio_station", "RTL Lounge") %} http://shoutcast.rtl.it:3070/
@@ -209,16 +217,16 @@ automation:
             {% elif is_state("input_select.radio_station", "Discoradio") %} http://46.37.20.206:1935/live/1discoradio.stream/playlist.m3u8
             {% elif is_state("input_select.radio_station", "Radionorba") %} http://onair11.xdevel.com:9990/
             {% elif is_state("input_select.radio_station", "Radionorba Music & Sport") %} http://onair7.xdevel.com:8738/
-            {% elif is_state("input_select.radio_station", "Radio Subasio") %} http://onair18.xdevel.com:8152
-            {% elif is_state("input_select.radio_station", "Radio Subasio +") %} http://onair11.xdevel.com:8050
-            {% elif is_state("input_select.radio_station", "Radio Subasio XL") %} http://onair11.xdevel.com:8052
-            {% elif is_state("input_select.radio_station", "Radio Amore Campania") %} http://onair11.xdevel.com:8002
-            {% elif is_state("input_select.radio_station", "Radio Cuore") %} http://nr9.newradio.it:9029
-            {% elif is_state("input_select.radio_station", "RIN Radio Italia Network") %} http://sr9.inmystream.info:8006
+            {% elif is_state("input_select.radio_station", "Radio Subasio") %} http://onair18.xdevel.com:8152/
+            {% elif is_state("input_select.radio_station", "Radio Subasio +") %} http://onair11.xdevel.com:8050/
+            {% elif is_state("input_select.radio_station", "Radio Subasio XL") %} http://onair11.xdevel.com:8052/
+            {% elif is_state("input_select.radio_station", "Radio Amore Campania") %} http://onair11.xdevel.com:8002/
+            {% elif is_state("input_select.radio_station", "Radio Cuore") %} http://nr9.newradio.it:9029/
+            {% elif is_state("input_select.radio_station", "RIN Radio Italia Network") %} http://sr9.inmystream.info:8006/
             {% elif is_state("input_select.radio_station", "Radio RCS l’Onda Veronese") %} http://176.31.254.217:8030/
             {% elif is_state("input_select.radio_station", "Ram Power 102.7") %} http://46.37.20.206:1935/live/1ram.stream/playlist.m3u8
-            {% elif is_state("input_select.radio_station", "Radio Playstudio") %} http://playstudio.serverroom.us:4140
-            {% elif is_state("input_select.radio_station", "LifeGate Radio") %} http://onair11.xdevel.com:8024
+            {% elif is_state("input_select.radio_station", "Radio Playstudio") %} http://playstudio.serverroom.us:4140/
+            {% elif is_state("input_select.radio_station", "LifeGate Radio") %} http://onair11.xdevel.com:8024/
             {% elif is_state("input_select.radio_station", "Radio Studio Delta") %} http://5.63.145.172:7203/
             {% elif is_state("input_select.radio_station", "Radio Sportiva") %} http://nr5.newradio.it:8545/stream.mp3
             {% elif is_state("input_select.radio_station", "Studioradio – The Vintage Station") %} http://91.121.38.216:8060/
@@ -227,7 +235,7 @@ automation:
             {% elif is_state("input_select.radio_station", "Radio Margherita") %} http://onair20.xdevel.com:8011/
             {% elif is_state("input_select.radio_station", "Radio Margherita Giovane") %} http://onair20.xdevel.com:8018/
             {% elif is_state("input_select.radio_station", "R.L.B.") %} http://nr5.newradio.it:8767/stream.mp3
-          
+            {# AUTOMATION_END}
             {% endif %}
 
   - alias: "[Media] Stop Radio"
@@ -237,7 +245,7 @@ automation:
         entity_id: input_boolean.play_radio
         to: 'off'
       - platform: state
-        entity_id: media_player.multiroom_player
+        entity_id: group.all_speakers
         to: 'paused'
         for:
           seconds: 15
@@ -259,4 +267,4 @@ automation:
       - service: input_boolean.turn_off
         entity_id: input_boolean.play_radio
       - service: media_player.media_pause
-        entity_id: media_player.multiroom_player
+        entity_id: group.all_speakers

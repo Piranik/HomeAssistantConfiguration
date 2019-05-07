@@ -12,7 +12,7 @@ homeassistant:
     sensor.system_pc_*:
       icon: mdi:laptop
     sensor.system_media_*:
-      icon: mdi:music
+      icon: mdi:speaker
 
   customize:
     sensor.connection_internet:
@@ -40,9 +40,6 @@ homeassistant:
     #
     sensor.system_security_intercom:
       icon: mdi:cctv
-    #
-    sensor.system_media_kitchen:
-      icon: mdi:speaker
     #
     input_boolean.test:
       icon: mdi:test-tube
@@ -130,6 +127,11 @@ sensor:
         entity_id: device_tracker.media_kitchen
         value_template: >-
           {{ 'Online' if is_state('device_tracker.media_kitchen', 'home') else 'Offline' }}
+      system_media_living_room:
+        friendly_name: "Колонки В Гостиной"
+        entity_id: device_tracker.media_living_room
+        value_template: >-
+          {{ 'Online' if is_state('device_tracker.media_living_room', 'home') else 'Offline' }}
 
 
 automation:

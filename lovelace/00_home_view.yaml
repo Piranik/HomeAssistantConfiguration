@@ -270,32 +270,23 @@ cards:
               show_header_toggle: false
               entities:
                 - type: custom:mini-media-player
-                  entity: media_player.multiroom_player
+                  entity: media_player.kitchen
+                  name: "Кухня"
                   group: true
                   source: icon
                   info: short
                   hide:
-                    volume: true
                     power: true
                     source: true
-                - type: custom:mini-media-player
-                  entity: media_player.kitchen
-                  name: "Кухня"
-                  group: true
-                  hide:
-                    controls: true
-                    power: true
-                    source: true
-                    progress: true
                 - type: custom:mini-media-player
                   entity: media_player.living_room
                   name: "Гостиная"
                   group: true
+                  source: icon
+                  info: short
                   hide:
-                    controls: true
                     power: true
                     source: true
-                    progress: true
                 - input_boolean.play_radio
                 - input_select.radio_station
 
