@@ -21,9 +21,9 @@ eval $(parse_yaml ${ROOT}/secrets.yaml)
 cd ${ROOT}
 git config user.name "${secret_git_user_name}"
 git config user.email "${secret_git_user_email}"
-git config core.sshCommand "ssh -i ${ROOT}/.ssh/id_rsa -oStrictHostKeyChecking=no"
 git add .
 git commit -m "$1"
+git config core.sshCommand "ssh -i ${ROOT}/.ssh/id_rsa -oStrictHostKeyChecking=no"
 git push origin master
 
 exit
