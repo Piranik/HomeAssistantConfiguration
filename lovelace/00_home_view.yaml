@@ -150,6 +150,13 @@ cards:
                 tap_action:
                   action: toggle
               - !include empty_card.yaml
+              # - type: picture-entity
+              #   name: "Пылесос"
+              #   show_name: false
+              #   entity: input_select.cleaner_mode
+              #   image: /local/lovelace/home/cleaner_square.jpg
+              #   state_image:
+              #     "Not Today": /local/lovelace/home/cleaner_bw_square.jpg
 
           # - type: horizontal-stack
           #   cards:
