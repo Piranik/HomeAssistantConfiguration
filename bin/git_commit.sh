@@ -22,10 +22,9 @@ eval $(parse_yaml ${ROOT}/secrets.yaml)
 cd ${ROOT}
 git config user.name "${secret_git_user_name}"
 git config user.email "${secret_git_user_email}"
-secrets_mtime=`date "+%s" -r ${ROOT}/secrets.yaml`
-fake_secrets_mtime=`date "+%s" -r ${ROOT}/tests/fake_secrets.yaml`
-if [ "${secrets_mtime}" > "${fake_secrets_mtime}" ]; then
-  ${ROOT}/bin/make_fake_secrets.sh
+if [ "${ROOT}/secrets.yaml" -nt "${ROOT}/tests/fake_secrets.yaml" ]; then
+    echo "Updating fake_secrets.yaml"
+    ${ROOT}/bin/make_fake_secrets.sh
 fi
 git add .
 git commit -m "$1"

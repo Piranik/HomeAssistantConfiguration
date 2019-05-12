@@ -29,10 +29,10 @@ git fetch origin master
 
 gpg --import ${ROOT}/gpg_keys/*.asc
 if git verify-commit origin/master; then
-  # Update files only if commit is verified. Then restart Home Assistant
-  git reset --hard origin/master && hassio homeassistant restart
-  exit
+    # Update files only if commit is verified. Then restart Home Assistant
+    git reset --hard origin/master && hassio homeassistant restart
+    exit
 fi
 
-# Commit verification failed. Exiting with fail status
+echo "Commit verification failed"
 exit 1
