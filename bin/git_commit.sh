@@ -11,7 +11,7 @@ WDIR=$(cd `dirname $0` && pwd)
 ROOT=$(dirname ${WDIR})
 
 # Check for required utilites and install it if they are not available
-git --version || apk -q add git
+git --version >/dev/null || apk -q add git
 
 # Include parse_yaml function
 . ${WDIR}/_parse_yaml.sh

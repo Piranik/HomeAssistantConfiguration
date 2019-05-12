@@ -12,8 +12,8 @@ WDIR=$(cd `dirname $0` && pwd)
 ROOT=$(dirname ${WDIR})
 
 # Check for required utilites and install it if they are not available
-git --version || apk -q add git
-gpg --version || apk -q add gnupg
+git --version >/dev/null || apk -q add git
+gpg --version >/dev/null || apk -q add gnupg
 
 # Include parse_yaml function
 . ${WDIR}/_parse_yaml.sh
@@ -28,12 +28,11 @@ git config core.sshCommand "ssh -i ${ROOT}/.ssh/id_rsa -oStrictHostKeyChecking=n
 git fetch origin master
 
 gpg --import ${ROOT}/gpg_keys/*.asc
-if [ ! git verify-commit origin/master ]; then
-  # Commit verification failed. Exiting with fail status
-  exit 1
+if git verify-commit origin/master; then
+  # Update files only if commit is verified. Then restart Home Assistant
+  git reset --hard origin/master && hassio homeassistant restart
+  exit
 fi
 
-# Update files only if commit is verified. Then restart Home Assistant
-git reset --hard origin/master && hassio homeassistant restart
-
-exit
+# Commit verification failed. Exiting with fail status
+exit 1

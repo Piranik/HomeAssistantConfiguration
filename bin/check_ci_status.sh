@@ -40,10 +40,9 @@ current_state=`echo "${report}" | jq .last_build.state`
 current_state="${current_state%\"}"
 current_state="${current_state#\"}"
 
-if [ "$current_state" != "passed" -o "$current_build" == "$last_build" ]; then
-    exit 1
+if [ "$current_state" == "passed" -a "$current_build" != "$last_build" ]; then
+    echo "$current_build" >"${LAST_BUILD_FPATH}"
+    exit
 fi
 
-echo "$current_build" >"${LAST_BUILD_FPATH}"
-
-exit 
+exit 1
