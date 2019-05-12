@@ -11,7 +11,9 @@
 WDIR=$(cd `dirname $0` && pwd)
 ROOT=$(dirname ${WDIR})
 
+# Check for required utilites and install it if they are not available
 git --version || apk -q add git
+gpg --version || apk -q add gnupg
 
 # Include parse_yaml function
 . ${WDIR}/_parse_yaml.sh
@@ -24,6 +26,7 @@ git config user.name "${secret_git_user_name}"
 git config user.email "${secret_git_user_email}"
 git config core.sshCommand "ssh -i ${ROOT}/.ssh/id_rsa -oStrictHostKeyChecking=no"
 git fetch origin master
+gpg --import ${ROOT}/gpg_keys/*.asc
 git reset --hard origin/master
 
 exit
