@@ -26,7 +26,14 @@ git config user.name "${secret_git_user_name}"
 git config user.email "${secret_git_user_email}"
 git config core.sshCommand "ssh -i ${ROOT}/.ssh/id_rsa -oStrictHostKeyChecking=no"
 git fetch origin master
+
 gpg --import ${ROOT}/gpg_keys/*.asc
-git reset --hard origin/master
+if [ ! git verify-commit origin/master ]; then
+  # Commit verification failed. Exiting with fail status
+  exit 1
+fi
+
+# Update files only if commit is verified. Then restart Home Assistant
+git reset --hard origin/master && hassio homeassistant restart
 
 exit

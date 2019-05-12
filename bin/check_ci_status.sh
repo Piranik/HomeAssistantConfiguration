@@ -11,16 +11,20 @@ WDIR=$(cd `dirname $0` && pwd)
 ROOT=$(dirname ${WDIR})
 DATA_DIR='/tmp'
 
-GIT_REPO="Limych/HomeAssistantConfiguration"
+# Include parse_yaml function
+. ${WDIR}/_parse_yaml.sh
+
+# Read yaml file
+eval $(parse_yaml ${ROOT}/secrets.yaml)
 
 REPO_ID_FPATH="${DATA_DIR}/travisci_repo_id.txt"
 LAST_BUILD_FPATH="${DATA_DIR}/travisci_last_build.txt"
 
-if [ ! -f ${REPO_ID_FPATH} ]; then
-    curl -s https://api.travis-ci.org/repos/${GIT_REPO} | jq .id >${REPO_ID_FPATH}
+if [ ! -f "${REPO_ID_FPATH}" ]; then
+    curl -s https://api.travis-ci.org/repos/${secret_github_repo} | jq .id >"${REPO_ID_FPATH}"
 fi
-if [ ! -f ${LAST_BUILD_FPATH} ]; then
-    touch ${LAST_BUILD_FPATH}
+if [ ! -f "${LAST_BUILD_FPATH}" ]; then
+    touch "${LAST_BUILD_FPATH}"
 fi
 
 repo_id=`cat ${REPO_ID_FPATH}`
@@ -36,8 +40,10 @@ current_state=`echo "${report}" | jq .last_build.state`
 current_state="${current_state%\"}"
 current_state="${current_state#\"}"
 
-if [ "$current_state" == "passed" && "$current_build" != "$last_build" ]; then
-    echo "$last_build" >${LAST_BUILD_FPATH}
+if [ "$current_state" != "passed" -o "$current_build" == "$last_build" ]; then
+    exit 1
 fi
 
-exit
+echo "$current_build" >"${LAST_BUILD_FPATH}"
+
+exit 

@@ -3,12 +3,17 @@ input_text:
     name: "Commit Message"
     initial: "Commit from Hassio"
 
+
 shell_command:
   git_commit: '/usr/bin/env sh /config/bin/git_commit.sh "{{ states.input_text.git_commit_message.state }}"'
-  git_fetch: '/usr/bin/env sh /config/bin/git_fetch.sh'
+  git_auto_fetch: '/usr/bin/env sh /config/bin/check_ci_status.sh && /usr/bin/env sh /config/bin/git_fetch.sh'
 
-script:
-  git_fetch:
-    sequence:
-      - service: shell_command.git_fetch
-      - service: homeassistant.restart
+
+automation:
+  - alias: "[System] Autoupdate configs from GitHub"
+    initial_state: 'on'
+    trigger:
+      platform: time_pattern
+      minutes: '/10'
+    action:
+      service: shell_command.git_auto_fetch

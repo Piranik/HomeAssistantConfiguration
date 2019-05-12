@@ -58,12 +58,3 @@ cards:
         tap_action:
           action: call-service
           service: shell_command.git_commit
-      - type: custom:button-card
-        icon: mdi:arrow-bottom-left
-        name: "Fetch"
-        color: rgb(94, 175, 237)
-        color_type: card
-        layout: icon_name
-        tap_action:
-          action: call-service
-          service: script.git_fetch
