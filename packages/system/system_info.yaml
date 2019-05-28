@@ -41,9 +41,6 @@ homeassistant:
     sensor.system_security_intercom:
       icon: mdi:cctv
     #
-    sensor.system_cleaner:
-      icon: mdi:robot-vacuum
-    #
     input_boolean.test:
       icon: mdi:test-tube
 
@@ -135,12 +132,6 @@ sensor:
         entity_id: device_tracker.media_living_room
         value_template: >-
           {{ 'Online' if is_state('device_tracker.media_living_room', 'home') else 'Offline' }}
-
-      system_cleaner:
-        friendly_name: "Пылесос"
-        entity_id: device_tracker.cleaner
-        value_template: >-
-          {{ 'Online' if is_state('device_tracker.cleaner', 'home') else 'Offline' }}
 
 
 automation:

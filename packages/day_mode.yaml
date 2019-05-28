@@ -8,6 +8,7 @@ input_select:
      - "Ночь"
     icon: mdi:white-balance-sunny
 
+
 sensor:
   - platform: time_date
     display_options:
@@ -24,6 +25,7 @@ sensor:
           {%- set months = ["янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"] %}
           {%- set wdays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]  %}
           {{ wdays[now().weekday()] + ', ' + now().strftime('%d') + ' ' + months[now().month-1] }}          
+
     
 group:
   owners_sleeping:
@@ -32,6 +34,7 @@ group:
     all: true
     entities:
       - binary_sensor.limych_sleeping
+
 
 automation:
   ###################################

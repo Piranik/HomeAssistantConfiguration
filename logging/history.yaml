@@ -20,6 +20,8 @@ include:
     - sensor.pressure
     - sensor.kitchen_temperature
     - sensor.kitchen_humidity
+    - sensor.bathroom_temperature
+    - sensor.bathroom_humidity
 exclude:
   domains:
     - automation

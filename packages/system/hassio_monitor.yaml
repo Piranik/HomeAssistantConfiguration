@@ -14,14 +14,6 @@ input_boolean:
     icon: mdi:auto-fix
 
 
-binary_sensor:
-  - platform: rest
-    name: "Travis-CI Status"
-    resource: https://api.travis-ci.org/repos/Limych/HomeAssistantConfiguration?branch=master
-    scan_interval: 60
-    value_template: "{{ value_json.last_build_status|int(1) == 0 }}"
-
-
 sensor:
   - platform: uptime
     unit_of_measurement: minutes
@@ -108,20 +100,6 @@ automation:
       - service: notify.hass_info
         data:
           message: "Hass.io Offline"
-
-  - alias: '[System] Notify when Travis-CI build is successful'
-    initial_state: 'on'
-    trigger:
-      platform: state
-      entity_id: binary_sensor.travis_ci_status
-      from: 'off'
-      to: 'on'
-    action:
-      - service: notify.hass_info
-        data:
-          title: 'Travis-CI'
-          message: 'Build was successful'
-#      - service: script.restart_hass
 
   - alias: '[System] Hass Updater'
     initial_state: 'on'

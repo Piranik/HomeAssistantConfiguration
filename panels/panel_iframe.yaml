@@ -2,11 +2,3 @@ ide:
   title: IDE
   icon: mdi:code-braces
   url: !secret ide_url
-logs:
-  title: Logs
-  icon: mdi:format-list-bulleted-type
-  url: !secret logs_viewer_url
-mqtt:
-  title: MQTT
-  icon: mdi:home-automation
-  url: !secret mqtt_client_url

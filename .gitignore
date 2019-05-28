@@ -1,3 +1,8 @@
+# Python byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
 .*
 *.conf
 *.crt
@@ -8,14 +13,12 @@
 *.pid
 *.xml
 
-core.*
+core*
 home-assistant*
-secrets.*
 
 /deps/
 /gh-pages/
 /tts/
-/ssl/
 
 /www/
 !/www/custom-lovelace/
@@ -24,15 +27,11 @@ secrets.*
 !.gitkeep
 !.travis.yml
 
-ip_bans.yaml
 google_calendars.yaml
+ip_bans.yaml
 known_devices.yaml
+secrets.yaml
 
-/lovelace/links_card.yaml
 /lovelace/99_test_view.yaml
+/lovelace/links_card.yaml
 /packages/test_package.yaml
-
-# Python byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class

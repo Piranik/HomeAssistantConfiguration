@@ -302,6 +302,10 @@ cards:
                 title: "Прогноз погоды"
                 mode: hourly
                 pressure2mmhg: True
+              - type: custom:weather-card-chart
+                entity: weather.gismeteo_daily
+                mode: daily
+                chart_only: true
               - type: picture-entity
                 entity: camera.moscow_meteogram
                 show_name: false

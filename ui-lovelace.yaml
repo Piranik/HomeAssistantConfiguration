@@ -28,7 +28,7 @@ resources:
     type: js
   - url: /customcards/custom-lovelace/compact-custom-header.js?track=true
     type: module
-  - url: /customcards/custom-lovelace/custom-weather-card-chart.js
+  - url: /customcards/custom-lovelace/custom-weather-card-chart.js?track=false
     type: module
   # - url: /customcards/custom-lovelace/dual-gauge-card.js
   #   type: js

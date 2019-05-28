@@ -116,7 +116,7 @@ sun:
 owntracks:
   max_gps_accuracy: 200
 mqtt:
-  broker: a0d7b954-mqtt
+  broker: !secret mqtt_host_ip
   username: !secret mqtt_username
   password: !secret mqtt_password
   client_id: !secret home_title
