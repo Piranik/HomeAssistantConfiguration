@@ -10,7 +10,7 @@ cards:
             name: "Last boot"
           - entity: sensor.ssl_certificate_expiry
 
-      # - type: custom:useful-markdown-card
+      # - type: markdown
       #   content: |
       #     [[ sensor.hass_alerts ]]
 

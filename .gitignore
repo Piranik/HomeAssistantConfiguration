@@ -35,3 +35,4 @@ secrets.yaml
 /lovelace/99_test_view.yaml
 /lovelace/links_card.yaml
 /packages/test_package.yaml
+#/packages/persons/

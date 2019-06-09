@@ -44,6 +44,8 @@ resources:
   #   type: js
   - url: /customcards/custom-lovelace/live-camera-card.js?v.0.0.3
     type: module
+  - url: /customcards/custom-lovelace/markdown-mod.js?track=true
+    type: module
   - url: /customcards/custom-lovelace/mini-graph-card-bundle.js?track=true
     type: module
   - url: /customcards/custom-lovelace/mini-media-player-bundle.js?track=true
@@ -68,8 +70,6 @@ resources:
     type: module
   # - url: /customcards/custom-lovelace/upcoming-media-card.js
   #   type: js
-  - url: /customcards/custom-lovelace/useful-markdown-card.js?track=true
-    type: js
   # - url: /customcards/custom-lovelace/username-element.js
   #   type: js
   - url: /customcards/custom-lovelace/vertical-style-card.js?track=true

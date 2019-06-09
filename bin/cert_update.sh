@@ -18,8 +18,8 @@ eval $(parse_yaml ${ROOT}/secrets.yaml)
 
 SSH_CERT=/config/.ssh/id_rsa
 
-CERTFILE=${secret_nas_host_ip}:/mnt/pool1/Certs/${secret_hass_domain}/fullchain.cer
-KEYFILE=${secret_nas_host_ip}:/mnt/pool1/Certs/${secret_hass_domain}/${secret_hass_domain}.key
+CERTFILE=${secret_cert_host_ip}:/root/.acme.sh/${secret_hass_domain}/fullchain.cer
+KEYFILE=${secret_cert_host_ip}:/root/.acme.sh/${secret_hass_domain}/${secret_hass_domain}.key
 
 SSH_OPT="-oStrictHostKeyChecking=no"
 
