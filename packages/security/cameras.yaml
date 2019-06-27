@@ -13,15 +13,6 @@ camera:
     name: intercom_last
     file_path: /config/www/tmp/intercom_last.jpg
 
-  - platform: onvif
-    name: intercom1
-    host: 192.168.1.90
-    port: 2000
-    # username: "hass"
-    # password: "321ewq"
-    username: !secret camera_doorbell_login
-    password: !secret camera_doorbell_password
-
 
 automation:
   - alias: "[Security] Front door motion"

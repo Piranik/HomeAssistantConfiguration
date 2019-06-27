@@ -76,6 +76,17 @@ resources:
     type: js
     
 title: Home
+cch:
+  disable: false
+  header: true
+  background_image: false
+  menu: show
+  notifications: show
+  voice: hide
+  options: clock
+  clock_format: 24
+  swipe: true
+  swipe_animate: swipe
 views:
   - !include lovelace/00_home_view.yaml
   - !include lovelace/10_home_info_view.yaml

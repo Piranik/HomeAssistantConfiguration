@@ -4,10 +4,12 @@
 #     entities:
 #       - binary_sensor.home_occupancy
 
+
 sensor:
   - platform: mqtt
     state_topic: 'monitor/home/status'
     name: "Статус мониторинга"
+
 
 binary_sensor:
   - platform: template
@@ -16,7 +18,7 @@ binary_sensor:
         friendly_name: "Хозяева в Доме"
         device_class: occupancy
         value_template: >-
-          {{ is_state('device_tracker.limych_presence', 'Дома') or is_state('device_tracker.limych_presence', 'Только пришёл') }}
+          {{ is_state('person.limych', 'home') }}
 
       presence:
         friendly_name: "Люди в Доме"
@@ -26,13 +28,6 @@ binary_sensor:
           or is_state('input_boolean.guest_mode', 'on') }}
         #   or is_state('group.motion', 'on') }}
 
-proximity:
-  home_limych:
-    zone: home
-    devices:
-      - device_tracker.limych_ahphonem
-    tolerance: 50
-    unit_of_measurement: km
 
 automation:
   - alias: '[Presence] Presence MQTT event'
@@ -45,22 +40,3 @@ automation:
       event_data_template:
         topic: '{{ trigger.topic }}'
         payload: '{{ trigger.payload }}'
-
-  - alias: '[Presence] Presence Homebound'
-    initial_state: 'on'
-    trigger:
-      - platform: numeric_state
-        entity_id: proximity.home_limych
-        below: 3
-    condition:
-      condition: or
-      conditions:
-      - condition: template
-        value_template: >-
-          {{ states.proximity.home_limych.attributes.dir_of_travel == "towards" }}
-    action:
-      - service: notify.limych
-        data_template:
-          title: "{{ trigger.to_state.name | title }}"
-          message: "{{ trigger.to_state.state }}"
-

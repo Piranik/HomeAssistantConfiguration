@@ -20,6 +20,8 @@ include:
     - sensor.pressure
     - sensor.kitchen_temperature
     - sensor.kitchen_humidity
+    - sensor.kitchen_co2
+    - sensor.kitchen_tvoc
     - sensor.bathroom_temperature
     - sensor.bathroom_humidity
 exclude:

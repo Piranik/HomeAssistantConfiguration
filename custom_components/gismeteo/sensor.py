@@ -16,24 +16,20 @@ import voluptuous as vol
 from homeassistant.components.weather import (
     ATTR_FORECAST_CONDITION, PLATFORM_SCHEMA)
 from homeassistant.const import (
-    ATTR_ATTRIBUTION, CONF_MONITORED_CONDITIONS, CONF_NAME, TEMP_CELSIUS, CONF_API_KEY)
+    ATTR_ATTRIBUTION, CONF_MONITORED_CONDITIONS, CONF_NAME, TEMP_CELSIUS,
+    CONF_API_KEY)
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.entity import Entity
 
 from . import gismeteo
 from .const import (
     ATTRIBUTION, DEFAULT_NAME, MIN_TIME_BETWEEN_UPDATES, CONF_CACHE_DIR,
-    DEFAULT_CACHE_DIR, ATTR_WEATHER_CLOUDINESS, ATTR_WEATHER_PRECIPITATION_TYPE, ATTR_WEATHER_PRECIPITATION_AMOUNT,
-    ATTR_WEATHER_PRECIPITATION_INTENSITY, ATTR_WEATHER_STORM, ATTR_WEATHER_GEOMAGNETIC_FIELD, VERSION)
+    DEFAULT_CACHE_DIR, ATTR_WEATHER_CLOUDINESS,
+    ATTR_WEATHER_PRECIPITATION_TYPE, ATTR_WEATHER_PRECIPITATION_AMOUNT,
+    ATTR_WEATHER_PRECIPITATION_INTENSITY, ATTR_WEATHER_STORM,
+    ATTR_WEATHER_GEOMAGNETIC_FIELD, VERSION)
 
-REQUIREMENTS = []
-
-if __name__ == '__main__':
-    from debugger import TestLogger
-
-    _LOGGER = TestLogger()
-else:
-    _LOGGER = logging.getLogger(__name__)
+_LOGGER = logging.getLogger(__name__)
 
 CONF_FORECAST = 'forecast'
 CONF_LANGUAGE = 'language'
@@ -82,19 +78,23 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     cache_dir = config.get(CONF_CACHE_DIR)
 
     gm = gismeteo.Gismeteo(latitude, longitude, params={
-        'cache_dir': str(cache_dir) + '/gismeteo' if os.access(cache_dir, os.X_OK | os.W_OK) else None,
+        'timezone': str(hass.config.time_zone),
+        'cache_dir': str(cache_dir) + '/gismeteo'
+        if os.access(cache_dir, os.X_OK | os.W_OK) else None,
         'cache_time': MIN_TIME_BETWEEN_UPDATES.total_seconds(),
     })
 
     dev = []
     for variable in config[CONF_MONITORED_CONDITIONS]:
         dev.append(GismeteoSensor(
-            name, gm, variable, SENSOR_TYPES[variable][1], SENSOR_TYPES[variable][2]))
+            name, gm, variable, SENSOR_TYPES[variable][1],
+            SENSOR_TYPES[variable][2]))
 
     if forecast:
         SENSOR_TYPES['forecast'] = ['Forecast', None, None]
         dev.append(GismeteoSensor(
-            name, gm, 'forecast', SENSOR_TYPES['forecast'][1], SENSOR_TYPES['forecast'][2]))
+            name, gm, 'forecast', SENSOR_TYPES['forecast'][1],
+            SENSOR_TYPES['forecast'][2]))
 
     add_entities(dev, True)
 
@@ -102,7 +102,8 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
 class GismeteoSensor(Entity):
     """Implementation of an Gismeteo sensor."""
 
-    def __init__(self, station_name, weather_data, sensor_type, temp_unit, icon):
+    def __init__(self, station_name, weather_data, sensor_type, temp_unit,
+                 icon):
         """Initialize the sensor."""
         self.client_name = station_name
         self._name = SENSOR_TYPES[sensor_type][0]
@@ -141,7 +142,8 @@ class GismeteoSensor(Entity):
             elif self.type == 'rain':
                 if data.get(ATTR_WEATHER_PRECIPITATION_TYPE) in [1, 3]:
                     self._state = data.get(ATTR_WEATHER_PRECIPITATION_AMOUNT) \
-                                  or PRECIPITATION_AMOUNT[data.get(ATTR_WEATHER_PRECIPITATION_INTENSITY)]
+                                  or PRECIPITATION_AMOUNT[data.get(
+                                    ATTR_WEATHER_PRECIPITATION_INTENSITY)]
                     self._unit_of_measurement = SENSOR_TYPES['rain'][1]
                 else:
                     self._state = 'not raining'
@@ -149,7 +151,8 @@ class GismeteoSensor(Entity):
             elif self.type == 'snow':
                 if data.get(ATTR_WEATHER_PRECIPITATION_TYPE) in [2, 3]:
                     self._state = data.get(ATTR_WEATHER_PRECIPITATION_AMOUNT) \
-                                  or PRECIPITATION_AMOUNT[data.get(ATTR_WEATHER_PRECIPITATION_INTENSITY)]
+                                  or PRECIPITATION_AMOUNT[data.get(
+                                    ATTR_WEATHER_PRECIPITATION_INTENSITY)]
                     self._unit_of_measurement = SENSOR_TYPES['snow'][1]
                 else:
                     self._state = 'not snowing'
@@ -160,7 +163,8 @@ class GismeteoSensor(Entity):
                 self._state = data.get(ATTR_WEATHER_GEOMAGNETIC_FIELD)
         except KeyError:
             self._state = None
-            _LOGGER.warning("Condition is currently not available: %s", self.type)
+            _LOGGER.warning("Condition is currently not available: %s",
+                            self.type)
 
     @property
     def device_state_attributes(self):
@@ -188,16 +192,3 @@ class GismeteoSensor(Entity):
     def icon(self):
         """Return the icon to use in the frontend, if any."""
         return self._icon
-
-
-if __name__ == '__main__':
-    wd = gismeteo.Gismeteo(55.59, 37.74, {
-        'cache_dir': os.path.dirname(os.path.abspath(__file__)) + '/../../tmp',
-        'cache_time': 300,
-    })
-
-    SENSOR_TYPES['forecast'] = ['Forecast', None]
-    for sensor_type, unit in SENSOR_TYPES.items():
-        gm = GismeteoSensor('Gismeteo', wd, sensor_type, unit, None)
-        gm.update()
-        print('\t'.join([str(gm.name), str(gm.state), str(gm.unit_of_measurement)]))

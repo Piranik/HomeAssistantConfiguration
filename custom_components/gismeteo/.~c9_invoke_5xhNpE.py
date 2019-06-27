@@ -262,11 +262,6 @@ class Gismeteo:
         res = src.get(ATTR_WEATHER_WIND_SPEED)
         return float(res)
 
-    def precipitation_amount(self, src=None):
-        """Return the current precipitation amount in mm."""
-        src = src or self._current
-        return src.get(ATTR_WEATHER_PRECIPITATION_AMOUNT)
-
     def forecast(self, src=None):
         """Return the forecast array."""
         src = src or self._forecast
@@ -277,8 +272,8 @@ class Gismeteo:
             if self._mode == FORECAST_MODE_HOURLY:
                 data = {
                     ATTR_FORECAST_TIME:
-                        dt_util.as_local(datetime.utcfromtimestamp(
-                            e.get(ATTR_FORECAST_TIME))).isoformat(),
+                        dt_util.as_local(
+                            e.get(ATTR_FORECAST_TIME)).isoformat(),
                     ATTR_FORECAST_CONDITION:
                         self.condition(e),
                     ATTR_FORECAST_TEMP:
@@ -292,14 +287,14 @@ class Gismeteo:
                     ATTR_FORECAST_WIND_BEARING:
                         self.wind_bearing(e),
                     ATTR_FORECAST_PRECIPITATION:
-                        self.precipitation_amount(e),
+                        e.get(ATTR_WEATHER_PRECIPITATION_AMOUNT),
                 }
 
             else:  # self._mode == FORECAST_MODE_DAILY
                 data = {
                     ATTR_FORECAST_TIME:
-                        dt_util.as_local(datetime.utcfromtimestamp(
-                            e.get(ATTR_FORECAST_TIME))).isoformat(),
+                        dt_util.as_local(
+                            e.get(ATTR_FORECAST_TIME)).isoformat(),
                     ATTR_FORECAST_CONDITION:
                         self.condition(e),
                     ATTR_FORECAST_TEMP:
@@ -313,7 +308,7 @@ class Gismeteo:
                     ATTR_FORECAST_WIND_BEARING:
                         self.wind_bearing(e),
                     ATTR_FORECAST_PRECIPITATION:
-                        self.precipitation_amount(e),
+                        e.get(ATTR_WEATHER_PRECIPITATION_AMOUNT),
                 }
                 if e.get(ATTR_FORECAST_TEMP_LOW) is not None:
                     data[ATTR_FORECAST_TEMP_LOW] = e.get(
@@ -327,16 +322,16 @@ class Gismeteo:
         return forecast
 
     @staticmethod
-    def _get_utime(source, tzone):
+    def _get_datetime(source, tzone):
         local_date = source
         if len(source) <= 10:
             local_date += 'T00:00:00'
         tz_h, tz_m = divmod(abs(tzone), 60)
         local_date += \
-            "+{:02}:{:02}".format(tz_h,
-                                  tz_m) if tzone >= 0 else "-{:02}:{:02}".format(
+            "+{}:{}".format(tz_h, tz_m) if tzone >= 0 else "-{}:{}".format(
                 tz_h, tz_m)
-        return dt_util.as_timestamp(local_date)
+        _LOGGER.debug(local_date)
+        return dt_util.parse_datetime(local_date)
 
     @Throttle(MIN_TIME_BETWEEN_UPDATES)
     def update(self):
@@ -356,10 +351,6 @@ class Gismeteo:
         tzone = int(xml.find('location').get('tzone'))
         current = xml.find('location/fact')
         current_v = current.find('values')
-
-        pr_amount = current_v.get('prflt')
-        if pr_amount is not None:
-            pr_amount = float(pr_amount)
 
         self._current = {
             ATTR_SUNRISE: int(current.get('sunrise')),
@@ -382,7 +373,7 @@ class Gismeteo:
             ATTR_WEATHER_PRECIPITATION_TYPE:
                 int(current_v.get('pt')),
             ATTR_WEATHER_PRECIPITATION_AMOUNT:
-                pr_amount,
+                float(current_v.get('prflt')),
             ATTR_WEATHER_PRECIPITATION_INTENSITY:
                 int(current_v.get('pr')),
             ATTR_WEATHER_STORM:
@@ -401,17 +392,12 @@ class Gismeteo:
 
                 for fc in day.findall('forecast'):
                     fc_v = fc.find('values')
-
-                    pr_amount = fc_v.get('prflt')
-                    if pr_amount is not None:
-                        pr_amount = float(pr_amount)
-
                     data = {
                         ATTR_SUNRISE: sunrise,
                         ATTR_SUNSET: sunset,
 
                         ATTR_FORECAST_TIME:
-                            self._get_utime(fc.get('valid'), tzone),
+                            self._get_datetime(fc.get('valid'), tzone),
                         ATTR_FORECAST_CONDITION:
                             fc_v.get('descr'),
                         ATTR_FORECAST_TEMP:
@@ -429,7 +415,7 @@ class Gismeteo:
                         ATTR_FORECAST_PRECIPITATION_TYPE:
                             int(fc_v.get('pt')),
                         ATTR_FORECAST_PRECIPITATION_AMOUNT:
-                            pr_amount,
+                            float(fc_v.get('prflt')),
                         ATTR_FORECAST_PRECIPITATION_INTENSITY:
                             int(fc_v.get('pr')),
                         ATTR_FORECAST_STORM:
@@ -442,16 +428,12 @@ class Gismeteo:
 
         else:  # self._mode == FORECAST_MODE_DAILY
             for day in xml.findall('location/day[@descr]'):
-                pr_amount = day.get('prflt')
-                if pr_amount is not None:
-                    pr_amount = float(pr_amount)
-
                 data = {
                     ATTR_SUNRISE: int(day.get('sunrise')),
                     ATTR_SUNSET: int(day.get('sunset')),
 
                     ATTR_FORECAST_TIME:
-                        self._get_utime(day.get('date'), tzone),
+                        self._get_datetime(day.get('date'), tzone),
                     ATTR_FORECAST_CONDITION:
                         day.get('descr'),
                     ATTR_FORECAST_TEMP:
@@ -471,7 +453,7 @@ class Gismeteo:
                     ATTR_FORECAST_PRECIPITATION_TYPE:
                         int(day.get('pt')),
                     ATTR_FORECAST_PRECIPITATION_AMOUNT:
-                        pr_amount,
+                        day.get('prflt'),
                     ATTR_FORECAST_PRECIPITATION_INTENSITY:
                         int(day.get('pr')),
                     ATTR_FORECAST_STORM:

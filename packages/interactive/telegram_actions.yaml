@@ -7,6 +7,23 @@
 
 
 automation:
+  # - alias: "[System] Telegram actions help"
+  #   initial_state: on
+  #   trigger:
+  #     platform: event
+  #     event_type: telegram_command
+  #     event_data:
+  #       command: '/help'
+  #   action:
+  #     - service: telegram_bot.send_message
+  #       data_template:
+  #         target: "{{ trigger.event.data.user_id }}"
+  #         message: "Commands:"
+  #         data:
+  #           keyboard:
+  #             - '/ping, /alarm'
+  #             - '/siren'
+
   - alias: "[System] Maintenance Mode Remote Switch On"
     initial_state: on
     trigger:
@@ -73,7 +90,7 @@ automation:
       platform: event
       event_type: telegram_command
       event_data:
-        command: '/guest_on'
+        command: '/guests_on'
     action:
       - service: input_boolean.turn_on
         entity_id: input_boolean.guest_mode
@@ -88,7 +105,7 @@ automation:
       platform: event
       event_type: telegram_command
       event_data:
-        command: '/guest_off'
+        command: '/guests_off'
     action:
       - service: input_boolean.turn_off
         entity_id: input_boolean.guest_mode

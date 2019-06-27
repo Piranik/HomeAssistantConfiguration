@@ -11,7 +11,7 @@ weather:
   - platform: gismeteo
     name: "Gismeteo Daily"
     mode: daily
-    
+
 binary_sensor:
   - platform: car_wash
     weather: weather.gismeteo_daily

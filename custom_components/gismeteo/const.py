@@ -14,11 +14,14 @@ from datetime import timedelta
 
 from homeassistant.components.weather import ATTR_FORECAST_CONDITION
 
-VERSION = '2.0.5'
+VERSION = '2.0.11'
 
 ATTRIBUTION = 'Data provided by Gismeteo'
 
 CONF_CACHE_DIR = 'cache_dir'
+
+FORECAST_MODE_HOURLY = 'hourly'
+FORECAST_MODE_DAILY = 'daily'
 
 DEFAULT_NAME = 'Gismeteo'
 DEFAULT_CACHE_DIR = '/tmp'

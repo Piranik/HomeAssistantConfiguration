@@ -11,7 +11,8 @@ default: error
 logs:
   # custom_components.average_temperature: debug
   # custom_components.car_wash: debug
-  custom_components.linkplay: debug
+  # custom_components.linkplay: debug
+  # custom_components.gismeteo: debug
   
   # homeassistant.components.api: error
   # homeassistant.components.automation: error

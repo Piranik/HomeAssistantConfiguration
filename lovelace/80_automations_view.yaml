@@ -2,7 +2,6 @@ title: Automations
 icon: mdi:flash-auto
 path: automations
 cards:
-  - type: custom:compact-custom-header
   # - type: custom:monster-card
   #   show_empty: false
   #   card:

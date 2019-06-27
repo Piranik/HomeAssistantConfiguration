@@ -19,6 +19,8 @@ homeassistant:
       friendly_name: "ada2"
     sensor.nas_disk_ada3*:
       friendly_name: "ada3"
+    sensor.nas_disk_ada4*:
+      friendly_name: "ada4"
     sensor.nas_disk_*_temperature:
       unit_of_measurement: '°C'
       scan_interval: 300
@@ -216,6 +218,12 @@ sensor:
     state_topic: "sensor/nas_state"
     value_template: >-
       {{ value_json.disks_temperature.ada3 }}
+
+  - platform: mqtt
+    name: nas_disk_ada4_temperature
+    state_topic: "sensor/nas_state"
+    value_template: >-
+      {{ value_json.disks_temperature.ada4 }}
 
   - platform: mqtt
     name: nas_pool_pool1_use_percent

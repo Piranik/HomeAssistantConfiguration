@@ -45,7 +45,19 @@ automation:
     trigger:
       - platform: sun
         event: sunrise
-
+      - platform: time
+        at: '05:00:00'
+    condition:
+      condition: and
+      conditions:
+        # Only during daylight hours
+        - condition: sun
+          after: sunrise
+        # And has to be between 05 and 10
+        - condition: time
+          after: '05:00:00'
+          before: '10:00:00'
+    
     action:
       - service: input_select.select_option
         data:
@@ -73,9 +85,19 @@ automation:
   - alias: '[House] Day Mode To Evening'
     initial_state: 'on'
     trigger:
+      # Just before sunset
       - platform: sun
         event: sunset
-        offset: '-00:45:00'
+        offset: '-00:30:00'
+      # Or at 18:00
+      - platform: time
+        at: '18:00:00'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: input_select.day_mode
+          state: "День"
 
     action:
       - service: input_select.select_option

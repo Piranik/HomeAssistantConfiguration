@@ -22,6 +22,7 @@ homeassistant:
         - ::1
         - 192.168.1.0/24
         - fd00::/8
+        - !secret work_office_ip
   customize_glob:
     "*.*":
       custom_ui_state_card: state-card-custom-ui

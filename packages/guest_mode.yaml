@@ -10,12 +10,10 @@ homeassistant:
           else if (state === 'off') return 'rgb(249, 251, 255)';
 
 
-
 input_boolean:
   guest_mode:
     name: "Гости в Доме"
     icon: mdi:account-clock
-
 
 
 automation:

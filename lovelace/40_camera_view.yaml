@@ -6,7 +6,6 @@ cards:
   - type: custom:layout-card
     layout: horizontal
     cards:
-      - type: custom:compact-custom-header
       - type: vertical-stack
         cards:
           - type: picture-glance

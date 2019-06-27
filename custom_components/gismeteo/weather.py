@@ -16,31 +16,24 @@ import voluptuous as vol
 from homeassistant.components.weather import (
     PLATFORM_SCHEMA, WeatherEntity)
 from homeassistant.const import (
-    TEMP_CELSIUS, CONF_LATITUDE, CONF_LONGITUDE, CONF_NAME, CONF_API_KEY, CONF_MODE)
+    TEMP_CELSIUS, CONF_LATITUDE, CONF_LONGITUDE, CONF_NAME, CONF_API_KEY,
+    CONF_MODE)
 from homeassistant.helpers import config_validation as cv
 
 from . import gismeteo
 from .const import (
-    ATTRIBUTION,
-    DEFAULT_NAME, MIN_TIME_BETWEEN_UPDATES, CONF_CACHE_DIR, DEFAULT_CACHE_DIR, VERSION)
+    ATTRIBUTION, DEFAULT_NAME, MIN_TIME_BETWEEN_UPDATES, CONF_CACHE_DIR,
+    DEFAULT_CACHE_DIR, VERSION, FORECAST_MODE_HOURLY, FORECAST_MODE_DAILY)
 
-REQUIREMENTS = []
-
-if __name__ == '__main__':
-    from debugger import TestLogger
-
-    _LOGGER = TestLogger()
-else:
-    _LOGGER = logging.getLogger(__name__)
-
-FORECAST_MODE = ['hourly', 'daily']
+_LOGGER = logging.getLogger(__name__)
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
     vol.Optional(CONF_API_KEY): cv.string,
     vol.Optional(CONF_LATITUDE): cv.latitude,
     vol.Optional(CONF_LONGITUDE): cv.longitude,
-    vol.Optional(CONF_MODE, default='hourly'): vol.In(FORECAST_MODE),
+    vol.Optional(CONF_MODE, default=FORECAST_MODE_HOURLY): vol.In(
+        [FORECAST_MODE_HOURLY, FORECAST_MODE_DAILY]),
     vol.Optional(CONF_CACHE_DIR, default=DEFAULT_CACHE_DIR): cv.string,
 })
 
@@ -58,7 +51,9 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     mode = config.get(CONF_MODE)
 
     gm = gismeteo.Gismeteo(latitude, longitude, mode, params={
-        'cache_dir': str(cache_dir) + '/gismeteo' if os.access(cache_dir, os.X_OK | os.W_OK) else None,
+        'timezone': str(hass.config.time_zone),
+        'cache_dir': str(cache_dir) + '/gismeteo'
+        if os.access(cache_dir, os.X_OK | os.W_OK) else None,
         'cache_time': MIN_TIME_BETWEEN_UPDATES.total_seconds(),
     })
 
@@ -126,20 +121,3 @@ class GismeteoWeather(WeatherEntity):
     def forecast(self):
         """Return the forecast array."""
         return self._wd.forecast()
-
-
-if __name__ == '__main__':
-    gm = GismeteoWeather('Gismeteo', gismeteo.Gismeteo(55.59, 37.74, 'hourly', {
-        'cache_dir': os.path.dirname(os.path.abspath(__file__)) + '/../../tmp',
-        'cache_time': 300,
-    }))
-    gm.update()
-
-    print(gm.condition)
-    print(gm.temperature)
-    print(gm.pressure)
-    print(gm.humidity)
-    print(gm.wind_bearing)
-    print(gm.wind_speed)
-
-    print(gm.forecast)

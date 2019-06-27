@@ -1,0 +1,39 @@
+homeassistant:
+  customize_glob:
+    sensor.*_humidity:
+      device_class: humidity
+      unit_of_measurement: '%'
+    sensor.*_temperature:
+      device_class: temperature
+      unit_of_measurement: '°C'
+    sensor.*_co2:
+      unit_of_measurement: 'ppm'
+      icon: mdi:periodic-table-co2
+    sensor.*_tvoc:
+      unit_of_measurement: 'ppb'
+      icon: mdi:air-filter
+    #
+    sensor.kitchen_*:
+      friendly_name: "Кухня"
+
+
+sensor:
+  - platform: mqtt
+    name: kitchen_temperature
+    state_topic: "sensor/kitchen/temperature"
+    availability_topic: "sensor/kitchen/status"
+
+  - platform: mqtt
+    name: kitchen_humidity
+    state_topic: "sensor/kitchen/humidity"
+    availability_topic: "sensor/kitchen/status"
+
+  - platform: mqtt
+    name: kitchen_co2
+    state_topic: "sensor/kitchen/eCO2"
+    availability_topic: "sensor/kitchen/status"
+
+  - platform: mqtt
+    name: kitchen_tvoc
+    state_topic: "sensor/kitchen/TVOC"
+    availability_topic: "sensor/kitchen/status"

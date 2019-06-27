@@ -1,4 +1,12 @@
 homeassistant:
+  customize_glob:
+    sensor.*_humidity:
+      device_class: humidity
+      unit_of_measurement: '%'
+    sensor.*_temperature:
+      device_class: temperature
+      unit_of_measurement: '°C'
+
   customize:
     sensor.bathroom_temperature:
       friendly_name: "Ванная"
@@ -34,3 +42,51 @@ sensor:
     expire_after: 300
     device_class: humidity
     unit_of_measurement: "%"
+
+
+input_boolean:
+  bathroom_drying:
+    name: "Сушка белья"
+    icon: mdi:tumble-dryer
+
+
+automation:
+  - alias: '[House] Bathroom Drying On'
+    initial_state: 'on'
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.bathroom_humidity
+        above: 55
+    condition:
+      - condition: state
+        entity_id: input_boolean.bathroom_drying
+        state: 'on'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.bathroom_fan
+
+  - alias: '[House] Bathroom Drying Off'
+    initial_state: 'on'
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.bathroom_humidity
+        below: 50
+    condition:
+      - condition: state
+        entity_id: input_boolean.bathroom_drying
+        state: 'on'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.bathroom_fan
+
+  - alias: '[House] Bathroom Drying Mode AutoOff'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.bathroom_drying
+        to: 'on'
+        for:
+          hours: 5
+    action:
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.bathroom_drying
