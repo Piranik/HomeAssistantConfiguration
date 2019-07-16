@@ -219,11 +219,11 @@ sensor:
     value_template: >-
       {{ value_json.disks_temperature.ada3 }}
 
-  - platform: mqtt
-    name: nas_disk_ada4_temperature
-    state_topic: "sensor/nas_state"
-    value_template: >-
-      {{ value_json.disks_temperature.ada4 }}
+  # - platform: mqtt
+  #   name: nas_disk_ada4_temperature
+  #   state_topic: "sensor/nas_state"
+  #   value_template: >-
+  #     {{ value_json.disks_temperature.ada4 }}
 
   - platform: mqtt
     name: nas_pool_pool1_use_percent

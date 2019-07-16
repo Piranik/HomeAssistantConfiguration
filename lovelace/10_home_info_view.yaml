@@ -137,13 +137,14 @@ cards:
 
               - type: entities
                 entities:
-                  # - type: custom:fold-entity-row
-                  #   head:
-                  #     type: section
-                  #     label: Security
-                  #   group_config:
-                  #     secondary_info: last-changed
-                  #   items:
+                  - type: custom:fold-entity-row
+                    head:
+                      type: section
+                      label: "Безопасность"
+                    group_config:
+                      secondary_info: last-changed
+                    items:
+                      - entity: binary_sensor.kitchen_motion
                   #     - sensor.front_door
                   #     - sensor.back_door
                   #     - sensor.yard_door
@@ -155,7 +156,6 @@ cards:
 
                   #     - sensor.passage_movement
                   #     - sensor.upstairs_hallway_movement
-                  #     - binary_sensor.stefans_room_motion
                   #     - sensor.ring_front_door_last_motion
 
                   - type: custom:fold-entity-row

@@ -79,7 +79,7 @@ rest_command:
 
 automation:
   - alias: '[System] Hass Started'
-    initial_state: 'on'
+    initial_state: on
     trigger:
       platform: homeassistant
       event: start
@@ -92,7 +92,7 @@ automation:
           message: "Hass.io Online"
 
   - alias: '[System] Hass Stopped'
-    initial_state: 'on'
+    initial_state: on
     trigger:
       platform: homeassistant
       event: shutdown
@@ -102,7 +102,7 @@ automation:
           message: "Hass.io Offline"
 
   - alias: '[System] Hass Updater'
-    initial_state: 'on'
+    initial_state: on
     trigger:
       - platform: state
         entity_id: sensor.latest_version
@@ -120,7 +120,7 @@ automation:
             Hass.io version {{ states('sensor.latest_version') }} is now available!
 
   - alias: '[System] Weekly Backup Monday at 5:00'
-    initial_state: 'on'
+    initial_state: on
     trigger:
       platform: time
       at: '05:00'
@@ -137,7 +137,7 @@ automation:
           message: "Automated Snapshot {{ now().strftime('%F') }}"
 
   - alias: '[System] Weekly Backup Monday to Google at 5:30'
-    initial_state: 'on'
+    initial_state: on
     trigger:
       - platform: time
         at: '05:30'

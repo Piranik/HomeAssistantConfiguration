@@ -6,7 +6,7 @@ shell_command:
 
 automation:
   - alias: '[System] Update SSL Certificates'
-    initial_state: 'on'
+    initial_state: on
     trigger:
       platform: time
       at: '00:00'

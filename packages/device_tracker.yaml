@@ -27,7 +27,7 @@ device_tracker:
 
 automation:
   - alias: '[System] Hass New Device Tracked'
-    initial_state: 'on'
+    initial_state: on
     trigger:
       platform: event
       event_type: device_tracker_new_device

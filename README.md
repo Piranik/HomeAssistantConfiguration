@@ -114,12 +114,11 @@ Automations view
 
 ## Add-ons
 
-* [A better presence](https://github.com/helto4real/hassio-add-ons/tree/master/presence);
 * [Backup Hass.io to Google Drive](https://github.com/samccauley/addon-hassiogooglebackup#readme);
-* [Check Home Assistant Configuration](https://www.home-assistant.io/addons/check_config/) — official addon;
 * [IDE](https://github.com/hassio-addons/addon-ide/blob/master/README.md);
 * [Log Viewer](https://github.com/hassio-addons/addon-log-viewer);
-* [MQTT Server & Web Client](https://github.com/hassio-addons/addon-mqtt/blob/master/README.md);
+* [MariaDB](https://www.home-assistant.io/addons/mariadb/) — official addon;
+* [Mosquitto MQTT broker](https://www.home-assistant.io/addons/mosquitto/) — official addon;
 * [Samba Share](https://www.home-assistant.io/addons/samba/) — official addon;
 
 # Get in contact

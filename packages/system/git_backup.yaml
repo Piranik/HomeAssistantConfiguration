@@ -20,7 +20,7 @@ shell_command:
 
 automation:
   # - alias: "[System] Autoupdate configs from GitHub"
-  #   initial_state: 'on'
+  #   initial_state: on
   #   trigger:
   #     platform: state
   #     entity_id: binary_sensor.travis_ci_status
@@ -34,7 +34,7 @@ automation:
   #     - service: shell_command.git_fetch
 
   - alias: "[System] Autoupdate configs from GitHub"
-    initial_state: 'on'
+    initial_state: on
     trigger:
       platform: time_pattern
       minutes: '/10'

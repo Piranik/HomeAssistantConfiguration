@@ -64,7 +64,7 @@ camera:
 
 automation:
   - alias: '[Misc] When I can Clear the Car'
-    initial_state: 'on'
+    initial_state: on
     trigger:
       - entity_id: binary_sensor.car_wash
         platform: state

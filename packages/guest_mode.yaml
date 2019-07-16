@@ -18,7 +18,7 @@ input_boolean:
 
 automation:
   - alias: '[House] Guest Mode On by Presence'
-    initial_state: 'on'
+    initial_state: on
     trigger:
       - platform: state
         entity_id: >-
@@ -35,7 +35,7 @@ automation:
             'Встречайте {{ trigger.to_state.name }}'
 
   - alias: '[House] Guest Mode On'
-    initial_state: 'on'
+    initial_state: on
     trigger:
       - platform: state
         entity_id: input_boolean.guest_mode
@@ -48,7 +48,7 @@ automation:
             'Гости в доме!'
 
   - alias: '[House] Guest Mode Off'
-    initial_state: 'on'
+    initial_state: on
     trigger:
       - platform: state
         entity_id: input_boolean.guest_mode

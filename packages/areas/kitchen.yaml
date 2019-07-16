@@ -13,7 +13,13 @@ homeassistant:
       unit_of_measurement: 'ppb'
       icon: mdi:air-filter
     #
+    binary_sensor.*_motion:
+      device_class: motion
+    #
     sensor.kitchen_*:
+      friendly_name: "Кухня"
+    #
+    binary_sensor.kitchen_*:
       friendly_name: "Кухня"
 
 
@@ -36,4 +42,11 @@ sensor:
   - platform: mqtt
     name: kitchen_tvoc
     state_topic: "sensor/kitchen/TVOC"
+    availability_topic: "sensor/kitchen/status"
+
+
+binary_sensor:
+  - platform: mqtt
+    name: kitchen_motion
+    state_topic: "sensor/kitchen/motion"
     availability_topic: "sensor/kitchen/status"

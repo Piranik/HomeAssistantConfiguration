@@ -1,8 +1,8 @@
-# group:
-#   motion:
-#     name: motion
-#     entities:
-#       - binary_sensor.home_occupancy
+group:
+  motion:
+    name: motion
+    entities:
+      - binary_sensor.kitchen_motion
 
 
 sensor:
@@ -25,13 +25,14 @@ binary_sensor:
         device_class: occupancy
         value_template: >-
           {{ is_state('binary_sensor.presence_owners', 'on')
-          or is_state('input_boolean.guest_mode', 'on') }}
-        #   or is_state('group.motion', 'on') }}
+          or is_state('input_boolean.guest_mode', 'on')
+          or is_state('group.motion', 'on') }}
+#          }}
 
 
 automation:
   - alias: '[Presence] Presence MQTT event'
-    initial_state: 'on'
+    initial_state: on
     trigger:
     - platform: mqtt
       topic: 'monitor/home/#'
@@ -40,3 +41,33 @@ automation:
       event_data_template:
         topic: '{{ trigger.topic }}'
         payload: '{{ trigger.payload }}'
+
+  - alias: '[Presence] Owners presence On'
+    initial_state: on
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.presence_owners
+        to: 'on'
+    condition:
+      - condition: numeric_state
+        entity_id: sensor.uptime
+        above: 1
+    action:
+      - service: notify.limych
+        data_template:
+          message: "Добро пожаловать домой!"
+
+  - alias: '[Presence] Owners presence Off'
+    initial_state: on
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.presence_owners
+        to: 'off'
+    condition:
+      - condition: numeric_state
+        entity_id: sensor.uptime
+        above: 1
+    action:
+      - service: notify.limych
+        data_template:
+          message: "Счастливого пути!"

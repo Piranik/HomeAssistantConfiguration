@@ -52,7 +52,7 @@ input_boolean:
 
 automation:
   - alias: '[House] Bathroom Drying On'
-    initial_state: 'on'
+    initial_state: on
     trigger:
       - platform: numeric_state
         entity_id: sensor.bathroom_humidity
@@ -66,7 +66,7 @@ automation:
         entity_id: switch.bathroom_fan
 
   - alias: '[House] Bathroom Drying Off'
-    initial_state: 'on'
+    initial_state: on
     trigger:
       - platform: numeric_state
         entity_id: sensor.bathroom_humidity
@@ -79,14 +79,19 @@ automation:
       - service: switch.turn_off
         entity_id: switch.bathroom_fan
 
-  - alias: '[House] Bathroom Drying Mode AutoOff'
-    initial_state: 'on'
+  - alias: '[House] Bathroom Drying Mode Off'
+    initial_state: on
     trigger:
       - platform: state
         entity_id: input_boolean.bathroom_drying
         to: 'on'
         for:
           hours: 5
+      - platform: state
+        entity_id: input_boolean.bathroom_drying
+        to: 'off'
     action:
       - service: input_boolean.turn_off
         entity_id: input_boolean.bathroom_drying
+      - service: switch.turn_off
+        entity_id: switch.bathroom_fan
