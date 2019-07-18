@@ -220,6 +220,18 @@ cards:
               - sensor.gismeteo_humidity
               - sensor.bathroom_humidity
 
+          - break
+          - type: history-graph
+            title: "ЛОВ за 48ч"
+            hours_to_show: 48
+            entities:
+              - sensor.kitchen_tvoc
+          - type: history-graph
+            title: "ЛОВ за 7 дней"
+            hours_to_show: 168
+            entities:
+              - sensor.kitchen_tvoc
+
           # - break
           # - type: history-graph
           #   title: Light 24 Hours

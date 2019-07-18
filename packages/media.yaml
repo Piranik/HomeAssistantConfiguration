@@ -129,7 +129,7 @@ automation:
         entity_id: input_select.day_mode
         to: 'Ночь'
       - platform: state
-        entity_id: group.owners_sleeping
+        entity_id: group.owners_sleeping_some
         to: 'on'
 
     action:
@@ -280,6 +280,9 @@ automation:
       - platform: state
         entity_id: group.motion
         to: 'on'
+      - platform: state
+        entity_id: group.owners_sleeping_all
+        to: 'off'
 
     condition:
       condition: and
@@ -296,3 +299,6 @@ automation:
     action:
       - service: input_boolean.turn_on
         entity_id: input_boolean.play_radio
+      - service: notify.all
+        data:
+          message: 'С добрым утром!'

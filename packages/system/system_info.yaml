@@ -61,16 +61,16 @@ sensor:
         entity_id: binary_sensor.internet
         value_template: >-
           {{ 'Online' if is_state('binary_sensor.internet', 'on') else 'Offline' }}
-      system_uplink:
-        friendly_name: "Uplink"
-        entity_id: device_tracker.uplink
-        value_template: >-
-          {{ 'Online' if is_state('device_tracker.uplink', 'home') else 'Offline' }}
+      # system_uplink:
+      #   friendly_name: "Uplink"
+      #   entity_id: device_tracker.uplink
+      #   value_template: >-
+      #     {{ 'Online' if is_state('device_tracker.uplink', 'home') else 'Offline' }}
       system_gateway:
         friendly_name: "Gateway"
-        entity_id: device_tracker.server_gate_uplink
+        entity_id: device_tracker.server_gate_lan
         value_template: >-
-          {{ 'Online' if is_state('device_tracker.server_gate_uplink', 'home') else 'Offline' }}
+          {{ 'Online' if is_state('device_tracker.server_gate_lan', 'home') else 'Offline' }}
       system_nas:
         friendly_name: "NAS"
         entity_id: device_tracker.server_nas
@@ -111,7 +111,7 @@ sensor:
         entity_id: device_tracker.server_sonarr
         value_template: >-
           {{ 'Online' if is_state('device_tracker.server_sonarr', 'home') else 'Offline' }}
-      system_server_sonarr:
+      system_server_jackett:
         friendly_name: "Jackett"
         entity_id: device_tracker.server_jackett
         value_template: >-
@@ -148,7 +148,6 @@ automation:
       - platform: state
         entity_id:
           - sensor.connection_internet
-          - sensor.system_uplink
           - sensor.system_gateway
           - sensor.system_nas
           - sensor.connection_wifi_ap

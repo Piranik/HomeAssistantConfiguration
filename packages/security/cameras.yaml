@@ -15,10 +15,31 @@ camera:
 
 
 automation:
+  # - alias: "[Security] Front door events"
+  #   trigger:
+  #     platform: webhook
+  #     webhook_id: doorbell
+
+  #   condition:
+  #     condition: state
+  #     entity_id: input_boolean.test
+  #     state: 'on'
+  
+  #   action:
+  #     - service: notify.hass_info
+  #       data_template:
+  #         title: "Front door event"
+  #         # message: "{{ trigger.query.event }}"
+  #         message: "{{ trigger.query.event == 'doorbell' }}"
+
   - alias: "[Security] Front door motion"
     trigger:
       platform: webhook
       webhook_id: doorbell
+  
+    # condition:
+    #   condition: template
+    #   value_template: "{{ trigger.query.event == 'motion' }}"
     
     action:
       - service: camera.snapshot
@@ -33,6 +54,37 @@ automation:
       # - service: notify.limych
       #   data:
       #     title: "Front door motion"
+      #     message: "Image of pool gate attached"
+      #     data:
+      #       photo:
+      #         file: /config/www/tmp/intercom_last.jpg
+
+  - alias: "[Security] Front door bell"
+    trigger:
+      platform: webhook
+      webhook_id: doorbell
+  
+    condition:
+      condition: template
+      value_template: "{{ trigger.query.event == 'doorbell' }}"
+        
+    action:
+      - service: notify.hass_info
+        data_template:
+          title: "Front door event"
+          message: "{{ trigger.query.event }}"
+      # - service: camera.snapshot
+      #   data:
+      #     entity_id: camera.intercom
+      #     filename: /config/www/tmp/intercom_last.jpg
+      # - delay: '00:00:07'
+      # - service: camera.local_file_update_file_path
+      #   data:
+      #     entity_id: camera.intercom_last
+      #     file_path: /config/www/tmp/intercom_last.jpg
+      # - service: notify.limych
+      #   data:
+      #     title: "Front door bell"
       #     message: "Image of pool gate attached"
       #     data:
       #       photo:
