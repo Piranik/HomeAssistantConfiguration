@@ -57,7 +57,13 @@ automation:
       - platform: numeric_state
         entity_id: sensor.bathroom_humidity
         above: 55
+      - platform: state
+        entity_id: input_boolean.bathroom_drying
+        to: 'on'
     condition:
+      - condition: numeric_state
+        entity_id: sensor.bathroom_humidity
+        above: 55
       - condition: state
         entity_id: input_boolean.bathroom_drying
         state: 'on'

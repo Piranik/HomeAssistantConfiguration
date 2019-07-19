@@ -44,7 +44,7 @@ cards:
                     height: 75
                     decimals: 0
                     entities:
-                      - sensor.gismeteo_pressure
+                      - sensor.gismeteo_pressure_mmhg
 
               - type: custom:air-visual-card
                 air_pollution_level: sensor.u_s_air_pollution_level
@@ -144,18 +144,10 @@ cards:
                     group_config:
                       secondary_info: last-changed
                     items:
-                      - entity: binary_sensor.kitchen_motion
-                  #     - sensor.front_door
-                  #     - sensor.back_door
-                  #     - sensor.yard_door
-                  #     - sensor.balcony_door
+                      - binary_sensor.front_door
+                      - binary_sensor.hallway_motion
+                      - binary_sensor.kitchen_motion
 
-                  #     - sensor.dining_area_window
-                  #     - sensor.bedroom_window
-                  #     - binary_sensor.bedroom_door
-
-                  #     - sensor.passage_movement
-                  #     - sensor.upstairs_hallway_movement
                   #     - sensor.ring_front_door_last_motion
 
                   - type: custom:fold-entity-row
@@ -192,16 +184,12 @@ cards:
             hours_to_show: 48
             entities:
               - sensor.kitchen_temperature
-              - sensor.gismeteo_temperature
-              - sensor.average_temperature
               - sensor.bathroom_temperature
           - type: history-graph
             title: "Температура за 7 дней"
             hours_to_show: 168
             entities:
               - sensor.kitchen_temperature
-              - sensor.gismeteo_temperature
-              - sensor.average_temperature
               - sensor.bathroom_temperature
 
           - break
@@ -210,14 +198,12 @@ cards:
             hours_to_show: 48
             entities:
               - sensor.kitchen_humidity
-              - sensor.gismeteo_humidity
               - sensor.bathroom_humidity
           - type: history-graph
             title: "Влажность за 7 дней"
             hours_to_show: 168
             entities:
               - sensor.kitchen_humidity
-              - sensor.gismeteo_humidity
               - sensor.bathroom_humidity
 
           - break

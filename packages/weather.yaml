@@ -32,6 +32,17 @@ sensor:
       - storm
       - geomagnetic
 
+  - platform: template
+    sensors:
+      gismeteo_pressure_mmhg:
+        entity_id: sensor.gismeteo_pressure
+        unit_of_measurement: 'mmHg'
+        friendly_name: "Gismeteo Pressure"
+        value_template: >-
+          {% if states.sensor.gismeteo_pressure %}
+            {{ (states('sensor.gismeteo_pressure') | float / 1.33322) | round(0) }}
+          {% endif %}
+
   - platform: mqtt
     name: pressure
     state_topic: "sensor/kitchen/pressure"

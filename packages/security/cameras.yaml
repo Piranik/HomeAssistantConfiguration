@@ -22,7 +22,7 @@ automation:
 
   #   condition:
   #     condition: state
-  #     entity_id: input_boolean.test
+  #     entity_id: input_boolean.maintenance_mode
   #     state: 'on'
   
   #   action:

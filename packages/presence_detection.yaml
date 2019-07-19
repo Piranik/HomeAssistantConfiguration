@@ -2,13 +2,14 @@ group:
   motion:
     name: motion
     entities:
+      # - binary_sensor.hallway_motion
       - binary_sensor.kitchen_motion
 
 
-sensor:
-  - platform: mqtt
-    state_topic: 'monitor/home/status'
-    name: "Статус мониторинга"
+# sensor:
+#   - platform: mqtt
+#     state_topic: 'monitor/home/status'
+#     name: "Статус мониторинга"
 
 
 binary_sensor:

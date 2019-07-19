@@ -280,21 +280,24 @@ automation:
       - platform: state
         entity_id: group.motion
         to: 'on'
-      - platform: state
-        entity_id: group.owners_sleeping_all
-        to: 'off'
+      # - platform: state
+      #   entity_id: group.owners_sleeping_all
+      #   to: 'off'
 
     condition:
       condition: and
       conditions:
         - condition: state
-          entity_id: input_select.day_mode
-          state: 'Утро'
-        - condition: state
           entity_id: input_boolean.play_radio
           state: 'off'
           for:
             hours: 5
+        - condition: state
+          entity_id: input_select.day_mode
+          state: 'Утро'
+        - condition: state
+          entity_id: input_boolean.guest_mode
+          state: 'off'
 
     action:
       - service: input_boolean.turn_on

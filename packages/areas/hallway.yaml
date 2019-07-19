@@ -1,0 +1,18 @@
+homeassistant:
+  customize:
+    binary_sensor.front_door:
+      device_class: door
+      friendly_name: "Входная дверь"
+    binary_sensor.hallway_motion:
+      friendly_name: "Холл"
+      
+  customize_glob:
+    binary_sensor.*_motion:
+      device_class: motion
+
+
+binary_sensor:
+  - platform: rpi_gpio
+    ports:
+      23: "Hallway Motion"
+      24: "Front Door"
