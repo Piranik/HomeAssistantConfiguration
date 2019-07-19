@@ -16,11 +16,11 @@ before_install:
   - mv tests/fake_secrets.yaml secrets.yaml
 install:
   - if [ $BUILD == "beta" ]; then
-      pip3 install --pre homeassistant
+      pip3 install --pre homeassistant;
     elif [ $BUILD == "dev" ]; then
-      pip3 install git+git://github.com/home-assistant/home-assistant.git@dev
+      pip3 install git+git://github.com/home-assistant/home-assistant.git@dev;
     else
-      pip3 install homeassistant
+      pip3 install homeassistant;
     fi
 script:
   - hass -c . --script check_config
