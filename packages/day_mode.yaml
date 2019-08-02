@@ -62,7 +62,7 @@ automation:
         # And has to be between 05 and 10
         - condition: time
           after: '05:00:00'
-          before: '10:00:00'
+          before: '12:00:00'
     
     action:
       - service: input_select.select_option
@@ -77,7 +77,7 @@ automation:
     initial_state: on
     trigger:
       - platform: time
-        at: '10:00:00'
+        at: '12:00:00'
 
     action:
       - service: input_select.select_option

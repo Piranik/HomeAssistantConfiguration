@@ -1,0 +1,105 @@
+title: "Weather"
+icon: mdi:weather-partly-cloudy
+panel: true
+path: weather
+cards:
+  - type: vertical-stack
+    cards:
+      - type: custom:layout-card
+        layout: vertical
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    height: 75
+                    hour24: true
+                    entities:
+                      - sensor.gismeteo_temperature
+                    # color_thresholds:
+                    #   - value: 0
+                    #     color: "#CCE5FF"
+                    #   - value: 10
+                    #     color: "#66B2FF"
+                    #   - value: 18
+                    #     color: "#0080FF"
+                    #   - value: 20
+                    #     color: "#87c087"
+                    #   - value: 21
+                    #     color: "#389638"
+                    #   - value: 24
+                    #     color: "#FF9932"
+                    #   - value: 25
+                    #     color: "#FF8000"
+                    #   - value: 26
+                    #     color: "#ff0000"
+                  - type: custom:mini-graph-card
+                    height: 75
+                    hour24: true
+                    entities:
+                      - sensor.gismeteo_humidity
+                  - type: custom:mini-graph-card
+                    hour24: true
+                    height: 75
+                    decimals: 0
+                    entities:
+                      - sensor.gismeteo_pressure_mmhg
+
+              - type: custom:vertical-style-card
+                cards:
+                  - type: custom:weather-card-chart
+                    entity: weather.gismeteo
+                    mode: hourly
+                    chart_only: true
+                  - type: custom:weather-card-chart
+                    entity: weather.gismeteo_daily
+                    mode: daily
+                    chart_only: true
+                  - type: picture-entity
+                    entity: camera.moscow_meteogram
+                    show_name: false
+                    show_state: false
+
+          - break
+          - type: custom:air-visual-card
+            air_pollution_level: sensor.u_s_air_pollution_level
+            air_quality_index: sensor.u_s_air_quality_index
+            main_pollutant: sensor.u_s_main_pollutant
+            temp: weather.gismeteo
+            city: "Nest @Moscow"
+            svg_location: "/local/lovelace/home"
+
+          # - break
+          - type: history-graph
+            title: "Температура за 48ч"
+            hours_to_show: 48
+            entities:
+              - entity: sensor.gismeteo_temperature
+                name: "Gismeteo"
+              - entity: sensor.average_temperature
+                name: "В среднем"
+          - type: history-graph
+            title: "Температура за 7 дней"
+            hours_to_show: 168
+            entities:
+              - entity: sensor.gismeteo_temperature
+                name: "Gismeteo"
+              - entity: sensor.average_temperature
+                name: "В среднем"
+
+          - break
+          - type: history-graph
+            title: "Влажность за 48ч"
+            hours_to_show: 48
+            entities:
+              - entity: sensor.gismeteo_humidity
+                name: "Gismeteo"
+          - type: history-graph
+            title: "Влажность за 7 дней"
+            hours_to_show: 168
+            entities:
+              - entity: sensor.gismeteo_humidity
+                name: "Gismeteo"
+
+          - !include dev_card.yaml

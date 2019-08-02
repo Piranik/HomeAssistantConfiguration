@@ -12,6 +12,7 @@ homeassistant:
   time_zone: !secret home_timezone
   whitelist_external_dirs:
     - /tmp
+    - /config/.storage/beward
   packages: !include_dir_named packages
   # Customization
   auth_providers:
@@ -37,13 +38,15 @@ api:
 config:
 upnp:
   port_mapping: true
+ssdp:
+zeroconf:
 #  sensors: false
 http:
   base_url: !secret hass_base_url
   ssl_certificate: !secret ssl_certificate
   ssl_key: !secret ssl_key
   ip_ban_enabled: true
-  login_attempts_threshold: 3
+  login_attempts_threshold: 7
 customizer:
   custom_ui: hosted
 
@@ -66,6 +69,7 @@ custom_updater:
   track:
     - cards
     - components
+    - python_scripts
   card_urls:
     - https://raw.githubusercontent.com/atomic7777/atomic_calendar/master/tracker.json
     - https://raw.githubusercontent.com/dnguyen800/Air-Visual-Card/master/tracker.json
@@ -77,7 +81,9 @@ custom_updater:
   component_urls:
     - https://raw.githubusercontent.com/Limych/HomeAssistantComponents/master/custom_components.json
     - https://raw.githubusercontent.com/Limych/media_player.linkplay/master/custom_components.json
-   
+    - https://raw.githubusercontent.com/marcogazzola/custom_components/master/custom_components.json
+  python_script_urls:
+    - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json   
 
 # ########################################
 # ###              LOGGING             ###

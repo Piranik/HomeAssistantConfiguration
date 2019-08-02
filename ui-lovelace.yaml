@@ -22,8 +22,6 @@ resources:
     type: module
   # - url: /customcards/custom-lovelace/calendar-card.js
   #   type: module
-  # - url: /customcards/custom-lovelace/camera-card.js?track=true
-  #   type: module
   - url: /customcards/custom-lovelace/card-modder.js?track=true
     type: js
   - url: /customcards/custom-lovelace/compact-custom-header.js?track=true
@@ -89,6 +87,7 @@ cch:
   swipe_animate: swipe
 views:
   - !include lovelace/00_home_view.yaml
+  - !include lovelace/05_weather_view.yaml
   - !include lovelace/10_home_info_view.yaml
   # - !include lovelace/20_lights_view.yaml
   - !include lovelace/30_system_info_view.yaml

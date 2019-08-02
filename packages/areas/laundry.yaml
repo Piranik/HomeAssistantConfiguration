@@ -1,0 +1,89 @@
+homeassistant:
+  customize:
+    input_select.washing_machine_status:
+      icon: mdi:washing-machine
+    sensor.washer:
+      icon: mdi:washing-machine
+  customize_glob:
+    input_select.washing_machine_status:
+      templates:
+        hs_color: "if (state === 'Ждёт') return [0, 0];
+        else if (state === 'Работает') return [40, 70];
+        else if (state === 'Очистка') return [0, 85];"
+
+
+input_select:  
+  washing_machine_status:
+    name: "Статус Стиральной машины"
+    options:
+      - "Ждёт"
+      - "Работает"
+      - "Очистка"
+
+
+sensor:
+  - platform: template
+    sensors:
+      washer:
+        friendly_name: "Стиральная машина Выключена"
+        entity_id: "sensor.washer_plug_power"
+        value_template: "{{ states('sensor.washer_plug_power') | int < 3.2 }}"
+
+
+input_boolean:
+  bathroom_drying:
+    name: "Сушка белья"
+    icon: mdi:tumble-dryer
+
+
+automation:
+  - alias: '[House] Bathroom Drying On'
+    initial_state: on
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.bathroom_humidity
+        above: !secret drying_humidity_max
+      - platform: state
+        entity_id: input_boolean.bathroom_drying
+        to: 'on'
+    condition:
+      - condition: numeric_state
+        entity_id: sensor.bathroom_humidity
+        above: !secret drying_humidity_max
+      - condition: state
+        entity_id: input_boolean.bathroom_drying
+        state: 'on'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.bathroom_fan
+
+  - alias: '[House] Bathroom Drying Off'
+    initial_state: on
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.bathroom_humidity
+        below: !secret drying_humidity_min
+    condition:
+      - condition: state
+        entity_id: input_boolean.bathroom_drying
+        state: 'on'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.bathroom_fan
+
+  - alias: '[House] Bathroom Drying Mode Off'
+    initial_state: on
+    trigger:
+      - platform: state
+        entity_id: input_boolean.bathroom_drying
+        to: 'on'
+        for:
+          hours: 7
+      - platform: state
+        entity_id: input_boolean.bathroom_drying
+        to: 'off'
+    action:
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.bathroom_drying
+      - service: switch.turn_off
+        entity_id: switch.bathroom_fan

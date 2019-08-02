@@ -27,6 +27,8 @@ homeassistant:
       icon: mdi:access-point
     sensor.connection_lan_router:
       icon: mdi:router-wireless
+    sensor.connection_lan_switch:
+      icon: mdi:lan
     sensor.system_server_emby:
       icon: mdi:emby
     sensor.system_server_transmission:
@@ -86,6 +88,11 @@ sensor:
         entity_id: device_tracker.lan_router
         value_template: >-
           {{ 'Online' if is_state('device_tracker.lan_router', 'home') else 'Offline' }}
+      connection_lan_switch:
+        friendly_name: "LAN Switch"
+        entity_id: device_tracker.lan_switch
+        value_template: >-
+          {{ 'Online' if is_state('device_tracker.lan_switch', 'home') else 'Offline' }}
       system_server_emby:
         friendly_name: "Emby"
         entity_id: device_tracker.server_emby

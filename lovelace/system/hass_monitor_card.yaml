@@ -25,13 +25,13 @@ cards:
           - sensor.processor_use
         color_thresholds:
           - value: -1
-            color: green
+            color: '#008000'  # green
           - value: 70
-            color: lightgreen
+            color: '#ADFF2F'  # yellow green
           - value: 100
-            color: orange
+            color: '#FFA500'  # orange
           - value: 300
-            color: red
+            color: '#FF0000'  # red
         tap_action:
           action: more-info
       - type: custom:mini-graph-card
@@ -43,9 +43,9 @@ cards:
           - sensor.memory_use_percent
         color_thresholds:
           - value: -1
-            color: green
-          - value: 70
-            color: orange
+            color: '#008000'  # green
+          - value: 90
+            color: '#FF0000'  # red
         tap_action:
           action: more-info
       - type: custom:mini-graph-card
@@ -57,8 +57,8 @@ cards:
           - sensor.disk_use_percent
         color_thresholds:
           - value: -1
-            color: green
+            color: '#008000'  # green
           - value: 75
-            color: orange
+            color: '#FFA500'  # orange
           - value: 90
-            color: red
+            color: '#FF0000'  # red

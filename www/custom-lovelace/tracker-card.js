@@ -76,7 +76,7 @@ class TrackerCard extends HTMLElement {
             font-weight: normal;
           }
           td a {
-            color: red;
+            color: '#FF0000'  # red;
             font-weight: bold;
           }
           tbody td.separator {

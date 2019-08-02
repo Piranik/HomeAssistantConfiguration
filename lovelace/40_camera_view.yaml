@@ -6,17 +6,17 @@ cards:
   - type: custom:layout-card
     layout: horizontal
     cards:
-      - type: vertical-stack
-        cards:
-          - type: picture-glance
-            title: "Latest Motion Front Door"
-            camera_image: camera.intercom_last
-            entities: []
+      - type: picture-glance
+        title: "Последний посетитель"
+        camera_image: camera.front_door_last_ding
+        entities: []
+      - type: picture-glance
+        title: "Последнее движение у двери"
+        camera_image: camera.front_door_last_motion
+        entities: []
+      - type: picture-glance
+        title: "Сейчас у двери"
+        camera_image: camera.front_door_live
+        entities: []
 
-          - !include dev_card.yaml
-
-      - type: custom:vertical-style-card
-        cards:
-          - type: custom:live-camera-card
-            update_interval: 0.5
-            camera: camera.intercom
+      - !include dev_card.yaml

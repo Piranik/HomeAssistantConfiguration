@@ -4,88 +4,39 @@ homeassistant:
       friendly_name: "Входная дверь"
 
 
-camera:
-  - platform: ffmpeg
-    name: intercom
-    input: -rtsp_transport tcp -i rtsp://hass:hass321@192.168.1.90:554/av0_1
+beward:
+  devices:
+    - host: !secret camera_doorbell_host
+      username: !secret camera_doorbell_login
+      password: !secret camera_doorbell_password
+      stream: 1
+      name: "Front door"
 
-  - platform: local_file
-    name: intercom_last
-    file_path: /config/www/tmp/intercom_last.jpg
+
+camera:
+  - platform: beward
+
+
+binary_sensor:
+  - platform: beward
+
+
+sensor:
+  - platform: beward
 
 
 automation:
-  # - alias: "[Security] Front door events"
-  #   trigger:
-  #     platform: webhook
-  #     webhook_id: doorbell
-
-  #   condition:
-  #     condition: state
-  #     entity_id: input_boolean.maintenance_mode
-  #     state: 'on'
-  
-  #   action:
-  #     - service: notify.hass_info
-  #       data_template:
-  #         title: "Front door event"
-  #         # message: "{{ trigger.query.event }}"
-  #         message: "{{ trigger.query.event == 'doorbell' }}"
-
-  - alias: "[Security] Front door motion"
+  - alias: "[Security] Front door Ding"
     trigger:
-      platform: webhook
-      webhook_id: doorbell
-  
-    # condition:
-    #   condition: template
-    #   value_template: "{{ trigger.query.event == 'motion' }}"
-    
+      platform: state
+      entity_id: binary_sensor.front_door_ding
+      to: 'on'
     action:
-      - service: camera.snapshot
+      # - delay: 00:00:01
+      - service: notify.limych
         data:
-          entity_id: camera.intercom
-          filename: /config/www/tmp/intercom_last.jpg
-      - delay: '00:00:07'
-      - service: camera.local_file_update_file_path
-        data:
-          entity_id: camera.intercom_last
-          file_path: /config/www/tmp/intercom_last.jpg
-      # - service: notify.limych
-      #   data:
-      #     title: "Front door motion"
-      #     message: "Image of pool gate attached"
-      #     data:
-      #       photo:
-      #         file: /config/www/tmp/intercom_last.jpg
-
-  - alias: "[Security] Front door bell"
-    trigger:
-      platform: webhook
-      webhook_id: doorbell
-  
-    condition:
-      condition: template
-      value_template: "{{ trigger.query.event == 'doorbell' }}"
-        
-    action:
-      - service: notify.hass_info
-        data_template:
-          title: "Front door event"
-          message: "{{ trigger.query.event }}"
-      # - service: camera.snapshot
-      #   data:
-      #     entity_id: camera.intercom
-      #     filename: /config/www/tmp/intercom_last.jpg
-      # - delay: '00:00:07'
-      # - service: camera.local_file_update_file_path
-      #   data:
-      #     entity_id: camera.intercom_last
-      #     file_path: /config/www/tmp/intercom_last.jpg
-      # - service: notify.limych
-      #   data:
-      #     title: "Front door bell"
-      #     message: "Image of pool gate attached"
-      #     data:
-      #       photo:
-      #         file: /config/www/tmp/intercom_last.jpg
+          message: "Звонят в дверь!"
+          data:
+            photo:
+              file: /config/.storage/beward/front_door_last_ding.jpg
+              caption: "Звонят в дверь!"

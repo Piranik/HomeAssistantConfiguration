@@ -34,7 +34,6 @@ cards:
   - type: vertical-stack
     cards:
       - type: custom:layout-card
-        max_columns: 2
         cards:
           - type: horizontal-stack
             cards:
@@ -297,18 +296,10 @@ cards:
                 title: "Прогноз погоды"
                 mode: hourly
                 pressure2mmhg: True
-              - type: custom:weather-card-chart
-                entity: weather.gismeteo_daily
-                mode: daily
-                chart_only: true
-              - type: picture-entity
-                entity: camera.moscow_meteogram
-                show_name: false
-                show_state: false
 
           - type: picture-glance
             title: "Latest Motion Front Door"
-            camera_image: camera.intercom_last
+            camera_image: camera.front_door_last_motion
             entities: []
             tap_action:
               action: navigate
