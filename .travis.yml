@@ -11,7 +11,7 @@ matrix:
       env: BUILD=dev
 
 before_install:
-  - mv tests/fake_secrets.yaml secrets.yaml
+  - mv tests/fake_secrets.yaml secrets.yaml;
     mkdir /config/.storage/beward
 install:
   - if [ $BUILD == "beta" ]; then
