@@ -113,7 +113,7 @@ cards:
                     items:
                       - entity: person.limych
                         secondary_info: last-changed
-                      - entity: device_tracker.limych_ahphonem_2
+                      - entity: device_tracker.limych_ahphoneb_2
                         secondary_info: last-changed
                       - entity: device_tracker.limych_ahtabletl_2
                         secondary_info: last-changed

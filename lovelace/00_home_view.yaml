@@ -125,25 +125,33 @@ cards:
           - type: horizontal-stack
             cards:
               - type: picture-entity
-                entity: binary_sensor.car_wash
+                entity: input_select.washer_status
                 show_name: false
-                show_state: false
                 state_image:
-                  "on": /local/lovelace/home/car_wash_square.jpg
-                  "off": /local/lovelace/home/car_wash_bw_square.jpg
-              - type: picture-entity
-                entity: input_boolean.cleaning_day
-                image: /local/lovelace/home/cleaning_square.jpg
-                show_name: false
-                tap_action:
-                  action: toggle
+                  "Ждёт": /local/lovelace/home/washer_idle_square.jpg
+                  "Работает": /local/lovelace/home/washer_running_square.jpg
+                  "Очистка": /local/lovelace/home/washer_clean_square.jpg
+                style: |
+                  @keyframes blink {
+                    50% {
+                      outline: 3px solid #389638;
+                    }
+                  }
+                  ha-card {
+                    animation: [[ if(input_select.washer_status == "Очистка", "blink 2s linear infinite", "none") ]]
+                  }
+              # - type: picture-entity
+              #   entity: input_boolean.cleaning_day
+              #   image: /local/lovelace/home/cleaning_square.jpg
+              #   show_name: false
+              #   tap_action:
+              #     action: toggle
               - type: picture-entity
                 entity: input_boolean.bathroom_drying
                 image: /local/lovelace/home/drying_square.jpg
                 show_name: false
                 tap_action:
                   action: toggle
-              # - !include empty_card.yaml
               # - type: picture-entity
               #   name: "Пылесос"
               #   show_name: false
@@ -151,6 +159,18 @@ cards:
               #   image: /local/lovelace/home/cleaner_square.jpg
               #   state_image:
               #     "Not Today": /local/lovelace/home/cleaner_bw_square.jpg
+
+          # - type: horizontal-stack
+          #   cards:
+              - type: picture-entity
+                entity: binary_sensor.car_wash
+                show_name: false
+                show_state: false
+                state_image:
+                  "on": /local/lovelace/home/car_wash_square.jpg
+                  "off": /local/lovelace/home/car_wash_bw_square.jpg
+              # - !include empty_card.yaml
+              # - !include empty_card.yaml
 
           # - type: horizontal-stack
           #   cards:
