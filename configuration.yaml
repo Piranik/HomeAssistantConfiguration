@@ -38,6 +38,7 @@ api:
 config:
 upnp:
   port_mapping: true
+discovery:
 ssdp:
 zeroconf:
 #  sensors: false
@@ -102,17 +103,18 @@ logger: !include logging/logger.yaml
 # ###              ENTITIES            ###
 # ########################################
 
-discovery:
 zone: !include_dir_merge_list zones/
 
 # Torrents
-transmission:
-  host: !secret transmission_host
-  turtle_mode: true
-  monitored_conditions:
-    - current_status
-    - download_speed
-    - upload_speed
+# transmission:
+#   host: !secret transmission_host
+#   username: !secret transmission_username
+#   password: !secret transmission_password
+#   turtle_mode: true
+#   monitored_conditions:
+#     - current_status
+#     - download_speed
+#     - upload_speed
 
 
 # ########################################

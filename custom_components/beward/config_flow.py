@@ -25,9 +25,6 @@ class BewardFlowHandler(config_entries.ConfigFlow):
         Special type of import, we're not actually going to store any data.
         Instead, we're going to rely on the values that are in config file.
         """
-        if self._async_current_entries():
-            return self.async_abort(reason="single_instance_allowed")
-
         return self.async_create_entry(title="configuration.yaml", data={})
 
     async def async_step_user(
@@ -35,11 +32,8 @@ class BewardFlowHandler(config_entries.ConfigFlow):
     ):  # pylint: disable=dangerous-default-value
         """Handle a flow initialized by the user."""
         self._errors = {}
-        return self.async_abort(reason="in_development")
-        if self._async_current_entries():
-            return self.async_abort(reason="single_instance_allowed")
-        if self.hass.data.get(DOMAIN):
-            return self.async_abort(reason="single_instance_allowed")
+
+        # return self.async_abort(reason="in_development")
 
         if user_input is not None:
             valid = await self._test_credentials(
@@ -56,20 +50,17 @@ class BewardFlowHandler(config_entries.ConfigFlow):
     async def _show_config_form(self, user_input):
         """Show the configuration form to edit location data."""
 
-        # Defaults
-        username = ""
-        password = ""
-        stream = 0
+        if user_input is None:
+            user_input = {}
 
-        if user_input is not None:
-            if "username" in user_input:
-                username = user_input["username"]
-            if "password" in user_input:
-                password = user_input["password"]
-            if "stream" in user_input:
-                stream = user_input["stream"]
+        # Defaults
+        host = user_input.get("host", '')
+        username = user_input.get("username", '')
+        password = user_input.get("password", '')
+        stream = user_input.get("stream", 0)
 
         data_schema = OrderedDict()
+        data_schema[vol.Required("host", default=host)] = str
         data_schema[vol.Required("username", default=username)] = str
         data_schema[vol.Required("password", default=password)] = str
         data_schema[vol.Required("stream", default=stream)] = int
@@ -90,4 +81,5 @@ class BewardFlowHandler(config_entries.ConfigFlow):
     async def async_step_ssdp(self, info):  # pylint: disable=unused-argument
         """Handle a flow initialized by SSDP/UPNP."""
         self._errors = {}
+
         return self.async_abort(reason="in_development")

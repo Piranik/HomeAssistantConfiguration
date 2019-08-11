@@ -1,5 +1,5 @@
 title: "Weather"
-icon: mdi:weather-partly-cloudy
+icon: mdi:umbrella
 panel: true
 path: weather
 cards:

@@ -5,24 +5,31 @@ homeassistant:
 
 
 beward:
-  devices:
-    - host: !secret camera_doorbell_host
-      username: !secret camera_doorbell_login
-      password: !secret camera_doorbell_password
-      stream: 1
-      name: "Front door"
+  - host: !secret camera_doorbell_host
+    username: !secret camera_doorbell_login
+    password: !secret camera_doorbell_password
+    name: "Front door"
+    stream: 1
+    binary_sensors:
+      - online
+      - motion
+      - ding
+    sensors:
+      - last_activity
+      - last_motion
+      - last_ding
 
 
-camera:
-  - platform: beward
+# camera:
+#   - platform: beward
 
 
-binary_sensor:
-  - platform: beward
+# binary_sensor:
+#   - platform: beward
 
 
-sensor:
-  - platform: beward
+# sensor:
+#   - platform: beward
 
 
 automation:

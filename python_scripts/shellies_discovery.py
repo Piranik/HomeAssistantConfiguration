@@ -85,7 +85,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.10.2'
+VERSION = '0.10.3'
 
 ATTR_DEVELOP = 'develop'
 
@@ -143,8 +143,8 @@ ATTR_OVERTEMPERATURE = 'overtemperature'
 ATTR_OVERPOWER = 'overpower'
 ATTR_HEAT = 'heat'
 ATTR_COVER = 'cover'
-ATTR_UNIT_W = 'W'
-ATTR_UNIT_KWH = 'kWh'
+ATTR_UNIT_WMIN = 'Wmin'
+ATTR_UNIT_KW = 'kW'
 ATTR_UNIT_V = 'V'
 ATTR_UNIT_VAR = 'VAR'
 ATTR_UNIT_PERCENT = '%'
@@ -226,7 +226,7 @@ else:
         model = ATTR_MODEL_SHELLY1PM
         relays = 1
         relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-        relays_sensors_units = [ATTR_UNIT_W, ATTR_UNIT_KWH]
+        relays_sensors_units = [ATTR_UNIT_WMIN, ATTR_UNIT_KW]
         relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
         relays_sensors_templates = [
             ATTR_TEMPLATE_POWER,
@@ -247,7 +247,7 @@ else:
         relays = 2
         rollers = 1
         relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-        relays_sensors_units = [ATTR_UNIT_W, ATTR_UNIT_KWH]
+        relays_sensors_units = [ATTR_UNIT_WMIN, ATTR_UNIT_KW]
         relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
         relays_sensors_templates = [
             ATTR_TEMPLATE_POWER,
@@ -261,7 +261,7 @@ else:
         relays = 2
         rollers = 1
         relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-        relays_sensors_units = [ATTR_UNIT_W, ATTR_UNIT_KWH]
+        relays_sensors_units = [ATTR_UNIT_WMIN, ATTR_UNIT_KW]
         relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
         relays_sensors_templates = [
             ATTR_TEMPLATE_POWER,
@@ -281,7 +281,7 @@ else:
         model = ATTR_MODEL_SHELLYPLUG
         relays = 1
         relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-        relays_sensors_units = [ATTR_UNIT_W, ATTR_UNIT_KWH]
+        relays_sensors_units = [ATTR_UNIT_WMIN, ATTR_UNIT_KW]
         relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
         relays_sensors_templates = [
             ATTR_TEMPLATE_POWER,
@@ -292,7 +292,7 @@ else:
         model = ATTR_MODEL_SHELLYPLUG_S
         relays = 1
         relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-        relays_sensors_units = [ATTR_UNIT_W, ATTR_UNIT_KWH]
+        relays_sensors_units = [ATTR_UNIT_WMIN, ATTR_UNIT_KW]
         relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
         relays_sensors_templates = [
             ATTR_TEMPLATE_POWER,
@@ -310,7 +310,7 @@ else:
         model = ATTR_MODEL_SHELLY4PRO
         relays = 4
         relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-        relays_sensors_units = [ATTR_UNIT_W, ATTR_UNIT_KWH]
+        relays_sensors_units = [ATTR_UNIT_WMIN, ATTR_UNIT_KW]
         relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
         relays_sensors_templates = [
             ATTR_TEMPLATE_POWER,
@@ -385,7 +385,7 @@ else:
         model = ATTR_MODEL_SHELLYEM
         meters = 2
         meters_sensors = [ATTR_POWER, ATTR_REACTIVE_POWER, ATTR_VOLTAGE]
-        meters_sensors_units = [ATTR_UNIT_W, ATTR_UNIT_W, ATTR_UNIT_VAR]
+        meters_sensors_units = [ATTR_UNIT_WMIN, ATTR_UNIT_VAR, ATTR_UNIT_V]
         meters_sensors_classes = [ATTR_POWER, '', '']
         meters_sensors_templates = [
             ATTR_TEMPLATE_POWER,

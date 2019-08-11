@@ -7,33 +7,20 @@ cards:
     cards:
       - type: custom:layout-card
         cards:
-          - type: custom:tracker-card
-            title:
-            trackers:
-              - sensor.custom_card_tracker
-              - sensor.custom_component_tracker
-
-          - !include dev_card_content.yaml
-          - !include links_card.yaml
-
-          # - type: custom:home-setter
-          #   pages:
-          #     - name: Default
-          #       path: lovelace/home
-          #     - name: Dashboard
-          #       path: lovelace/dashboard
-
-          # - type: custom:auto-entities
-          #   card:
-          #     type: entities
-          #     head:
-          #       type: section
-          #       label: "Power consumption"
-          #   filter:
-          #     include:
-          #       - entity_id: sensor.daily_energy_consumption
-          #       - entity_id: sensor.monthly_energy_consumption
-          #       - entity_id: "*_power"
+          - type: custom:auto-entities
+            card:
+              type: entities
+              head:
+                type: section
+                label: "Потребляемая мощность"
+            filter:
+              include:
+                - entity_id: sensor.daily_energy_consumption
+                - entity_id: sensor.monthly_energy_consumption
+                - entity_id: "*.daily_energy_consumption_*"
+                - entity_id: "*.monthly_energy_consumption_*"
+                - entity_id: sensor.total_power_usage
+                - entity_id: "*_power"
           #     exclude:
           #       - entity_id: "*_2"
           #       - entity_id: "*_management"
@@ -91,3 +78,13 @@ cards:
                     - domain: history_graph
                     - entity_id: customizer.customizer
                     - entity_id: "media_player.emby_*"
+
+          - !include links_card.yaml
+
+          - type: custom:tracker-card
+            title:
+            trackers:
+              - sensor.custom_card_tracker
+              - sensor.custom_component_tracker
+
+          - !include dev_card_content.yaml

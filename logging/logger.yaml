@@ -27,6 +27,7 @@ logs:
   # homeassistant.components.device_tracker.owntracks: error
   homeassistant.components.discovery: warn
   # homeassistant.components.ffmpeg: debug
+  homeassistant.components.hassio: debug
   # homeassistant.components.http: error
   # homeassistant.components.light: warn
   # homeassistant.components.media_player: error
@@ -36,7 +37,7 @@ logs:
   homeassistant.components.sensor: fatal
   homeassistant.components.sensor.travisci: debug
   homeassistant.components.shell_command: debug
-  homeassistant.components.ssdp: debug
+  # homeassistant.components.ssdp: debug
   # homeassistant.components.telegram: error
   # homeassistant.components.websocket_api: error
   # homeassistant.components.weather: debug

@@ -6,8 +6,10 @@
         "title": "Beward",
         "description": "If you need help with the configuration have a look here: https://github.com/Limych/ha-beward",
         "data": {
+          "host": "Host",
           "username": "Username",
-          "password": "Password"
+          "password": "Password",
+          "stream": "Stream #"
         }
       }
     },
