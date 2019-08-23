@@ -101,6 +101,7 @@ cards:
                       secondary_info: last-changed
                     items:
                       - binary_sensor.front_door
+                      - binary_sensor.wallpanel_motion
                       - binary_sensor.hallway_motion
                       - binary_sensor.kitchen_motion
 

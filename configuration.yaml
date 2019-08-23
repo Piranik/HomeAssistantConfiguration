@@ -50,6 +50,7 @@ http:
   login_attempts_threshold: 7
 customizer:
   custom_ui: hosted
+mobile_app:
 
 
 # ########################################

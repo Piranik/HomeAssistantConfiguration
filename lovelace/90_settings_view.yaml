@@ -17,9 +17,9 @@ cards:
               include:
                 - entity_id: sensor.daily_energy_consumption
                 - entity_id: sensor.monthly_energy_consumption
+                - entity_id: sensor.total_energy_consumption
                 - entity_id: "*.daily_energy_consumption_*"
                 - entity_id: "*.monthly_energy_consumption_*"
-                - entity_id: sensor.total_power_usage
                 - entity_id: "*_power"
           #     exclude:
           #       - entity_id: "*_2"

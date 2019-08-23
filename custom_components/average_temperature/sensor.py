@@ -19,8 +19,10 @@ from homeassistant.components.climate import ClimateDevice
 from homeassistant.components.water_heater import WaterHeaterDevice
 from homeassistant.components.weather import WeatherEntity
 from homeassistant.const import (
-    CONF_NAME, CONF_ENTITIES, EVENT_HOMEASSISTANT_START, ATTR_UNIT_OF_MEASUREMENT,
-    TEMP_CELSIUS, TEMP_FAHRENHEIT, UNIT_NOT_RECOGNIZED_TEMPLATE, TEMPERATURE)
+    CONF_NAME, CONF_ENTITIES, EVENT_HOMEASSISTANT_START,
+    ATTR_UNIT_OF_MEASUREMENT,
+    TEMP_CELSIUS, TEMP_FAHRENHEIT, UNIT_NOT_RECOGNIZED_TEMPLATE, TEMPERATURE,
+    STATE_UNKNOWN, STATE_UNAVAILABLE)
 from homeassistant.core import callback
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import config_validation as cv
@@ -29,7 +31,7 @@ from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.event import async_track_state_change
 from homeassistant.util.temperature import convert as convert_temperature
 
-VERSION = '1.2.1'
+VERSION = '1.2.2'
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -44,7 +46,8 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 })
 
 
-async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
+async def async_setup_platform(hass, config, async_add_entities,
+                               discovery_info=None):
     """Set up the Gismeteo weather platform."""
     _LOGGER.debug('Version %s', VERSION)
     _LOGGER.info('if you have ANY issues with this, please report them here:'
@@ -54,7 +57,8 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
     duration = config.get(CONF_DURATION)
     entities = config.get(CONF_ENTITIES)
 
-    async_add_entities([AverageTemperatureSensor(hass, name, duration, entities)])
+    async_add_entities(
+        [AverageTemperatureSensor(hass, name, duration, entities)])
 
 
 class AverageTemperatureSensor(Entity):
@@ -79,11 +83,13 @@ class AverageTemperatureSensor(Entity):
         @callback
         def sensor_startup(event):
             """Update template on startup."""
-            async_track_state_change(self._hass, self._entities, sensor_state_listener)
+            async_track_state_change(self._hass, self._entities,
+                                     sensor_state_listener)
 
             self.async_schedule_update_ha_state(True)
 
-        self._hass.bus.async_listen_once(EVENT_HOMEASSISTANT_START, sensor_startup)
+        self._hass.bus.async_listen_once(EVENT_HOMEASSISTANT_START,
+                                         sensor_startup)
 
     @property
     def should_poll(self):
@@ -124,13 +130,16 @@ class AverageTemperatureSensor(Entity):
 
         if temperature is not None:
             if entity_unit not in (TEMP_CELSIUS, TEMP_FAHRENHEIT):
-                raise ValueError(UNIT_NOT_RECOGNIZED_TEMPLATE.format(entity_unit, TEMPERATURE))
+                raise ValueError(
+                    UNIT_NOT_RECOGNIZED_TEMPLATE.format(entity_unit,
+                                                        TEMPERATURE))
 
             temperature = float(temperature)
             ha_unit = self._hass.config.units.temperature_unit
 
             if entity_unit != ha_unit:
-                temperature = convert_temperature(temperature, entity_unit, ha_unit)
+                temperature = convert_temperature(temperature, entity_unit,
+                                                  ha_unit)
 
         return temperature
 
@@ -172,21 +181,31 @@ class AverageTemperatureSensor(Entity):
 
                 if entity_id not in history_list.keys():
                     value = self._get_temperature(entity)
-                    _LOGGER.warning('Historical data not found for entity \'%s\'.'
-                                    ' Current temperature used: %s', entity_id, value)
+                    _LOGGER.warning(
+                        'Historical data not found for entity \'%s\'.'
+                        ' Current temperature used: %s', entity_id, value)
                 else:
                     # Get the first state
                     item = history.get_state(self.hass, start, entity_id)
                     _LOGGER.debug('Initial historical state: %s', item)
                     last_state = None
                     last_time = start_timestamp
-                    if item is not None and item.state is not None:
+                    if (
+                            item is not None
+                            and item.state is not None
+                            and item.state not in [STATE_UNKNOWN,
+                                                   STATE_UNAVAILABLE]
+                    ):
                         last_state = self._get_temperature(item)
 
                     # Get the other states
                     for item in history_list.get(entity_id):
                         _LOGGER.debug('Historical state: %s', item)
-                        if item.state is not None:
+                        if (
+                                item.state is not None
+                                and item.state not in [STATE_UNKNOWN,
+                                                       STATE_UNAVAILABLE]
+                        ):
                             current_state = self._get_temperature(item)
                             current_time = item.last_changed.timestamp()
 

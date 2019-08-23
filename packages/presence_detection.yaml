@@ -2,8 +2,10 @@ group:
   motion:
     name: motion
     entities:
-      # - binary_sensor.hallway_motion
+      - binary_sensor.front_door
+      - binary_sensor.hallway_motion
       - binary_sensor.kitchen_motion
+      - binary_sensor.wallpanel_motion
 
 
 # sensor:

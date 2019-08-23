@@ -1,0 +1,20 @@
+automation:
+  - alias: '[Security] Front Door Opened'
+    initial_state: on
+    trigger:
+      - platform: state
+        entity_id:
+          - binary_sensor.front_door
+        to: 'on'
+    condition:
+      condition: state
+      entity_id: binary_sensor.presence_owners
+      state: 'off'
+    action:
+      - service: notify.all
+        data:
+          message: "Входная дверь открыта!"
+          data:
+            photo:
+              file: /config/.storage/beward/front_door_last_motion.jpg
+              caption: "Входная дверь открыта!"

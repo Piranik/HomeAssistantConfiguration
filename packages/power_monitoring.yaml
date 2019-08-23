@@ -1,57 +1,56 @@
 homeassistant:
-  customize:
-    sensor.total_power_usage:
-      unit_of_measurement: kW
-      icon: mdi:flash
   customize_glob:
     sensor.*_energy_consumption*:
-      unit_of_measurement: kW
+      unit_of_measurement: 'kWh'
       icon: mdi:counter
 
 
 sensor:
   - platform: template
     sensors:
-      total_power_usage:
-        friendly_name: "Текущее потребление энергии"
+      total_energy_consumption:
+        friendly_name: "Общее потребление энергии"
         value_template: >-
-          {{ (
-            (states.sensor.servers_plug_energy.state | float)
-            + (states.sensor.washer_plug_energy.state | float)
-          ) | round(1) }}
+          {% if states('sensor.servers_plug_energy')
+              and states('sensor.washer_plug_energy') %}
+            {{ (
+              (states.sensor.servers_plug_energy.state | float)
+              + (states.sensor.washer_plug_energy.state | float)
+            ) | round(2) }}
+          {% else %}Unavailable{% endif %}
       daily_energy_consumption:
         friendly_name: "Дневное потребление энергии"
         value_template: >-
-          {{ ((
+          {{ (
             (states.sensor.daily_energy_consumption_t1_peak.state | float)
             + (states.sensor.daily_energy_consumption_t2_offpeak.state | float)
             + (states.sensor.daily_energy_consumption_t3_partialpeak.state | float)
-          ) / 1000) | round(2) }}
+          ) | round(2) }}
       monthly_energy_consumption:
         friendly_name: "Месячное потребление энергии"
         value_template: >-
-          {{ ((
+          {{ (
             (states.sensor.monthly_energy_consumption_t1_peak.state | float)
             + (states.sensor.monthly_energy_consumption_t2_offpeak.state | float)
             + (states.sensor.monthly_energy_consumption_t3_partialpeak.state | float)
-          ) / 1000) | round(2) }}
+          ) | round(2) }}
 
         
 utility_meter:
   daily_energy_consumption:
-    source: sensor.total_power_usage
+    source: sensor.total_energy_consumption
     cycle: daily 
     tariffs:
-      - T1-peak
-      - T3-partialpeak
-      - T2-offpeak
+      - 'T1-peak'
+      - 'T3-partialpeak'
+      - 'T2-offpeak'
   monthly_energy_consumption:
-    source: sensor.total_power_usage
+    source: sensor.total_energy_consumption
     cycle: monthly
     tariffs:
-      - T1-peak
-      - T3-partialpeak
-      - T2-offpeak
+      - 'T1-peak'
+      - 'T3-partialpeak'
+      - 'T2-offpeak'
 
 
 automation:  
@@ -68,7 +67,7 @@ automation:
           entity_id:
             - utility_meter.daily_energ
             - utility_meter.monthly_energy
-          tariff: T1-peak
+          tariff: 'T1-peak'
 
   - alias: "[House] Change Utility Tariffs to T2-offpeak"
     initial_state: on
@@ -81,7 +80,7 @@ automation:
           entity_id:
             - utility_meter.daily_energ
             - utility_meter.monthly_energy
-          tariff: T2-offpeak
+          tariff: 'T2-offpeak'
 
   - alias: "[House] Change Utility Tariffs to T3-partialpeak"
     initial_state: on
@@ -96,4 +95,4 @@ automation:
           entity_id:
             - utility_meter.daily_energ
             - utility_meter.monthly_energy
-          tariff: T3-partialpeak
+          tariff: 'T3-partialpeak'

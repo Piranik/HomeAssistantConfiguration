@@ -1,0 +1,49 @@
+homeassistant:
+  customize:
+    input_boolean.car_clean:
+      templates:
+        icon: >-
+          if (state == 'on') return 'mdi:car';
+          return 'mdi:car-wash';
+    binary_sensor.car_wash:
+      templates:
+        icon: >-
+          if (state == 'on') return 'mdi:weather-sunny';
+          return 'mdi:weather-pouring';
+
+
+input_boolean:
+  car_clean:
+    name: "Машина помыта"
+
+
+binary_sensor:
+  - platform: car_wash
+    weather: weather.gismeteo_daily
+
+
+sensor:
+  - platform: template
+    sensors:
+      car_wash_state:
+        value_template: >-
+          {% if is_state('input_boolean.car_clean', 'on') %}
+            clean
+          {% elif is_state('binary_sensor.car_wash', 'off') %}
+            bad weather
+          {% else %}
+            time to wash
+          {% endif %}
+
+
+automation:
+  - alias: '[Misc] When I can Clear the Car'
+    initial_state: on
+    trigger:
+      - entity_id: sensor.car_wash_state
+        platform: state
+        to: 'time to wash'
+    action:
+      - service: notify.limych
+        data_template:
+          message: "Пора запланировать мойку машины."

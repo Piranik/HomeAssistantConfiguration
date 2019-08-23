@@ -9,8 +9,6 @@ homeassistant:
           else return [40, 70];
     sensor.system_security_*:
       icon: mdi:security
-    sensor.system_pc_*:
-      icon: mdi:laptop
     sensor.system_media_*:
       icon: mdi:speaker
 
@@ -60,90 +58,68 @@ sensor:
     sensors:
       connection_internet:
         friendly_name: "Интернет"
-        entity_id: binary_sensor.internet
         value_template: >-
           {{ 'Online' if is_state('binary_sensor.internet', 'on') else 'Offline' }}
       # system_uplink:
       #   friendly_name: "Uplink"
-      #   entity_id: device_tracker.uplink
       #   value_template: >-
       #     {{ 'Online' if is_state('device_tracker.uplink', 'home') else 'Offline' }}
       system_gateway:
         friendly_name: "Gateway"
-        entity_id: device_tracker.server_gate_lan
         value_template: >-
           {{ 'Online' if is_state('device_tracker.server_gate_lan', 'home') else 'Offline' }}
       system_nas:
         friendly_name: "NAS"
-        entity_id: device_tracker.server_nas
         value_template: >-
           {{ 'Online' if is_state('device_tracker.server_nas', 'home') else 'Offline' }}
       connection_wifi_ap:
         friendly_name: "WiFi точка доступа"
-        entity_id: device_tracker.lan_wifi_ap
         value_template: >-
           {{ 'Online' if is_state('device_tracker.lan_wifi_ap', 'home') else 'Offline' }}
       connection_lan_router:
         friendly_name: "OpenWRT роутер"
-        entity_id: device_tracker.lan_router
         value_template: >-
           {{ 'Online' if is_state('device_tracker.lan_router', 'home') else 'Offline' }}
       connection_lan_switch:
         friendly_name: "LAN Switch"
-        entity_id: device_tracker.lan_switch
         value_template: >-
           {{ 'Online' if is_state('device_tracker.lan_switch', 'home') else 'Offline' }}
       system_server_emby:
         friendly_name: "Emby"
-        entity_id: device_tracker.server_emby
         value_template: >-
           {{ 'Online' if is_state('device_tracker.server_emby', 'home') else 'Offline' }}
       system_server_transmission:
         friendly_name: "Transmission"
-        entity_id: device_tracker.server_transmission
         value_template: >-
           {{ 'Online' if is_state('device_tracker.server_transmission', 'home') else 'Offline' }}
       system_server_repo:
         friendly_name: "GIT Repository"
-        entity_id: device_tracker.server_repo
         value_template: >-
           {{ 'Online' if is_state('device_tracker.server_repo', 'home') else 'Offline' }}
       system_server_syncthing:
         friendly_name: "Syncthing"
-        entity_id: device_tracker.server_syncthing
         value_template: >-
           {{ 'Online' if is_state('device_tracker.server_syncthing', 'home') else 'Offline' }}
       system_server_sonarr:
         friendly_name: "Sonarr"
-        entity_id: device_tracker.server_sonarr
         value_template: >-
           {{ 'Online' if is_state('device_tracker.server_sonarr', 'home') else 'Offline' }}
       system_server_jackett:
         friendly_name: "Jackett"
-        entity_id: device_tracker.server_jackett
         value_template: >-
           {{ 'Online' if is_state('device_tracker.server_jackett', 'home') else 'Offline' }}
 
       system_security_intercom:
         friendly_name: "Домофон"
-        entity_id: device_tracker.security_intercom
         value_template: >-
           {{ 'Online' if is_state('device_tracker.security_intercom', 'home') else 'Offline' }}
 
-      system_pc_willy:
-        friendly_name: "Willy"
-        entity_id: device_tracker.limych_willy
-        value_template: >-
-          {{ 'Online' if is_state('device_tracker.limych_willy', 'home') else 'Offline' }}
-
       system_media_kitchen:
         friendly_name: "Колонки на Кухне"
-        entity_id: device_tracker.media_kitchen
         value_template: >-
           {{ 'Online' if is_state('device_tracker.media_kitchen', 'home') else 'Offline' }}
       system_media_living_room:
         friendly_name: "Колонки В Гостиной"
-        entity_id: device_tracker.media_living_room
         value_template: >-
           {{ 'Online' if is_state('device_tracker.media_living_room', 'home') else 'Offline' }}
 
@@ -166,6 +142,7 @@ automation:
           - sensor.system_server_sonarr
           - sensor.system_server_jackett
           - sensor.system_security_intercom
+          - sensor.system_security_wallpanel
         to: 'Offline'
         for:
           minutes: 5

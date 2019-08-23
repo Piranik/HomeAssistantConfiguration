@@ -6,15 +6,13 @@ homeassistant:
     sensor.*humidity*:
       icon: mdi:water-percent
 
+
 weather:
   - platform: gismeteo
   - platform: gismeteo
     name: "Gismeteo Daily"
     mode: daily
 
-binary_sensor:
-  - platform: car_wash
-    weather: weather.gismeteo_daily
 
 sensor:
   - platform: gismeteo
@@ -66,23 +64,9 @@ sensor:
       - us
     show_on_map: false
 
+
 camera:
   - platform: generic
     name: "Moscow meteogram"
     still_image_url: https://www.foreca.ru/meteogram.php?loc_id=100819827&lang=ru
     content_type: 'image/png'
-
-
-automation:
-  - alias: '[Misc] When I can Clear the Car'
-    initial_state: on
-    trigger:
-      - entity_id: binary_sensor.car_wash
-        platform: state
-        from: 'off'
-        to: 'on'
-    action:
-      - service: notify.limych
-        data_template:
-          message: "Пора запланировать мойку машины."
-        

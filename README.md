@@ -44,8 +44,13 @@ Now I am running Hass.io on my NAS into Bhyve virtual machine which emulates [Ra
 * **Security:**
     1. [OPNsense-driven](https://opnsense.org/) Network Firewall;
     1. [Beward DS06M](https://www.beward.ru/katalog/ip-videodomofony/vyzyvnye-paneli/vyzyvnaya-panel-ds06m/) Doorbell;
+    1. Home made security sensor (PIR & front door opening) direct wired to Home Assistant Raspberry PI;
+    1. Home made [ESP32-driven](https://ru.wikipedia.org/wiki/ESP32) climate (now only indoor Pressure, Humidity & Temperature) & security (PIR) sensor;
 * **Climate:**
-    1. Home made [ESP32-driven](https://ru.wikipedia.org/wiki/ESP32) climate sensor (now only indoor Pressure, Humidity & Temperature);
+    1. Home made [ESP32-driven](https://ru.wikipedia.org/wiki/ESP32) climate (now only indoor Pressure, Humidity & Temperature) & security (PIR) sensor;
+    1. Sonoff TH10 [ESPEasy-driven](https://www.letscontrolit.com/wiki/index.php?title=ESPEasy) bathroom climate sensor & fan controller;
+* **Misc:**
+    1. Android tablet based WallPanel-driven Home Assistant dashboard;
 
 </details>
 

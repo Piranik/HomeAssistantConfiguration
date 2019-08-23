@@ -66,6 +66,7 @@ cards:
                     - entity_id: 'sensor.system_security_*'
                     - entity_id: 'sensor.system_server_*'
                     - entity_id: 'sensor.system_*'
+                    - entity_id: 'sensor.*_pc_*'
                   exclude:
                     - entity_id: sensor.system_uplink
 

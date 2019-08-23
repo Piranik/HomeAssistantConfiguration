@@ -4,7 +4,7 @@ homeassistant:
       device_class: door
       friendly_name: "Входная дверь"
     binary_sensor.hallway_motion:
-      friendly_name: "Холл"
+      friendly_name: "Коридор"
       
   customize_glob:
     binary_sensor.*_motion:

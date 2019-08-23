@@ -47,7 +47,7 @@ MMHG2HPA = 1.333223684
 MS2KMH = 3.6
 
 
-class Cache(object):
+class Cache:
     def __init__(self, params=None):
         params = params or {}
 
@@ -247,10 +247,7 @@ class Gismeteo:
         """Return the current wind bearing."""
         src = src or self._current
         wd = int(src.get(ATTR_WEATHER_WIND_BEARING))
-        if wd > 0:
-            return (wd - 1) * 45
-        else:
-            return STATE_UNKNOWN
+        return (wd - 1) * 45 if wd > 0 else STATE_UNKNOWN
 
     def wind_speed_kmh(self, src=None):
         """Return the current windspeed in km/h."""

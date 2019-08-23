@@ -18,11 +18,12 @@ logs:
   # custom_components.linkplay: debug
   # custom_components.gismeteo: debug
   # custom_components.beward: debug
+  custom_components.radon: debug
   
   # homeassistant.components.api: error
   # homeassistant.components.automation: error
   # homeassistant.components.binary_sensor: debug
-  homeassistant.components.camera: debug
+  # homeassistant.components.camera: debug
   homeassistant.components.device_tracker: warn
   # homeassistant.components.device_tracker.owntracks: error
   homeassistant.components.discovery: warn
@@ -39,6 +40,7 @@ logs:
   homeassistant.components.shell_command: debug
   # homeassistant.components.ssdp: debug
   # homeassistant.components.telegram: error
+  # homeassistant.components.utility_meter: debug
   # homeassistant.components.websocket_api: error
   # homeassistant.components.weather: debug
   homeassistant.components.zeroconf: debug
