@@ -28,7 +28,9 @@ But while using packages you can no longer reload your config with the buttons i
 <details>
     <p><summary>Now I have very few devices in the system. But I plan to gradually add new ones. Click to expand and read more.</summary></p>
 
-Now I am running Hass.io on my NAS into Bhyve virtual machine which emulates [Raspberry Pi 3 Model B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/).
+I am running Hass.io on [Raspberry Pi 3 Model B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/) with Raspbian, in Docker.
+
+To run Hass.io this way, [install manually in Docker](https://github.com/home-assistant/hassio-installer).
 
 * **Personal gadgets:**
     1. Android devices (Phones and Tablets);
