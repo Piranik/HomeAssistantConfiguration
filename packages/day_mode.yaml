@@ -1,12 +1,21 @@
+homeassistant:
+  customize:
+    input_select.day_mode:
+      templates:
+        icon: >-
+          if state == 'Ночь' or state == 'Вечер' return 'mdi:weather-night';
+          return 'mdi:white-balance-sunny';
+
+
 input_select:
   day_mode:
     name: "Режим дня"
+    icon: mdi:white-balance-sunny
     options:
      - "Утро"
      - "День"
      - "Вечер"
      - "Ночь"
-    icon: mdi:white-balance-sunny
 
 
 sensor:
@@ -49,21 +58,22 @@ automation:
   - alias: '[House] Day Mode To Morning'
     initial_state: on
     trigger:
+      - platform: time
+        at: '05:00:00'
       - platform: sun
         event: sunrise
       - platform: time
-        at: '05:00:00'
+        at: '08:00:00'
     condition:
-      condition: and
+      condition: or
       conditions:
         # Only during daylight hours
         - condition: sun
           after: sunrise
-        # And has to be between 05 and 10
+        # Or has to be between 08 and 12
         - condition: time
-          after: '05:00:00'
+          after: '08:00:00'
           before: '12:00:00'
-    
     action:
       - service: input_select.select_option
         data:
@@ -78,7 +88,6 @@ automation:
     trigger:
       - platform: time
         at: '12:00:00'
-
     action:
       - service: input_select.select_option
         data:
@@ -104,7 +113,6 @@ automation:
         - condition: state
           entity_id: input_select.day_mode
           state: "День"
-
     action:
       - service: input_select.select_option
         data:
@@ -126,20 +134,15 @@ automation:
         - condition: state
           entity_id: input_select.day_mode
           state: "Вечер"
-        ## Has to be between 22 and 06
-        - condition: time
-          after: '22:00:00'
-          before: '06:00:00'
-        ## Someone of owners has to be home
-        - condition: state
-          entity_id: binary_sensor.presence_owners
-          state: 'on'
-
     action:
       - service: input_select.select_option
         data:
           entity_id: input_select.day_mode
           option: "Ночь"
+      ## Stop here if no owners at home
+      - condition: state
+        entity_id: binary_sensor.presence_owners
+        state: 'on'
       - service: notify.all
         data:
           title: 'Сладких снов!'

@@ -29,9 +29,9 @@ import beward
 from beward.const import ALARM_MOTION, ALARM_SENSOR
 from .binary_sensor import BINARY_SENSORS
 from .camera import CAMERAS
-from .const import CONF_STREAM, DOMAIN, VERSION, ISSUE_URL, DATA_BEWARD, \
-    REQUIRED_FILES, ALARMS_TO_EVENTS, CONF_RTSP_PORT, CONF_CAMERAS, \
-    CONF_FFMPEG_ARGUMENTS
+from .const import CONF_STREAM, ALARMS_TO_EVENTS, CONF_RTSP_PORT, \
+    CONF_CAMERAS, CONF_FFMPEG_ARGUMENTS, DOMAIN, VERSION, ISSUE_URL, \
+    DATA_BEWARD, SUPPORT_URL
 from .helpers import service_signal
 from .sensor import SENSORS
 
@@ -66,10 +66,6 @@ def setup(hass, config):
     _LOGGER.info('If you have any issues with this you need to open an issue '
                  'here: %s', ISSUE_URL)
 
-    # Check that all required files are present
-    # if not _check_files(hass):
-    #     return False
-
     hass.data.setdefault(DATA_BEWARD, {})
 
     for index, device_config in enumerate(config[DOMAIN]):
@@ -85,9 +81,20 @@ def setup(hass, config):
         binary_sensors = device_config.get(CONF_BINARY_SENSORS)
         sensors = device_config.get(CONF_SENSORS)
 
-        device = beward.Beward.factory(
-            device_ip, username, password, port=port, rtsp_port=rtsp_port,
-            stream=stream)
+        try:
+            device = beward.Beward.factory(
+                device_ip, username, password, port=port, rtsp_port=rtsp_port,
+                stream=stream)
+        except ValueError as exc:
+            _LOGGER.error(exc)
+            hass.components.persistent_notification.create(
+                'Error: {}<br />'
+                'Please <a href="{}" target="_blank">contact the developers '
+                'of the component</a> to solve this problem.'
+                ''.format(exc, SUPPORT_URL),
+                title='Beward device Initialization Failure',
+                notification_id='beward_connection_error')
+            raise PlatformNotReady
 
         if device is None or not device.available:
             if device is None:
@@ -139,23 +146,6 @@ def setup(hass, config):
             }, config)
 
     if not hass.data[DATA_BEWARD]:
-        return False
-
-    return True
-
-
-def _check_files(hass):
-    """Return bool that indicates if all files are present."""
-    # Verify that the user downloaded all required files.
-    base = f"{hass.config.path()}/custom_components/{DOMAIN}/"
-    missing = []
-    for file in REQUIRED_FILES:
-        fullpath = "{}{}".format(base, file)
-        if not os.path.exists(fullpath):
-            missing.append(file)
-
-    if missing:
-        _LOGGER.critical("The following files are missing: %s", str(missing))
         return False
 
     return True

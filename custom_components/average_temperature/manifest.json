@@ -1,8 +1,0 @@
-{
-  "domain": "average_temperature",
-  "name": "Average Temperature",
-  "documentation": "https://github.com/Limych/HomeAssistantComponents/tree/master/custom_components/average_temperature",
-  "requirements": [],
-  "dependencies": [],
-  "codeowners": ["@limych"]
-}

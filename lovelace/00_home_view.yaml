@@ -8,7 +8,7 @@ popup_cards:
     card:
       type: entities
       entities:
-        - entity: sensor.limych_ahphonem_battery_level
+        - entity: sensor.limych_ahphoneb_battery_level
           type: custom:secondaryinfo-entity-row
           secondary_info: last-changed
         - entity: person.limych
@@ -24,11 +24,11 @@ popup_cards:
         #   style:
         #     text-align: right
         #
+        - entity: device_tracker.limych_ahphoneb_2
+          secondary_info: last-changed
         - entity: device_tracker.limych_ahphonem_2
           secondary_info: last-changed
         - entity: device_tracker.limych_ahtabletl_2
-          secondary_info: last-changed
-        - entity: device_tracker.limych_ahphones_2
           secondary_info: last-changed
 cards:
   - type: vertical-stack
@@ -62,53 +62,6 @@ cards:
                 tap_action:
                   action: more-info
 
-          #     - type: custom:state-switch
-          #       entity: user
-          #       default: default
-          #       states:
-          #         Stefan:
-          #           type: picture-elements
-          #           image: /local/lovelace/bg_transparent.png
-          #           elements:
-          #             - type: image
-          #               entity: switch.stefan_radiator_3
-          #               tap_action:
-          #                 action: more-info
-          #               state_image:
-          #                 "on": /local/lovelace/home/radiator_on.jpg
-          #                 "off": /local/lovelace/home/radiator_off.jpg
-          #               style:
-          #                 top: 50%
-          #                 left: 50%
-          #                 width: 100%
-          #             - type: state-label
-          #               entity: sensor.temperature_stefan
-          #               style:
-          #                 top: 90%
-          #                 left: 50%
-
-          #         default:
-          #           type: picture-elements
-          #           image: /local/lovelace/bg_transparent.png
-          #           elements:
-          #             - type: state-icon
-          #               entity: light.inside_lights
-          #               tap_action:
-          #                 action: navigate
-          #                 navigation_path: /lovelace/lights
-          #               style:
-          #                 "--iron-icon-width": 50px
-          #                 "--iron-icon-height": 50px
-          #                 top: 50%
-          #                 left: 20%
-          #             - type: state-icon
-          #               entity: light.outdoor_lights
-          #               style:
-          #                 "--iron-icon-width": 50px
-          #                 "--iron-icon-height": 50px
-          #                 top: 50%
-          #                 left: 75%
-
           # - type: horizontal-stack
           #   cards:
           #     - type: picture-entity
@@ -132,6 +85,11 @@ cards:
                   "Ждёт": /local/lovelace/home/washer_idle_square.jpg
                   "Работает": /local/lovelace/home/washer_running_square.jpg
                   "Очистка": /local/lovelace/home/washer_clean_square.jpg
+                tap_action:
+                  action: call-service
+                  service: automation.trigger
+                  service_data:
+                    entity_id: automation.house_washer_mode_idle
                 style: |
                   @keyframes blink {
                     50% {
@@ -139,7 +97,12 @@ cards:
                     }
                   }
                   ha-card {
-                    animation: [[ if(input_select.washer_status == "Очистка", "blink 2s linear infinite", "none") ]]
+                    animation: 
+                    {% if is_state("input_select.washer_status", "Очистка") %}
+                      blink 2s linear infinite
+                    {% else %}
+                      none
+                    {% endif %};
                   }
               # - type: picture-entity
               #   entity: input_boolean.cleaning_day
@@ -289,33 +252,44 @@ cards:
           #           show_state: false
           #     - type: shopping-list
 
-          - type: custom:card-modder
-            style:
-              background-image: url("/local/lovelace/home/bg_sound.jpg")
-              background-size: cover
-              background-position: center
-            card:
-              type: entities
-              show_header_toggle: false
-              entities:
-                - type: custom:mini-media-player
-                  entity: media_player.kitchen
-                  name: "Кухня"
-                  group: true
-                  source: icon
-                  hide:
-                    power: true
-                    source: true
-                - type: custom:mini-media-player
-                  entity: media_player.living_room
-                  name: "Гостиная"
-                  group: true
-                  source: icon
-                  hide:
-                    power: true
-                    source: true
-                - input_boolean.play_radio
-                - input_select.radio_station
+          - type: entities
+            show_header_toggle: false
+            style: |
+              ha-card {
+                background-image: url("/local/lovelace/home/bg_sound.jpg");
+                background-size: cover;
+                background-position: center;
+              }
+            entities:
+              - type: custom:mini-media-player
+                entity: media_player.kitchen
+                name: "Кухня"
+                group: true
+                source: icon
+                hide:
+                  power: true
+                  source: true
+              - type: custom:mini-media-player
+                entity: media_player.living_room
+                name: "Гостиная"
+                group: true
+                source: icon
+                hide:
+                  power: true
+                  source: true
+              - type: custom:button-card
+                entity: input_boolean.play_radio
+                color: rgb(117, 189, 111)
+                color_type: card
+                layout: icon_name
+                # show_name: False
+                styles:
+                  card:
+                    - height: 50px
+                state:
+                  - value: "off"
+                    color: rgba(255, 255, 255, 0.1)
+              - input_select.radio_station
 
           - type: custom:vertical-style-card
             cards:

@@ -21,16 +21,15 @@ This configuration is broken down into [packages](https://www.home-assistant.io/
 
 But while using packages you can no longer reload your config with the buttons in the ui.
 
-*NB. In this configuration, I've use several custom components. Those of them that I wrote myself, you can find in a [separate repository](https://github.com/Limych/HomeAssistantComponents).*
+> **_Note_**:\
+> In this configuration, I've use several custom components. Those of them that I wrote myself, you can find in a [separate repositories](https://github.com/search?q=user%3ALimych+ha-).
 
 ## Ecosystem
 
 <details>
     <p><summary>Now I have very few devices in the system. But I plan to gradually add new ones. Click to expand and read more.</summary></p>
 
-I am running Hass.io on [Raspberry Pi 3 Model B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/) with Raspbian, in Docker.
-
-To run Hass.io this way, [install manually in Docker](https://github.com/home-assistant/hassio-installer).
+I am running Hass.io on [Raspberry Pi 3 Model B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/) with Raspbian, in Docker. To run Hass.io this way, [install manually in Docker](https://github.com/home-assistant/hassio-installer).
 
 * **Personal gadgets:**
     1. Android devices (Phones and Tablets);
@@ -63,9 +62,14 @@ I'm using [YAML mode](https://www.home-assistant.io/lovelace/yaml-mode/). Single
 My main Lovelace-file is found [here](https://github.com/Limych/HomeAssistantConfiguration/blob/master/ui-lovelace.yaml), and my folder with includes [here](https://github.com/Limych/HomeAssistantConfiguration/tree/master/lovelace). This is very much still a work in progress, so files might not correspond exactly to screenshots.
 
 <p align="center">* * *</p>
-I put a lot of work into making this repo available and updated to inspire and help others! I will be glad to receive thanks from you — it will give me new strength and add enthusiasm:
-<p align="center"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=UAGFL5L6M8RN2&item_name=[hass-config]+Donation+for+a+big+barrel+of+coffee+:)&currency_code=EUR&source=url"><img alt="Buy Me a Coffe" src="https://raw.githubusercontent.com/Limych/HomeAssistantConfiguration/master/docs/images/donate-with-paypal.png"></a></p>
-<p align="center"><a href="https://www.patreon.com/join/limych?"><img alt="Support my work on Patreon" src="https://raw.githubusercontent.com/Limych/HomeAssistantConfiguration/master/docs/images/support-with-patreon.jpg"></a></p>
+I put a lot of work into making this repo and component available and updated to inspire and help others! I will be glad to receive thanks from you — it will give me new strength and add enthusiasm:
+<p align="center"><br>
+<a href="https://www.patreon.com/join/limych?" target="_blank"><img src="http://khrolenok.ru/support_patreon.png" alt="Patreon" width="250" height="48"></a>
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=UAGFL5L6M8RN2&item_name=[hass-config]+Donation+for+a+big+barrel+of+coffee+:)&currency_code=EUR&source=url" target="_blank"><img src="http://khrolenok.ru/support_paypal.png" alt="PayPal" width="250" height="48"></a>
+<br>or&nbsp;support via Bitcoin or Etherium:<br>
+<a href="bitcoin:16yfCfz9dZ8y8yuSwBFVfiAa3CNYdMh7Ts" target="_blank"><img src="http://khrolenok.ru/support_bitcoin.png" alt="Bitcoin" width="150"><br>
+16yfCfz9dZ8y8yuSwBFVfiAa3CNYdMh7Ts</a>
+</p>
 
 ### Examples from my Lovelace GUI
 
@@ -122,6 +126,7 @@ Automations view
 ## Add-ons
 
 * [Backup Hass.io to Google Drive](https://github.com/samccauley/addon-hassiogooglebackup#readme);
+* [HACS](https://github.com/custom-components/hacs);
 * [IDE](https://github.com/hassio-addons/addon-ide/blob/master/README.md);
 * [Log Viewer](https://github.com/hassio-addons/addon-log-viewer);
 * [MariaDB](https://www.home-assistant.io/addons/mariadb/) — official addon;

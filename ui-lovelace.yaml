@@ -1,76 +1,76 @@
 resources:
-  - url: /customcards/custom-lovelace/card-tools.js?track=true
+  - url: /local/custom-lovelace/card-tools.js
     type: js
   - url: https://unpkg.com/moment@2.22.2/moment.js
     type: js
   - url: https://fonts.googleapis.com/css?family=Roboto+Condensed
     type: css
 
-  - url: /customcards/custom-lovelace/air-visual-card.js?track=true
+  - url: /community_plugin/air-visual-card/air-visual-card.js
     type: js
-  # - url: /customcards/custom-lovelace/alarm_control_panel-card.js
+  # - url: /community_plugin/alarm_control_panel-card.js
   #   type: js
-  # - url: /customcards/custom-lovelace/atomic-calendar.js?track=true
+  # - url: /community_plugin/atomic-calendar.js
   #   type: module
-  - url: /customcards/custom-lovelace/auto-entities.js?track=true
+  - url: /local/custom-lovelace/auto-entities.js
     type: js
-  # - url: /customcards/custom-lovelace/bar-card.js?track=true
+  # - url: /community_plugin/bar-card.js
   #   type: js
-  - url: /customcards/custom-lovelace/bignumber-card.js
+  - url: /community_plugin/bignumber-card/bignumber-card.js
     type: js
-  - url: /customcards/custom-lovelace/button-card.js?track=true
+  - url: /community_plugin/button-card/button-card.js
     type: module
-  # - url: /customcards/custom-lovelace/calendar-card.js
+  # - url: /community_plugin/calendar-card.js
   #   type: module
-  - url: /customcards/custom-lovelace/card-modder.js?track=true
-    type: js
-  - url: /customcards/custom-lovelace/compact-custom-header.js?track=true
+  - url: /community_plugin/lovelace-card-mod/card-mod.js
     type: module
-  - url: /customcards/custom-lovelace/custom-weather-card-chart.js?track=false
+  - url: /community_plugin/compact-custom-header/compact-custom-header.js
     type: module
-  # - url: /customcards/custom-lovelace/dual-gauge-card.js
-  #   type: js
-  # - url: /customcards/custom-lovelace/entity-attributes-card.js
-  #   type: js
-  - url: /customcards/custom-lovelace/fold-entity-row.js?track=true
-    type: js
-  # - url: /customcards/custom-lovelace/home-setter.js?track=true
-  #   type: js
-  - url: /customcards/custom-lovelace/layout-card.js?track=true
-    type: js
-  # - url: /customcards/custom-lovelace/light-card.js
-  #   type: js
-  - url: /customcards/custom-lovelace/live-camera-card.js?v.0.0.3
+  - url: /local/custom-lovelace/custom-weather-card-chart.js
     type: module
-  - url: /customcards/custom-lovelace/markdown-mod.js?track=true
+  # - url: /community_plugin/dual-gauge-card.js
+  #   type: js
+  # - url: /community_plugin/entity-attributes-card.js
+  #   type: js
+  - url: /community_plugin/flex-horseshoe-card/flex-horseshoe-card.js
     type: module
-  - url: /customcards/custom-lovelace/mini-graph-card-bundle.js?track=true
+  - url: /community_plugin/lovelace-fold-entity-row/fold-entity-row.js
+    type: js
+  # - url: /community_plugin/home-setter.js
+  #   type: js
+  - url: /local/custom-lovelace/layout-card.js
+    type: js
+  # - url: /community_plugin/light-card.js
+  #   type: js
+  # - url: /community_plugin/live-camera-card.js?v.0.0.3
+  #   type: module
+  - url: /community_plugin/lovelace-markdown-mod/markdown-mod.js
     type: module
-  - url: /customcards/custom-lovelace/mini-media-player-bundle.js?track=true
+  - url: /community_plugin/mini-graph-card/mini-graph-card-bundle.js
     type: module
-  - url: /customcards/custom-lovelace/monster-card.js?track=true
-    type: js
-  - url: /customcards/custom-lovelace/popup-card.js?track=true
-    type: js
-  - url: /customcards/custom-lovelace/secondaryinfo-entity-row.js?track=true
-    type: js
-  - url: /customcards/custom-lovelace/state-attribute-element.js?track=true
-    type: js
-  # - url: /customcards/custom-lovelace/state-element.js
-  #   type: js
-  # - url: /customcards/custom-lovelace/state-switch.js
-  #   type: js
-  - url: /customcards/custom-lovelace/text-element.js?track=true
-    type: js
-  # - url: /customcards/custom-lovelace/toggle-lock-entity-row.js
-  #   type: js
-  - url: /customcards/custom-lovelace/tracker-card.js?track=true
+  - url: /community_plugin/mini-media-player/mini-media-player-bundle.js
     type: module
-  # - url: /customcards/custom-lovelace/upcoming-media-card.js
+  - url: /community_plugin/monster-card/monster-card.js
+    type: js
+  - url: /local/custom-lovelace/popup-card.js
+    type: js
+  - url: /community_plugin/secondaryinfo-entity-row/secondaryinfo-entity-row.js
+    type: js
+  - url: /community_plugin/state-attribute-element/state-attribute-element.js
+    type: js
+  # - url: /community_plugin/state-element.js
   #   type: js
-  # - url: /customcards/custom-lovelace/username-element.js
+  # - url: /community_plugin/state-switch.js
   #   type: js
-  - url: /customcards/custom-lovelace/vertical-style-card.js?track=true
+  - url: /community_plugin/text-element/text-element.js
+    type: js
+  # - url: /community_plugin/toggle-lock-entity-row.js
+  #   type: js
+  # - url: /community_plugin/upcoming-media-card.js
+  #   type: js
+  # - url: /community_plugin/username-element.js
+  #   type: js
+  - url: /local/custom-lovelace/vertical-style-card.js
     type: js
     
 title: Home

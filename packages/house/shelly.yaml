@@ -1,23 +1,8 @@
-python_script:
-
-automation:
-  - alias: '[System] Shellies Announce'
-    trigger:
-      - platform: homeassistant
-        event: start
-    action:
-      service: mqtt.publish
-      data:
-        topic: shellies/command
-        payload: announce
-
-  - alias: '[System] Shellies Discovery'
-    trigger:
-      - platform: mqtt
-        topic: shellies/announce
-    action:
-      service: python_script.shellies_discovery
-      data_template:
-        id: '{{ trigger.payload_json.id }}'
-        mac: '{{ trigger.payload_json.mac }}'
-        fw_ver: '{{ trigger.payload_json.fw_ver }}'
+shelly:
+  devices:      #devices to be added
+    - id: 7A3507
+      name: "Washer Shelly Plug"
+      entity_id: washer_shelly_plug
+    - id: 7ADF96
+      name: "Server Shelly Plug"
+      entity_id: server_shelly_plug

@@ -2,49 +2,6 @@ title: Info
 icon: mdi:lan
 path: info
 panel: true
-popup_cards:
-  sensor.processor_use:
-    title: "CPU use"
-    card:
-      type: history-graph
-      title: "CPU load"
-      show:
-        icon: false
-        extrema: true
-      entities:
-        - sensor.load_1m
-        - sensor.load_5m
-        - sensor.load_15m
-        - sensor.cpu_temperature
-  sensor.memory_use_percent:
-    title: "RAM use"
-    card:
-      type: history-graph
-      entities:
-        - sensor.memory_free
-        - sensor.swap_use
-
-  sensor.nas_cpu_use_percent:
-    title: "CPU use"
-    card:
-      type: history-graph
-      title: "CPU load"
-      show:
-        icon: false
-        extrema: true
-      entities:
-        - sensor.nas_cpu_load_1m
-        - sensor.nas_cpu_load_5m
-        - sensor.nas_cpu_load_15m
-        - sensor.nas_cpu_temperature
-  sensor.nas_memory_use_percent:
-    title: "RAM use"
-    card:
-      type: history-graph
-      entities:
-        - sensor.nas_memory_free
-        - sensor.nas_swap_use
-
 cards:
   - type: vertical-stack
     cards:
@@ -84,19 +41,26 @@ cards:
 
           - !include system/nas_monitor_card.yaml
           - !include system/hass_monitor_card.yaml
-          
-          - type: custom:mini-graph-card
-            name: "Скорость Интернета"
-            height: 75
-            hour24: true
-            show:
-              icon: false
-              extrema: true
-              fill: false
-            entities:
-              - entity: sensor.speedtest_download
-                name: "Приём"
-              - entity: sensor.speedtest_upload
-                name: "Отправка"
+
+          - type: vertical-stack
+            cards:
+              - type: entities
+                show_header_toggle: false
+                entities:
+                  - entity: sensor.ssl_certificate_expiry
+                    name: "SSL Certificate Expirity"
+              - type: custom:mini-graph-card
+                name: "Скорость Интернета"
+                height: 75
+                hour24: true
+                show:
+                  icon: false
+                  extrema: true
+                  fill: false
+                entities:
+                  - entity: sensor.speedtest_download
+                    name: "Приём"
+                  - entity: sensor.speedtest_upload
+                    name: "Отправка"
 
           - !include dev_card.yaml

@@ -52,7 +52,8 @@ sensor:
     unit_of_measurement: 'mmHg'
     availability_topic: "sensor/kitchen/status"
     
-  - platform: average_temperature
+  - platform: average
+    name: 'Average Temperature'
     duration:
       days: 3
     entities:

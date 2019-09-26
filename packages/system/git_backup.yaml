@@ -7,7 +7,7 @@ input_text:
 shell_command:
   git_commit: '/usr/bin/env sh /config/bin/git_commit.sh "{{ states.input_text.git_commit_message.state }}"'
   git_fetch: '/usr/bin/env sh /config/bin/git_fetch.sh'
-  git_auto_fetch: '/usr/bin/env sh /config/bin/check_ci_status.sh && /usr/bin/env sh /config/bin/git_fetch.sh'
+  # git_auto_fetch: '/usr/bin/env sh /config/bin/check_ci_status.sh && /usr/bin/env sh /config/bin/git_fetch.sh'
 
 
 # binary_sensor:
@@ -18,7 +18,7 @@ shell_command:
 #     value_template: "{{ value_json.last_build_status|int(1) == 0 }}"
 
 
-automation:
+# automation:
   # - alias: "[System] Autoupdate configs from GitHub"
   #   initial_state: on
   #   trigger:
@@ -33,10 +33,10 @@ automation:
   #         message: 'Build was successful'
   #     - service: shell_command.git_fetch
 
-  - alias: "[System] Autoupdate configs from GitHub"
-    initial_state: on
-    trigger:
-      platform: time_pattern
-      minutes: '/10'
-    action:
-      service: shell_command.git_auto_fetch
+  # - alias: "[System] Autoupdate configs from GitHub"
+  #   initial_state: on
+  #   trigger:
+  #     platform: time_pattern
+  #     minutes: '/10'
+  #   action:
+  #     service: shell_command.git_auto_fetch

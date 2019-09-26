@@ -46,6 +46,10 @@ cards:
                     entities:
                       - sensor.gismeteo_pressure_mmhg
 
+              - type: entities
+                entities:
+                  - sensor.average_temperature
+
               - type: custom:vertical-style-card
                 cards:
                   - type: custom:weather-card-chart

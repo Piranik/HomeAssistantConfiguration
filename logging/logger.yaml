@@ -7,19 +7,18 @@
 # Log Severities: notset, debug, info, warn, warning, error, fatal, critical
 
 default: error
-#default: debug
+# default: debug
 logs:
   root: debug
 
   # beward: debug
 
-  # custom_components.average_temperature: debug
+  # custom_components.average: debug
   # custom_components.car_wash: debug
   # custom_components.linkplay: debug
   # custom_components.gismeteo: debug
   # custom_components.beward: debug
-  custom_components.radon: debug
-  
+
   # homeassistant.components.api: error
   # homeassistant.components.automation: error
   # homeassistant.components.binary_sensor: debug
@@ -31,7 +30,7 @@ logs:
   homeassistant.components.hassio: debug
   # homeassistant.components.http: error
   # homeassistant.components.light: warn
-  # homeassistant.components.media_player: error
+  # homeassistant.components.media_player: debug
   # homeassistant.components.mqtt: debug
   # homeassistant.components.notify: error
   # homeassistant.components.python_script: debug

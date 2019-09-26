@@ -26,8 +26,7 @@ binary_sensor:
     sensors:
       washer:
         friendly_name: "Стиральная машина Работает"
-        entity_id: sensor.washer_plug_power
-        value_template: "{{ states('sensor.washer_plug_power') | int > 3.5 }}"
+        value_template: "{{ states('sensor.shelly_washer_shelly_plug_consumption_2') | float > 3.5 }}"
         delay_off:
           minutes: 1
 
@@ -90,11 +89,23 @@ automation:
       - service: switch.turn_off
         entity_id: switch.bathroom_fan
 
+  - alias: '[House] Washer Mode Idle'
+    initial_state: on
+    trigger: []
+    action:
+      - condition: state
+        entity_id: input_select.washer_status
+        state: "Очистка"
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.washer_status
+          option: "Ждёт"
+
   - alias: '[House] Washer Mode Running'
     initial_state: on
     trigger:
       - platform: state
-        entity_id: input_boolean.washer
+        entity_id: binary_sensor.washer
         to: 'on'
     action:
       - service: input_select.select_option
@@ -106,7 +117,7 @@ automation:
     initial_state: on
     trigger:
       - platform: state
-        entity_id: input_boolean.washer
+        entity_id: binary_sensor.washer
         to: 'off'
     action:
       - service: input_select.select_option

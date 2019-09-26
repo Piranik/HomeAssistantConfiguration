@@ -38,6 +38,16 @@ cards:
                     battery: "< 50"
                     source_type: gps
 
+          - type: custom:monster-card
+            show_empty: true
+            card:
+              type: entities
+              title: "Shelly need update"
+              show_header_toggle: false
+            filter:
+              include:
+                - entity_id: '*firmware_update*'
+
           # - type: vertical-stack
           #   cards:
           #     - type: custom:monster-card
@@ -80,11 +90,4 @@ cards:
                     - entity_id: "media_player.emby_*"
 
           - !include links_card.yaml
-
-          - type: custom:tracker-card
-            title:
-            trackers:
-              - sensor.custom_card_tracker
-              - sensor.custom_component_tracker
-
           - !include dev_card_content.yaml
