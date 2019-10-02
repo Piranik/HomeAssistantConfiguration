@@ -37,18 +37,18 @@ sensor:
 
     
 group:
-  owners_sleeping_some:
+  sleeping_owners_some:
     name: "Хозяева спят (кто-то из)"
     icon: mdi:sleep
     all: false
     entities:
-      - binary_sensor.limych_sleeping
-  owners_sleeping_all:
+      - binary_sensor.sleeping_limych
+  sleeping_owners_all:
     name: "Хозяева спят (все)"
     icon: mdi:sleep
     all: true
     entities:
-      - binary_sensor.limych_sleeping
+      - binary_sensor.sleeping_limych
 
 
 automation:
@@ -126,7 +126,7 @@ automation:
     initial_state: on
     trigger:
       - platform: state
-        entity_id: group.owners_sleeping_all
+        entity_id: group.sleeping_owners_all
         to: 'on'
     condition:
       condition: and

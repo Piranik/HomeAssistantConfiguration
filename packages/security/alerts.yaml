@@ -7,14 +7,23 @@ automation:
           - binary_sensor.front_door
         to: 'on'
     condition:
-      condition: state
-      entity_id: binary_sensor.presence_owners
-      state: 'off'
+      condition: or
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.presence_owners
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.sleeping_owners_all
+          state: 'on'
     action:
+      - service: camera.snapshot
+        data:
+          entity_id: camera.front_door_live
+          filename: /config/www/images/frontdoor.jpg
       - service: notify.all
         data:
           message: "Входная дверь открыта!"
           data:
             photo:
-              file: /config/.storage/beward/front_door_last_motion.jpg
+              file: /config/www/images/frontdoor.jpg
               caption: "Входная дверь открыта!"
