@@ -33,9 +33,11 @@ from homeassistant.helpers.event import async_track_state_change
 from homeassistant.util import Throttle
 from homeassistant.util.temperature import convert as convert_temperature
 
-VERSION = '1.4.0'
-
 _LOGGER = logging.getLogger(__name__)
+
+# Base component constants
+VERSION = '1.4.1'
+ISSUE_URL = "https://github.com/Limych/ha-average/issues"
 
 CONF_START = 'start'
 CONF_END = 'end'
@@ -91,12 +93,14 @@ PLATFORM_SCHEMA = vol.All(
 )
 
 
+# pylint: disable=unused-argument
 async def async_setup_platform(hass, config, async_add_entities,
                                discovery_info=None):
-    """Set up the Gismeteo weather platform."""
-    _LOGGER.debug('Version %s', VERSION)
-    _LOGGER.info('if you have ANY issues with this, please report them here:'
-                 ' https://github.com/Limych/ha-average')
+    """Set up platform."""
+    # Print startup message
+    _LOGGER.info('Version %s', VERSION)
+    _LOGGER.info('If you have ANY issues with this,'
+                 ' please report them here: %s', ISSUE_URL)
 
     name = config.get(CONF_NAME)
     start = config.get(CONF_START)
@@ -137,6 +141,14 @@ class AverageSensor(Entity):
         self.min_value = self.max_value = None
 
     @property
+    def _has_period(self) -> bool:
+        """Return True if sensor has any period setting."""
+        return \
+            self._start_template is not None \
+            or self._end_template is not None \
+            or self._duration is not None
+
+    @property
     def should_poll(self):
         """Return the polling state."""
         return self._has_period
@@ -174,6 +186,7 @@ class AverageSensor(Entity):
     async def async_added_to_hass(self):
         """Register callbacks."""
 
+        # pylint: disable=unused-argument
         @callback
         def sensor_state_listener(entity, old_state, new_state):
             """Handle device state changes."""
@@ -182,6 +195,7 @@ class AverageSensor(Entity):
             if last_state != self._state:
                 self.async_schedule_update_ha_state(True)
 
+        # pylint: disable=unused-argument
         @callback
         def sensor_startup(event):
             """Update template on startup."""
@@ -196,13 +210,15 @@ class AverageSensor(Entity):
                                          sensor_startup)
 
     @staticmethod
-    def _has_state(state):
+    def _has_state(state) -> bool:
+        """Return True if state has any value."""
         return \
             state is not None \
             and state not in [STATE_UNKNOWN, STATE_UNAVAILABLE]
 
     @staticmethod
     def _is_temperature(entity) -> bool:
+        """Return True if entity are temperature sensor."""
         entity_unit = entity.attributes.get(ATTR_UNIT_OF_MEASUREMENT)
         return \
             entity_unit in (TEMP_CELSIUS, TEMP_FAHRENHEIT) \
@@ -238,6 +254,8 @@ class AverageSensor(Entity):
         return temperature
 
     def _get_entity_state(self, entity):
+        """Return current state of given entity
+        and count some sensor attributes."""
         state = self._get_temperature(entity) if self._temperature_mode \
             else entity.state
         if not self._has_state(state):
@@ -260,6 +278,7 @@ class AverageSensor(Entity):
 
     @Throttle(UPDATE_MIN_TIME)
     def update(self):
+        """Update the sensor state if it needed."""
         if self._has_period:
             self._update_state()
 
@@ -274,17 +293,10 @@ class AverageSensor(Entity):
         _LOGGER.error("Error parsing template for field %s", field)
         _LOGGER.error(ex)
 
-    @property
-    def _has_period(self):
-        return \
-            self._start_template is not None \
-            or self._end_template is not None \
-            or self._duration is not None
-
     def _update_period(self):
         """Parse the templates and calculate a datetime tuples."""
-        start = None
-        end = now = dt_util.now()
+        start = end = None
+        now = dt_util.now()
 
         # Parse start
         _LOGGER.debug('Process start template: %s', self._start_template)
@@ -336,11 +348,15 @@ class AverageSensor(Entity):
         _LOGGER.debug('Process duration: %s', self._duration)
         if self._duration is not None:
             if start is None:
+                if end is None:
+                    end = now
                 start = end - self._duration
             else:
                 end = start + self._duration
 
         _LOGGER.debug('Start: %s, End: %s', start, end)
+        if start is None or end is None:
+            return
 
         if start > now:
             # History hasn't been written yet for this period

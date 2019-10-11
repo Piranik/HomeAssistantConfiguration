@@ -21,7 +21,8 @@ s='[[:space:]]*'
 parse() {
    local callback=${2:-'%s%s%s=\"%s\"'}
    local w='[^:]*' fs=$(echo @|tr @ '\034'|tr -d '\015')
-   sed -ne "s|^\($s\)\($w\)$s:$s\"\(.*\)\"$s\$|\1$fs\2$fs\3|p" \
+   sed -e "/^[ \t]*#/d" \
+        -ne "s|^\($s\)\($w\)$s:$s\"\(.*\)\"$s\$|\1$fs\2$fs\3|p" \
         -e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\1$fs\2$fs\3|p" "$1" |
    awk -F$fs "{
       indent = length(\$1)/2;
