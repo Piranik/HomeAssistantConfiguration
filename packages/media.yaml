@@ -156,7 +156,7 @@ automation:
           message: 'С добрым утром!'
       - service: media_player.volume_set
         data:
-          entity_id: group.a
+          entity_id: group.all_speakers
           volume_level: 0.30
       - service: automation.trigger
         entity_id: automation.media_play_radio
