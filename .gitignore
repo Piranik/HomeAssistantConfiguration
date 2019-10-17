@@ -23,6 +23,7 @@ home-assistant*
 /www/
 !/www/custom-lovelace/
 
+!/.github/
 !.gitignore
 !.gitkeep
 !.travis.yml
