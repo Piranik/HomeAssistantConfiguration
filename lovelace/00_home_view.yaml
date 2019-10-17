@@ -93,7 +93,7 @@ cards:
                 style: |
                   @keyframes blink {
                     50% {
-                      outline: 3px solid #389638;
+                      outline: 5px solid var(--accent-color);
                     }
                   }
                   ha-card {
