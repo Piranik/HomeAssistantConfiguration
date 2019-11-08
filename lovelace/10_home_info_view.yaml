@@ -95,17 +95,6 @@ cards:
                 entities:
                   - input_select.day_mode
                   - type: custom:fold-entity-row
-                    head:
-                      type: section
-                      label: "Безопасность"
-                    group_config:
-                      secondary_info: last-changed
-                    items:
-                      - binary_sensor.front_door
-                      - binary_sensor.wallpanel_motion
-                      - binary_sensor.hallway_motion
-                      - binary_sensor.kitchen_motion
-                  - type: custom:fold-entity-row
                     head: binary_sensor.presence
                     group_config:
                       secondary_info: last-changed

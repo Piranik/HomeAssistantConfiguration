@@ -45,12 +45,10 @@ zeroconf:
 #  sensors: false
 http:
   base_url: !secret hass_base_url
-  ip_ban_enabled: true
-  login_attempts_threshold: 7
-  # use_x_forwarded_for: true
-  # trusted_proxies: !secret gateway_host_ip
   ssl_certificate: !secret ssl_certificate
   ssl_key: !secret ssl_key
+  use_x_forwarded_for: true
+  trusted_proxies: !secret gateway_host_ip
 customizer:
   custom_ui: hosted
 mobile_app:

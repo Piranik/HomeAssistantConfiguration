@@ -43,11 +43,11 @@ quote() {
 stations() {
   local key=$(quote "$1") value=$(quote "$2")
 
-  INPUT="${INPUT}      - ${key}\n"
+  INPUT="${INPUT}      - \"${key}\"\n"
   if [ "$AUTOMATION" == "" ]; then
-    AUTOMATION="${AUTOMATION}            {% if is_state(\"input_select.radio_station\", \"${key}\") %} ${value}\n"
+    AUTOMATION="${AUTOMATION}            {% if is_state(\"input_select.radio_station\", \"${key}\") %}${value}\n"
   else
-    AUTOMATION="${AUTOMATION}            {% elif is_state(\"input_select.radio_station\", \"${key}\") %} ${value}\n"
+    AUTOMATION="${AUTOMATION}            {% elif is_state(\"input_select.radio_station\", \"${key}\") %}${value}\n"
   fi
 }
 

@@ -44,6 +44,11 @@ media_player:
     auto_hide: true
 
 
+plex:
+  host: !secret plex_host
+  token: !secret plex_apikey
+
+
 input_boolean:
   play_radio:
     name: "Радио"
@@ -55,7 +60,7 @@ input_select:
     name: "Радио-станция"
     options:
       # INPUT_BEGIN
-      - Radio Subasio +
+      - "Radio Subasio +"
       # INPUT_END
     icon: mdi:radio
 
@@ -83,6 +88,15 @@ automation:
       - platform: state
         entity_id: media_player.emby_emby_mobile_chrome
         to: 'playing'
+      - platform: state
+        entity_id: media_player.emby_emby_mobile_chrome_3
+        to: 'playing'
+      - platform: state
+        entity_id: media_player.plex_notebook
+        to: 'playing'
+      - platform: state
+        entity_id: media_player.plex_willy
+        to: 'playing'
     action:
       - service: input_boolean.turn_off
         entity_id: input_boolean.play_radio
@@ -104,7 +118,7 @@ automation:
           media_content_type: 'music'
           media_content_id: >-
             {# AUTOMATION_BEGIN #}
-            {% if is_state("input_select.radio_station", "Radio Subasio +") %} http://icy.unitedradio.it/SubasioPiu.mp3
+            {% if is_state("input_select.radio_station", "Radio Subasio +") %}http://icy.unitedradio.it/SubasioPiu.mp3
             {# AUTOMATION_END #}
             {% endif %}
 
@@ -130,6 +144,15 @@ automation:
       - service: media_player.media_pause
         entity_id: group.all_speakers
 
+  - alias: "[Media] Set base volume"
+    initial_state: on
+    trigger: []
+    action:
+      - service: media_player.volume_set
+        data:
+          entity_id: group.all_speakers
+          volume_level: 0.30
+
   - alias: "[Media] Play Radio on Wake"
     initial_state: on
     trigger:
@@ -154,9 +177,7 @@ automation:
       - service: notify.all
         data:
           message: 'С добрым утром!'
-      - service: media_player.volume_set
-        data:
-          entity_id: group.all_speakers
-          volume_level: 0.30
+      - service: automation.trigger
+        entity_id: automation.media_set_base_volume
       - service: automation.trigger
         entity_id: automation.media_play_radio

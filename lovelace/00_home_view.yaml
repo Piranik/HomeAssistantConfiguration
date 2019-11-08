@@ -54,7 +54,6 @@ cards:
                     style:
                       top: 70%
                       left: 50%
-
               - type: picture-entity
                 entity: person.limych
                 image: /local/lovelace/home/limych_square.jpg
@@ -78,6 +77,28 @@ cards:
 
           - type: horizontal-stack
             cards:
+              - type: custom:button-card
+                color_type: card
+                entity: sensor.security_state
+                name: "Статус безопасности"
+                aspect_ratio: 1/1
+                size: 80%
+                tap_action: 
+                  action: navigate
+                  navigation_path: /lovelace/security/
+                state:
+                  - value: "Safe"
+                    color: green
+                    icon: mdi:shield-check
+                  - value: "Door Opened"
+                    color: orange
+                    icon: mdi:door-open
+                  - default:
+                    color: red
+                    icon: mdi:alert
+                    styles:
+                      card:
+                        - animation: blink 2s ease infinite
               - type: picture-entity
                 entity: input_select.washer_status
                 show_name: false
@@ -124,8 +145,8 @@ cards:
               #   state_image:
               #     "Not Today": /local/lovelace/home/cleaner_bw_square.jpg
 
-          # - type: horizontal-stack
-          #   cards:
+          - type: horizontal-stack
+            cards:
               - type: picture-glance
                 entities:
                   - input_boolean.car_clean
@@ -140,8 +161,9 @@ cards:
                   service: input_boolean.toggle
                   service_data:
                     entity_id: input_boolean.car_clean
-              # - !include empty_card.yaml
-              # - !include empty_card.yaml
+
+              - !include empty_card.yaml
+              - !include empty_card.yaml
 
           # - type: horizontal-stack
           #   cards:
@@ -252,6 +274,14 @@ cards:
           #           show_state: false
           #     - type: shopping-list
 
+          - type: custom:vertical-style-card
+            cards:
+              - type: custom:weather-card-chart
+                entity: weather.gismeteo
+                title: "Прогноз погоды"
+                mode: hourly
+                pressure2mmhg: True
+
           - type: entities
             show_header_toggle: false
             style: |
@@ -278,6 +308,21 @@ cards:
                   power: true
                   source: true
               - type: custom:button-card
+                name: "Фоновая громкость"
+                icon: mdi:volume-high
+                size: 80%
+                color: rgb(117, 111, 189)
+                color_type: card
+                layout: icon_name
+                tap_action:
+                  action: call-service
+                  service: automation.trigger
+                  service_data:
+                    entity_id: automation.media_set_base_volume
+                styles:
+                  card:
+                    - height: 50px
+              - type: custom:button-card
                 entity: input_boolean.play_radio
                 color: rgb(117, 189, 111)
                 color_type: card
@@ -291,18 +336,11 @@ cards:
                     color: rgba(255, 255, 255, 0.1)
               - input_select.radio_station
 
-          - type: custom:vertical-style-card
-            cards:
-              - type: custom:weather-card-chart
-                entity: weather.gismeteo
-                title: "Прогноз погоды"
-                mode: hourly
-                pressure2mmhg: True
-
           - type: picture-glance
-            title: "Latest Motion Front Door"
-            camera_image: camera.front_door_last_motion
+            title: "Входная дверь"
             entities: []
+            camera_image: camera.front_door_live
+            camera_view: live
             tap_action:
               action: navigate
               navigation_path: cameras

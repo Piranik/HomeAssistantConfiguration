@@ -90,7 +90,7 @@ views:
   # - !include lovelace/20_lights_view.yaml
   - !include lovelace/30_system_info_view.yaml
   # - !include lovelace/31_system_graphs.yaml
-  - !include lovelace/40_camera_view.yaml
+  - !include lovelace/40_security_view.yaml
   # - !include lovelace/60_traffic_view.yaml
   - !include lovelace/80_automations_view.yaml
   # - !include lovelace/101_dashboard.yaml
