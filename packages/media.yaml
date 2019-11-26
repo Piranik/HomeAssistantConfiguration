@@ -151,7 +151,7 @@ automation:
       - service: media_player.volume_set
         data:
           entity_id: group.all_speakers
-          volume_level: 0.30
+          volume_level: 0.20
 
   - alias: "[Media] Play Radio on Wake"
     initial_state: on

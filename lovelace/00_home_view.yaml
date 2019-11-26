@@ -77,28 +77,30 @@ cards:
 
           - type: horizontal-stack
             cards:
-              - type: custom:button-card
-                color_type: card
-                entity: sensor.security_state
-                name: "Статус безопасности"
-                aspect_ratio: 1/1
-                size: 80%
-                tap_action: 
+              - type: picture-entity
+                entity: sensor.security_status
+                show_name: false
+                state_image:
+                  "Safe": /local/lovelace/home/security_safe_square.jpg
+                  "Door Opened": /local/lovelace/home/security_door_open_square.jpg
+                  "Unsafe": /local/lovelace/home/security_alert_square.jpg
+                tap_action:
                   action: navigate
                   navigation_path: /lovelace/security/
-                state:
-                  - value: "Safe"
-                    color: green
-                    icon: mdi:shield-check
-                  - value: "Door Opened"
-                    color: orange
-                    icon: mdi:door-open
-                  - default:
-                    color: red
-                    icon: mdi:alert
-                    styles:
-                      card:
-                        - animation: blink 2s ease infinite
+                style: |
+                  @keyframes blink {
+                    50% {
+                      outline: 5px solid var(--accent-color);
+                    }
+                  }
+                  ha-card {
+                    animation: 
+                    {% if is_state("input_select.security_status", "Unsafe") %}
+                      blink 2s linear infinite
+                    {% else %}
+                      none
+                    {% endif %};
+                  }
               - type: picture-entity
                 entity: input_select.washer_status
                 show_name: false
@@ -333,7 +335,7 @@ cards:
                     - height: 50px
                 state:
                   - value: "off"
-                    color: rgba(255, 255, 255, 0.1)
+                    color: rgba(255, 255, 255, 0.3)
               - input_select.radio_station
 
           - type: picture-glance
@@ -343,6 +345,6 @@ cards:
             camera_view: live
             tap_action:
               action: navigate
-              navigation_path: cameras
+              navigation_path: security
 
           - !include dev_card.yaml

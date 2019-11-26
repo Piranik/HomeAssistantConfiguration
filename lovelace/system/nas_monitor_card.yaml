@@ -241,7 +241,7 @@ cards:
           80: '#FFA500'  # orange
           90: '#FF0000'  # red
 
-  - type: custom:monster-card
+  - type: custom:auto-entities
     show_empty: false
     card:
       type: glance

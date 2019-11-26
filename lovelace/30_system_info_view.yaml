@@ -9,7 +9,7 @@ cards:
         cards:
           - type: vertical-stack
             cards:
-              - type: custom:monster-card
+              - type: custom:auto-entities
                 show_empty: false
                 card:
                   type: glance
@@ -27,7 +27,7 @@ cards:
                   exclude:
                     - entity_id: sensor.system_uplink
 
-              - type: custom:monster-card
+              - type: custom:auto-entities
                 show_empty: false
                 card:
                   type: glance

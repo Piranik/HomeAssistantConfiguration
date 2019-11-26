@@ -38,7 +38,7 @@ cards:
                     battery: "< 50"
                     source_type: gps
 
-          - type: custom:monster-card
+          - type: custom:auto-entities
             show_empty: true
             card:
               type: entities
@@ -50,7 +50,7 @@ cards:
 
           # - type: vertical-stack
           #   cards:
-          #     - type: custom:monster-card
+          #     - type: custom:auto-entities
           #       show_empty: false
           #       card:
           #         type: entities
@@ -72,7 +72,7 @@ cards:
 
           - type: vertical-stack
             cards:
-              - type: custom:monster-card
+              - type: custom:auto-entities
                 show_empty: false
                 card:
                   type: entities

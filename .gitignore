@@ -19,6 +19,7 @@ home-assistant*
 /deps/
 /gh-pages/
 /tts/
+/img_sources/
 
 /www/
 !/www/custom-lovelace/

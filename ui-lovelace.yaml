@@ -12,8 +12,8 @@ resources:
   #   type: js
   # - url: /community_plugin/atomic-calendar.js
   #   type: module
-  - url: /local/custom-lovelace/auto-entities.js
-    type: js
+  - url: /community_plugin/lovelace-auto-entities/auto-entities.js
+    type: module
   # - url: /community_plugin/bar-card.js
   #   type: js
   - url: /community_plugin/bignumber-card/bignumber-card.js
@@ -48,8 +48,6 @@ resources:
     type: module
   - url: /community_plugin/mini-media-player/mini-media-player-bundle.js
     type: module
-  - url: /community_plugin/monster-card/monster-card.js
-    type: js
   - url: /local/custom-lovelace/popup-card.js
     type: js
   - url: /community_plugin/secondaryinfo-entity-row/secondaryinfo-entity-row.js

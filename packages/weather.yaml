@@ -42,14 +42,27 @@ sensor:
           {% endif %}
 
   - platform: mqtt
+    name: outdoor_temperature
+    state_topic: "sensor/kitchen/outdoor/temperature"
+    availability_topic: "sensor/kitchen/status"
+  - platform: mqtt
+    name: outdoor_humidity
+    state_topic: "sensor/kitchen/outdoor/humidity"
+    availability_topic: "sensor/kitchen/status"
+  - platform: mqtt
     name: pressure
-    state_topic: "sensor/kitchen/pressure"
+    state_topic: "sensor/kitchen/outdoor/pressure"
     unit_of_measurement: 'hPa'
     availability_topic: "sensor/kitchen/status"
   - platform: mqtt
     name: pressure_mmhg
-    state_topic: "sensor/kitchen/pressure_mmhg"
+    state_topic: "sensor/kitchen/outdoor/pressure_mmhg"
     unit_of_measurement: 'mmHg'
+    availability_topic: "sensor/kitchen/status"
+  - platform: mqtt
+    name: outdoor_luminosity
+    state_topic: "sensor/kitchen/outdoor/luminosity"
+    unit_of_measurement: 'lux'
     availability_topic: "sensor/kitchen/status"
     
   - platform: average

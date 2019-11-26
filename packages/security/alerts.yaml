@@ -1,7 +1,7 @@
 sensor:
   - platform: template
     sensors:
-      security_state:
+      security_status:
         value_template: >-
           {% if is_state('binary_sensor.front_door', 'on') %}
             Door Opened

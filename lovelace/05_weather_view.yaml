@@ -46,9 +46,54 @@ cards:
                     entities:
                       - sensor.gismeteo_pressure_mmhg
 
-              - type: entities
-                entities:
-                  - sensor.average_temperature
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    height: 75
+                    hour24: true
+                    entities:
+                      - sensor.outdoor_temperature
+                    # color_thresholds:
+                    #   - value: 0
+                    #     color: "#CCE5FF"
+                    #   - value: 10
+                    #     color: "#66B2FF"
+                    #   - value: 18
+                    #     color: "#0080FF"
+                    #   - value: 20
+                    #     color: "#87c087"
+                    #   - value: 21
+                    #     color: "#389638"
+                    #   - value: 24
+                    #     color: "#FF9932"
+                    #   - value: 25
+                    #     color: "#FF8000"
+                    #   - value: 26
+                    #     color: "#ff0000"
+                  - type: custom:mini-graph-card
+                    height: 75
+                    hour24: true
+                    entities:
+                      - sensor.outdoor_humidity
+                  - type: custom:mini-graph-card
+                    hour24: true
+                    height: 75
+                    decimals: 0
+                    entities:
+                      - sensor.pressure_mmhg
+
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    height: 75
+                    hour24: true
+                    entities:
+                      - sensor.average_temperature
+                  - type: custom:mini-graph-card
+                    height: 75
+                    hour24: true
+                    entities:
+                      - sensor.outdoor_luminosity
 
               - type: custom:vertical-style-card
                 cards:
@@ -81,6 +126,8 @@ cards:
             entities:
               - entity: sensor.gismeteo_temperature
                 name: "Gismeteo"
+              - entity: sensor.outdoor_temperature
+                name: "Улица"
               - entity: sensor.average_temperature
                 name: "В среднем"
           - type: history-graph
@@ -89,6 +136,8 @@ cards:
             entities:
               - entity: sensor.gismeteo_temperature
                 name: "Gismeteo"
+              - entity: sensor.outdoor_temperature
+                name: "Улица"
               - entity: sensor.average_temperature
                 name: "В среднем"
 
@@ -99,11 +148,15 @@ cards:
             entities:
               - entity: sensor.gismeteo_humidity
                 name: "Gismeteo"
+              - entity: sensor.outdoor_humidity
+                name: "Улица"
           - type: history-graph
             title: "Влажность за 7 дней"
             hours_to_show: 168
             entities:
               - entity: sensor.gismeteo_humidity
                 name: "Gismeteo"
+              - entity: sensor.outdoor_humidity
+                name: "Улица"
 
           - !include dev_card.yaml

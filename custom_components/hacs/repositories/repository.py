@@ -5,13 +5,14 @@ import json
 import os
 import tempfile
 import zipfile
-from distutils.version import LooseVersion
 from integrationhelper import Validate, Logger
 from aiogithubapi import AIOGitHubException
 from .manifest import HacsManifest
+from ..helpers.misc import get_repository_name
 from ..hacsbase import Hacs
 from ..hacsbase.backup import Backup
 from ..handler.download import async_download_file, async_save_file
+from ..helpers.misc import version_is_newer_than_version
 
 
 RERPOSITORY_CLASSES = {}
@@ -160,33 +161,19 @@ class HacsRepository(Hacs):
 
         if target is not None:
             if self.releases.releases:
-                if LooseVersion(self.system.ha_version) < LooseVersion(target):
+                if version_is_newer_than_version(target, self.system.ha_version):
                     return False
         return True
 
     @property
     def display_name(self):
         """Return display name."""
-        name = None
-        if self.information.category == "integration":
-            if self.manifest:
-                name = self.manifest["name"]
-
-        if self.repository_manifest is not None:
-            name = self.repository_manifest.name
-
-        if name is not None:
-            return name
-
-        if self.information.name:
-            name = self.information.name.replace("-", " ").replace("_", " ").title()
-
-        if name is not None:
-            return name
-
-        name = self.information.full_name
-
-        return name
+        return get_repository_name(
+            self.repository_manifest,
+            self.information.name,
+            self.information.category,
+            self.manifest,
+        )
 
     @property
     def display_status(self):
@@ -242,7 +229,7 @@ class HacsRepository(Hacs):
     @property
     def display_version_or_commit(self):
         """Does the repositoriy use releases or commits?"""
-        if self.versions.installed is not None:
+        if self.releases.releases:
             version_or_commit = "version"
         else:
             version_or_commit = "commit"
@@ -426,8 +413,7 @@ class HacsRepository(Hacs):
                     and self.information.full_name != "hacs/integration"
                 ):
                     await self.reload_custom_components()
-                else:
-                    self.pending_restart = True
+                self.pending_restart = True
 
             elif self.information.category == "theme":
                 try:
@@ -485,12 +471,18 @@ class HacsRepository(Hacs):
         """Download the content of a directory."""
         try:
             # Get content
-            if self.content.single:
-                contents = self.content.objects
-            else:
-                contents = await self.repository_object.get_contents(
-                    directory_path, self.ref
-                )
+            contents = []
+            if self.releases.releases:
+                for release in self.releases.objects:
+                    if self.status.selected_tag == release.tag_name:
+                        contents = release.assets
+            if not contents:
+                if self.content.single:
+                    contents = self.content.objects
+                else:
+                    contents = await self.repository_object.get_contents(
+                        directory_path, self.ref
+                    )
 
             for content in contents:
                 if content.type == "dir" and (
@@ -548,7 +540,9 @@ class HacsRepository(Hacs):
         """Get the content of the hacs.json file."""
         try:
             manifest = await self.repository_object.get_contents("hacs.json", self.ref)
-            self.repository_manifest = HacsManifest.from_dict(json.loads(manifest.content))
+            self.repository_manifest = HacsManifest.from_dict(
+                json.loads(manifest.content)
+            )
         except (AIOGitHubException, Exception):  # Gotta Catch 'Em All
             pass
 

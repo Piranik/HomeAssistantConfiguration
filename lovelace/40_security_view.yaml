@@ -10,7 +10,7 @@ cards:
         cards:
           - type: custom:button-card
             color_type: card
-            entity: sensor.security_state
+            entity: sensor.security_status
             name: "Статус безопасности"
             aspect_ratio: 4/1
             layout: icon_name

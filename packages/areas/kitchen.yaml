@@ -26,22 +26,22 @@ homeassistant:
 sensor:
   - platform: mqtt
     name: kitchen_temperature
-    state_topic: "sensor/kitchen/temperature"
+    state_topic: "sensor/kitchen/indoor/temperature"
     availability_topic: "sensor/kitchen/status"
 
   - platform: mqtt
     name: kitchen_humidity
-    state_topic: "sensor/kitchen/humidity"
+    state_topic: "sensor/kitchen/indoor/humidity"
     availability_topic: "sensor/kitchen/status"
 
   - platform: mqtt
     name: kitchen_co2
-    state_topic: "sensor/kitchen/eCO2"
+    state_topic: "sensor/kitchen/indoor/eCO2"
     availability_topic: "sensor/kitchen/status"
 
   - platform: mqtt
     name: kitchen_tvoc
-    state_topic: "sensor/kitchen/TVOC"
+    state_topic: "sensor/kitchen/indoor/TVOC"
     availability_topic: "sensor/kitchen/status"
 
 
