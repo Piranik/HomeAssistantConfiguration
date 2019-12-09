@@ -1,0 +1,24 @@
+home_presence_app:
+  module: home_presence_app
+  class: HomePresenceApp
+  plugin: 
+    - HASS
+    - MQTT
+  monitor_topic: presence
+  depart_check_time: 30
+  minimum_confidence: 80
+  not_home_timeout: 15
+  system_check: 30
+  system_timeout: 60
+  home_gateway_sensors:
+    - binary_sensor.front_door
+  home_motion_sensors:
+    - binary_sensor.kitchen_motion
+    - binary_sensor.hallway_motion
+
+  #pin_app: True
+  #pin_thread: 3
+  #log: apps_log
+  #log_level: DEBUG
+  known_devices:
+    - de:cb:5b:68:7c:f1 Limych AHPhoneB

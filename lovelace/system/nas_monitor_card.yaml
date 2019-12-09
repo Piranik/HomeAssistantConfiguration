@@ -243,6 +243,7 @@ cards:
 
   - type: custom:auto-entities
     show_empty: false
+    unique: true
     card:
       type: glance
     filter:

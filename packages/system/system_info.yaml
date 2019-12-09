@@ -27,18 +27,12 @@ homeassistant:
       icon: mdi:router-wireless
     sensor.connection_lan_switch:
       icon: mdi:lan
-    sensor.system_server_emby:
-      icon: mdi:emby
-    sensor.system_server_transmission:
-      icon: mdi:download
+    sensor.system_server_media:
+      icon: mdi:plex
     sensor.system_server_repo:
       icon: mdi:git
     sensor.system_server_syncthing:
       icon: mdi:cloud-sync
-    sensor.system_server_sonarr:
-      icon: mdi:cloud-search
-    sensor.system_server_jackett:
-      icon: mdi:cloud-search
     #
     sensor.system_security_intercom:
       icon: mdi:cctv
@@ -84,14 +78,10 @@ sensor:
         friendly_name: "LAN Switch"
         value_template: >-
           {{ 'Online' if is_state('device_tracker.lan_switch', 'home') else 'Offline' }}
-      system_server_emby:
-        friendly_name: "Emby"
+      system_server_media:
+        friendly_name: "Media Server"
         value_template: >-
-          {{ 'Online' if is_state('device_tracker.server_emby', 'home') else 'Offline' }}
-      system_server_transmission:
-        friendly_name: "Transmission"
-        value_template: >-
-          {{ 'Online' if is_state('device_tracker.server_transmission', 'home') else 'Offline' }}
+          {{ 'Online' if is_state('device_tracker.server_media', 'home') else 'Offline' }}
       system_server_repo:
         friendly_name: "GIT Repository"
         value_template: >-
@@ -100,14 +90,6 @@ sensor:
         friendly_name: "Syncthing"
         value_template: >-
           {{ 'Online' if is_state('device_tracker.server_syncthing', 'home') else 'Offline' }}
-      system_server_sonarr:
-        friendly_name: "Sonarr"
-        value_template: >-
-          {{ 'Online' if is_state('device_tracker.server_sonarr', 'home') else 'Offline' }}
-      system_server_jackett:
-        friendly_name: "Jackett"
-        value_template: >-
-          {{ 'Online' if is_state('device_tracker.server_jackett', 'home') else 'Offline' }}
 
       system_security_intercom:
         friendly_name: "Домофон"
@@ -135,12 +117,9 @@ automation:
           - sensor.system_nas
           - sensor.connection_wifi_ap
           - sensor.connection_lan_router
-          - sensor.system_server_emby
-          - sensor.system_server_transmission
+          - sensor.system_server_media
           - sensor.system_server_repo
           - sensor.system_server_syncthing
-          - sensor.system_server_sonarr
-          - sensor.system_server_jackett
           - sensor.system_security_intercom
           - sensor.system_security_wallpanel
         to: 'Offline'

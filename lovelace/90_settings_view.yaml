@@ -6,8 +6,10 @@ cards:
   - type: vertical-stack
     cards:
       - type: custom:layout-card
+        max_columns: 3
         cards:
           - type: custom:auto-entities
+            unique: true
             card:
               type: entities
               head:
@@ -26,6 +28,7 @@ cards:
           #       - entity_id: "*_management"
 
           - type: custom:auto-entities
+            unique: true
             card:
               type: entities
               title: "Battery warning"
@@ -40,6 +43,7 @@ cards:
 
           - type: custom:auto-entities
             show_empty: true
+            unique: true
             card:
               type: entities
               title: "Shelly need update"
@@ -52,6 +56,7 @@ cards:
           #   cards:
           #     - type: custom:auto-entities
           #       show_empty: false
+          #       unique: true
           #       card:
           #         type: entities
           #         title: "Batteries"
@@ -74,6 +79,7 @@ cards:
             cards:
               - type: custom:auto-entities
                 show_empty: false
+                unique: true
                 card:
                   type: entities
                   title: "Things that are probably broken"

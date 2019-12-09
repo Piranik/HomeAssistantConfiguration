@@ -7,6 +7,7 @@ cards:
     cards:
       - type: custom:layout-card
         layout: vertical
+        max_columns: 3
         cards:
           - type: vertical-stack
             cards:
@@ -101,11 +102,11 @@ cards:
                     items:
                       - entity: person.limych
                         secondary_info: last-changed
-                      - entity: device_tracker.limych_ahphoneb_2
+                      - entity: device_tracker.limych_ahphoneb_gps
                         secondary_info: last-changed
-                      - entity: device_tracker.limych_ahtabletl_2
+                      - entity: device_tracker.limych_ahtabletl_gps
                         secondary_info: last-changed
-                      - entity: device_tracker.limych_ahphones_2
+                      - entity: device_tracker.limych_ahphones_gps
                         secondary_info: last-changed
                       # - entity: proximity.home_limych
                       #   name: "Близость к дому"
@@ -119,8 +120,8 @@ cards:
                       # - entity: sensor.unlocked_by
                       #   name: "Front door last unlocked by"
                       #   secondary_info: last-changed
-                      # - entity: sensor.monitor
-                      #   secondary_info: last-changed
+                      - entity: sensor.monitor
+                        secondary_info: last-changed
 
           - break
           - type: history-graph

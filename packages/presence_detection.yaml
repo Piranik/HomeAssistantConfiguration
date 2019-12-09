@@ -1,3 +1,9 @@
+homeassistant:
+  customize:
+    sensor.monitor:
+      friendly_name: "Статус мониторинга"
+
+
 group:
   motion:
     name: motion
@@ -8,10 +14,10 @@ group:
       # - binary_sensor.wallpanel_motion
 
 
-# sensor:
-#   - platform: mqtt
-#     state_topic: 'monitor/home/status'
-#     name: "Статус мониторинга"
+sensor:
+  - platform: mqtt
+    state_topic: 'presence/hassio/status'
+    name: monitor
 
 
 binary_sensor:
@@ -37,7 +43,7 @@ automation:
     initial_state: on
     trigger:
     - platform: mqtt
-      topic: 'monitor/home/#'
+      topic: 'presence/#'
     action:
       event: HASS_MQTT_PRESENCE
       event_data_template:

@@ -36,10 +36,8 @@ resources:
     type: module
   - url: /community_plugin/lovelace-fold-entity-row/fold-entity-row.js
     type: js
-  # - url: /community_plugin/home-setter.js
-  #   type: js
-  - url: /local/custom-lovelace/layout-card.js
-    type: js
+  - url: /community_plugin/lovelace-layout-card/layout-card.js
+    type: module
   # - url: /community_plugin/light-card.js
   #   type: js
   # - url: /community_plugin/live-camera-card.js?v.0.0.3

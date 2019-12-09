@@ -107,6 +107,12 @@ automation:
       - platform: state
         entity_id: binary_sensor.washer
         to: 'on'
+      - platform: homeassistant
+        event: start
+    condition:
+      - condition: state
+        entity_id: binary_sensor.washer
+        state: 'on'
     action:
       - service: input_select.select_option
         data:
@@ -119,7 +125,16 @@ automation:
       - platform: state
         entity_id: binary_sensor.washer
         to: 'off'
+      - platform: homeassistant
+        event: start
+    condition:
+      - condition: state
+        entity_id: binary_sensor.washer
+        state: 'off'
     action:
+      - condition: state
+        entity_id: input_select.washer_status
+        state: "Работает"
       - service: input_select.select_option
         data:
           entity_id: input_select.washer_status

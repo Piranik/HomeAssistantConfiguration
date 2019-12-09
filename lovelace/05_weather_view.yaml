@@ -7,6 +7,7 @@ cards:
     cards:
       - type: custom:layout-card
         layout: vertical
+        max_columns: 3
         cards:
           - type: vertical-stack
             cards:
@@ -157,6 +158,24 @@ cards:
               - entity: sensor.gismeteo_humidity
                 name: "Gismeteo"
               - entity: sensor.outdoor_humidity
+                name: "Улица"
+
+          - break
+          - type: history-graph
+            title: "Давление за 48ч"
+            hours_to_show: 48
+            entities:
+              - entity: sensor.gismeteo_pressure_mmhg
+                name: "Gismeteo"
+              - entity: sensor.pressure_mmhg
+                name: "Улица"
+          - type: history-graph
+            title: "Давление за 7 дней"
+            hours_to_show: 168
+            entities:
+              - entity: sensor.gismeteo_pressure_mmhg
+                name: "Gismeteo"
+              - entity: sensor.pressure_mmhg
                 name: "Улица"
 
           - !include dev_card.yaml

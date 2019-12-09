@@ -6,11 +6,13 @@ cards:
   - type: vertical-stack
     cards:
       - type: custom:layout-card
+        max_columns: 3
         cards:
           - type: vertical-stack
             cards:
               - type: custom:auto-entities
                 show_empty: false
+                unique: true
                 card:
                   type: glance
                   title: "Устройства"
@@ -29,6 +31,7 @@ cards:
 
               - type: custom:auto-entities
                 show_empty: false
+                unique: true
                 card:
                   type: glance
                   title: "Соединения"
