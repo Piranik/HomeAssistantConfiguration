@@ -94,7 +94,7 @@ cards:
                     height: 75
                     hour24: true
                     entities:
-                      - sensor.outdoor_luminosity
+                      - sensor.outdoor_illuminance
 
               - type: custom:vertical-style-card
                 cards:

@@ -1,44 +1,6 @@
 homeassistant:
-  customize_glob:
-    sensor.*_humidity:
-      device_class: humidity
-      unit_of_measurement: '%'
-    sensor.*_temperature:
-      device_class: temperature
-      unit_of_measurement: '°C'
-
   customize:
     sensor.bathroom_temperature:
       friendly_name: "Ванная"
     sensor.bathroom_humidity:
       friendly_name: "Ванная"
-
-
-switch:
-  - platform: mqtt
-    name: "Bathroom Fan"
-    state_topic: "bathroom/relay/state"
-    command_topic: "bathroom/gpio/12"
-    payload_on: "1"
-    payload_off: "0"
-    qos: 1
-    retain: true
-    availability_topic: "bathroom/status/LWT"
-
-
-sensor:
-  - platform: mqtt
-    name: "Bathroom Temperature"
-    state_topic: "bathroom/sensor/temperature"
-    availability_topic: "bathroom/status/LWT"
-    expire_after: 300
-    device_class: temperature
-    unit_of_measurement: "°C"
-
-  - platform: mqtt
-    name: "Bathroom Humidity"
-    state_topic: "bathroom/sensor/humidity"
-    availability_topic: "bathroom/status/LWT"
-    expire_after: 300
-    device_class: humidity
-    unit_of_measurement: "%"

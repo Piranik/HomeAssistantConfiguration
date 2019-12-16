@@ -1,0 +1,186 @@
+substitutions:
+  device_name: "Bathroom"
+  device_ip: 192.168.1.64
+  
+  default_threshold: '75.0'
+  
+  <<: !include secrets.yaml
+
+esphome:
+  name: bathroom
+  platform: ESP8266
+  board: esp01_1m
+  on_boot:
+    priority: -10
+    then:
+      - sensor.template.publish:
+          id: fan_humidity_threshold
+          state: $default_threshold
+
+status_led:
+  pin:
+    number: GPIO13
+    inverted: True
+
+wifi:
+  ssid: $wifi_ssid
+  password: !secret wifi_password
+  domain: !secret network_domain
+
+  manual_ip:
+    static_ip: $device_ip
+    gateway: !secret network_gateway
+    subnet: !secret network_mask
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "${device_name} Fallback Hotspot"
+    password: !secret ota_password
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: !secret ota_password
+  services:
+    - service: set_fan_humidity_threshold
+      variables:
+        threshold: int
+        duration: int
+      then:
+        - if:
+            condition:
+              script.is_running: run_threshold_timeout
+            then:
+              - logger.log: "Humidity threshold change timer terminated"
+              - script.stop: run_threshold_timeout
+        - if:
+            condition:
+              lambda: 'return duration;'
+            then:
+              - globals.set:
+                  id: duration
+                  value: !lambda 'return duration;'
+              - if:
+                  condition:
+                    not:
+                      script.is_running: run_threshold_timeout
+                  else:
+                    - lambda: "id(old_threshold) = id(fan_humidity_threshold).state;"
+              - script.execute: run_threshold_timeout
+        - if:
+            condition:
+              lambda: 'return threshold == 0;'
+            then:
+              - sensor.template.publish:
+                  id: fan_humidity_threshold
+                  state: $default_threshold
+            else:
+              - sensor.template.publish:
+                  id: fan_humidity_threshold
+                  state: !lambda 'return threshold;'
+        - if:
+            condition:
+              lambda: 'return id(humi).state >= id(fan_humidity_threshold).state;'
+            then:
+              - fan.turn_on: bathroom_fan
+
+ota:
+  password: !secret ota_password
+
+web_server:
+  port: 80
+  auth:
+    username: admin
+    password: !secret web_server_password
+
+globals:
+  - id: duration
+    type: int
+  
+  - id: old_threshold
+    type: float
+
+output:
+  - platform: gpio
+    pin: GPIO12
+    id: fan_relay
+
+fan:
+  - platform: binary
+    output: fan_relay
+    name: "${device_name} Fan"
+    id: bathroom_fan
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      inverted: True
+    id: bathroom_fan_relay_button
+    on_press:
+      then:
+        - script.execute: run_with_timeout
+
+sensor:
+  - platform: uptime
+    name: "${device_name} Uptime"
+    id: device_uptime
+
+  - platform: template
+    id: fan_humidity_threshold
+    name: "${device_name} Fan Humidity Threshold"
+
+  - platform: dht
+    model: SI7021
+    pin: GPIO14
+    update_interval: 60s
+    humidity:
+      name: "${device_name} Humidity"
+      id: humi
+      on_value:
+        - if:
+            condition:
+              lambda: 'return x >= id(fan_humidity_threshold).state;'
+            then:
+              - fan.turn_on: bathroom_fan
+            else:
+              - if:
+                  condition:
+                    - lambda: 'return x <= id(fan_humidity_threshold).state - 5;'
+                    - not:
+                        script.is_running: run_with_timeout
+                  then:
+                    - fan.turn_off: bathroom_fan
+    temperature:
+      name: "${device_name} Temperature"
+
+script:
+  - id: run_with_timeout
+    then:
+      - fan.turn_on: bathroom_fan
+      - logger.log: "Fan run timer (5 min) reset"
+      - delay: 5min
+      - logger.log: "Fan run (5 min) timeout reached. Turning off fan"
+      - if:
+          condition:
+            lambda: 'return id(humi).state <= id(fan_humidity_threshold).state - 5;'
+          then:
+            - fan.turn_off: bathroom_fan
+
+  - id: run_threshold_timeout
+    then:
+      - logger.log: "Humidity threshold change timer reset"
+      - delay: !lambda 'return id(duration) * 60000;'
+      - logger.log: "Humidity threshold change timer reached. Restore previous threshold"
+      - lambda: 'id(fan_humidity_threshold).publish_state(id(old_threshold));'
+      - if:
+          condition:
+            - lambda: 'return id(humi).state <= id(fan_humidity_threshold).state - 5;'
+            - not:
+                script.is_running: run_with_timeout
+          then:
+            - fan.turn_off: bathroom_fan

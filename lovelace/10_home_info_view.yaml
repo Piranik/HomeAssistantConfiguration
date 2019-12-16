@@ -40,6 +40,11 @@ cards:
                     hour24: true
                     entities:
                       - sensor.kitchen_humidity
+                  - type: custom:mini-graph-card
+                    height: 75
+                    hour24: true
+                    entities:
+                      - sensor.kitchen_iaq_index
 
               - type: horizontal-stack
                 cards:

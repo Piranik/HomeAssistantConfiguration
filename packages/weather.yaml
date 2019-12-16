@@ -1,12 +1,3 @@
-homeassistant:
-  customize_glob:
-    sensor.*pressure*:
-      device_class: pressure
-      icon: mdi:gauge
-    sensor.*humidity*:
-      icon: mdi:water-percent
-
-
 weather:
   - platform: gismeteo
   - platform: gismeteo
@@ -33,38 +24,13 @@ sensor:
   - platform: template
     sensors:
       gismeteo_pressure_mmhg:
-        entity_id: sensor.gismeteo_pressure
         unit_of_measurement: 'mmHg'
         friendly_name: "Gismeteo Pressure"
         value_template: >-
           {% if states.sensor.gismeteo_pressure %}
-            {{ (states('sensor.gismeteo_pressure') | float / 1.33322) | round(0) }}
+            {{ (states('sensor.gismeteo_pressure') | float / 1.33322) | round(1) }}
           {% endif %}
 
-  - platform: mqtt
-    name: outdoor_temperature
-    state_topic: "sensor/kitchen/outdoor/temperature"
-    availability_topic: "sensor/kitchen/status"
-  - platform: mqtt
-    name: outdoor_humidity
-    state_topic: "sensor/kitchen/outdoor/humidity"
-    availability_topic: "sensor/kitchen/status"
-  - platform: mqtt
-    name: pressure
-    state_topic: "sensor/kitchen/outdoor/pressure"
-    unit_of_measurement: 'hPa'
-    availability_topic: "sensor/kitchen/status"
-  - platform: mqtt
-    name: pressure_mmhg
-    state_topic: "sensor/kitchen/outdoor/pressure_mmhg"
-    unit_of_measurement: 'mmHg'
-    availability_topic: "sensor/kitchen/status"
-  - platform: mqtt
-    name: outdoor_luminosity
-    state_topic: "sensor/kitchen/outdoor/luminosity"
-    unit_of_measurement: 'lux'
-    availability_topic: "sensor/kitchen/status"
-    
   - platform: average
     name: 'Average Temperature'
     duration:
