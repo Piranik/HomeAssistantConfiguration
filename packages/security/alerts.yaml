@@ -38,6 +38,7 @@ automation:
           entity_id: binary_sensor.sleeping_owners_all
           state: 'on'
     action:
+      - delay: 2
       - service: camera.snapshot
         data:
           entity_id: camera.front_door_live

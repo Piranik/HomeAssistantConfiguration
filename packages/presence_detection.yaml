@@ -1,12 +1,15 @@
 homeassistant:
-  customize:
-    sensor.monitor:
-      friendly_name: "Статус мониторинга"
+  customize_glob:
+    device_tracker.*_bt:
+      source_type: bluetooth
+    sensor.*_bt:
+      source_type: bluetooth
 
 
 group:
   motion:
-    name: motion
+    name: "Движение в доме"
+    all: false
     entities:
       - binary_sensor.front_door
       - binary_sensor.hallway_motion
@@ -16,8 +19,12 @@ group:
 
 sensor:
   - platform: mqtt
-    state_topic: 'presence/hassio/status'
-    name: monitor
+    state_topic: 'presence/hallway/status'
+    name: Monitor Hallway
+
+  - platform: mqtt
+    state_topic: 'presence/bedroom/status'
+    name: Monitor Bedroom
 
 
 binary_sensor:
@@ -39,16 +46,26 @@ binary_sensor:
 
 
 automation:
-  - alias: '[Presence] Presence MQTT event'
+  - alias: '[Presence] Initialize on Hass Started'
     initial_state: on
     trigger:
-    - platform: mqtt
-      topic: 'presence/#'
+      - platform: homeassistant
+        event: start
     action:
-      event: HASS_MQTT_PRESENCE
-      event_data_template:
-        topic: '{{ trigger.topic }}'
-        payload: '{{ trigger.payload }}'
+      - service: mqtt.publish
+        data:
+          topic: "presence/scan/restart"
+
+  # - alias: '[Presence] Presence MQTT event'
+  #   initial_state: on
+  #   trigger:
+  #     - platform: mqtt
+  #       topic: 'presence/#'
+  #   action:
+  #     event: HASS_MQTT_PRESENCE
+  #     event_data_template:
+  #       topic: '{{ trigger.topic }}'
+  #       payload: '{{ trigger.payload }}'
 
   - alias: '[Presence] Owners presence On'
     initial_state: on

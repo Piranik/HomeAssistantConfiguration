@@ -121,8 +121,7 @@ cards:
                     }
                   }
                   ha-card {
-                    animation: 
-                    {% if is_state("input_select.washer_status", "Очистка") %}
+                    animation: {% if is_state("input_select.washer_status", "Очистка") %}
                       blink 2s linear infinite
                     {% else %}
                       none
@@ -155,9 +154,9 @@ cards:
                   - input_boolean.car_clean
                   - binary_sensor.car_wash
                 state_image:
-                  'clean': /local/lovelace/home/car_wash_clean_square.jpg
-                  'bad weather': /local/lovelace/home/car_wash_weather_square.jpg
-                  'time to wash': /local/lovelace/home/car_wash_wash_square.jpg
+                  'Clean': /local/lovelace/home/car_wash_clean_square.jpg
+                  'Bad Weather': /local/lovelace/home/car_wash_weather_square.jpg
+                  'Time to Wash': /local/lovelace/home/car_wash_wash_square.jpg
                 entity: sensor.car_wash_state
                 tap_action:
                   action: call-service
@@ -170,25 +169,6 @@ cards:
 
           # - type: horizontal-stack
           #   cards:
-          #     - type: custom:card-modder
-          #       style:
-          #         animation: '[[ sensor.washer_animation.state ]] 2s linear infinite'
-          #         # animation: [[ if(sensor.washer_animation == 'Clean', "blink 2s linear infinite", "none") ]]
-          #       extra_styles: >
-          #         @keyframes blink {
-          #           50% {
-          #             outline: 3px solid #389638;
-          #           }
-          #         }
-          #       card:
-          #         type: picture-entity
-          #         name: Washer
-          #         show_name: false
-          #         entity: input_select.washing_machine_status
-          #         state_image:
-          #           "Idle": /local/lovelace/home/washer_square.jpg
-          #           "Running": /local/lovelace/home/laundry_running_square.jpg
-          #           "Clean": /local/lovelace/home/laundry_clean_2_square.jpg
           #     - type: picture-entity
           #       name: Cleaner
           #       show_name: false
@@ -196,13 +176,6 @@ cards:
           #       image: /local/lovelace/home/cleaner_square.jpg
           #       state_image:
           #         "Not Today": /local/lovelace/home/cleaner_bw_square.jpg
-          #     - type: picture-entity
-          #       entity: sensor.trash_status
-          #       image: /local/lovelace/home/trash_bear_bw_square.jpg
-          #       show_name: false
-          #       state_image:
-          #         "Put out": /local/lovelace/home/trash_square.jpg
-          #         "Take in": /local/lovelace/home/trash_square.jpg
 
           # - type: vertical-stack
           #   cards:
@@ -211,70 +184,17 @@ cards:
           #       - type: entity-filter
           #         show_empty: false
           #         entities:
-          #           - entity: sensor.front_door_lock
-          #             name: Front door lock
-          #           - entity: sensor.yard_door_lock
-          #             name: Yard door lock
           #           - sensor.front_door
-          #           - sensor.back_door
-          #           - sensor.yard_door
-          #           - sensor.balcony_door
-          #           - sensor.yard_door
-          #           - entity: sensor.dining_area_window
-          #             name: Dining area
-          #           - entity: sensor.bedroom_window
-          #             name: Bedroom
-          #           - entity: sensor.front_door_outdoor_movement
-          #             name: Ring motion
-          #           - sensor.hallway_movement
-          #           - sensor.passage_movement
-          #           - sensor.upstairs_hallway_movement
-          #           - sensor.living_room_movement
-          #           - sensor.back_door_camera_movement
-          #           - entity: sensor.yard_storage_door
-          #             name: Storage door
-          #           - sensor.water_heater
-          #           - sensor.kitchen_sink
-          #           - binary_sensor.smoke_sensor_158d0001d37bdd
-          #           - binary_sensor.smoke_sensor_158d0001d37be5
-          #           - binary_sensor.smoke_sensor_158d0001d37c82
           #         state_filter:
+          #           - 'on'
           #           - 'Open'
           #           - 'Movement detected'
           #           - 'Leaking'
           #           - 'Unlocked'
-          #           - 'on'
-          #           # - 'Unknown'
           #         card:
           #           type: glance
           #           show_state: false
 
-          #       - type: entity-filter
-          #         show_empty: false
-          #         entities:
-          #           - light.outdoor_lights
-          #           - entity: light.outdoor_yard_light_net
-          #             name: Yard net
-          #           - light.bedroom_ceiling_light
-          #           - light.bedside_lamp
-          #           - light.dining_area_ceiling_light_level
-          #           - light.kitchen_ceiling_spotlights_level
-          #           - light.floorlamp_reading_light
-          #           - light.floorlamp_uplight
-          #           - light.hallway_window_light
-          #           - light.isa_ceiling_light
-          #           - light.living_room_ceiling_light_level
-          #           - light.living_room_spotlights_level
-          #           - light.passage_ceiling_spotlights_level
-          #           - light.stairs_lights_lights
-          #           - light.walk_in_closet_lights
-          #           - light.upstairs_hallway_ceiling_light_level
-          #           - light.gateway_light_34ce008bfc4b
-          #         state_filter:
-          #           - 'on'
-          #         card:
-          #           type: glance
-          #           show_state: false
           #     - type: shopping-list
 
           - type: custom:vertical-style-card

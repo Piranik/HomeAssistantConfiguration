@@ -125,7 +125,9 @@ cards:
                       # - entity: sensor.unlocked_by
                       #   name: "Front door last unlocked by"
                       #   secondary_info: last-changed
-                      - entity: sensor.monitor
+                      - entity: sensor.monitor_hallway
+                        secondary_info: last-changed
+                      - entity: sensor.monitor_bedroom
                         secondary_info: last-changed
 
           - break

@@ -45,6 +45,27 @@ cards:
                 - binary_sensor.wallpanel_motion
                 - binary_sensor.hallway_motion
                 - binary_sensor.kitchen_motion
+
+          - type: vertical-stack
+            cards:
+              - type: custom:vertical-style-card
+                cards:
+                - type: entity-filter
+                  show_empty: false
+                  entities:
+                    - sensor.front_door
+                    - binary_sensor.hallway_motion
+                    - binary_sensor.kitchen_motion
+                  state_filter:
+                    - 'on'
+                    - 'Open'
+                    - 'Movement detected'
+                    - 'Leaking'
+                    - 'Unlocked'
+                  card:
+                    type: glance
+                    show_state: false
+
       - type: picture-glance
         title: "Последний посетитель"
         entities: []

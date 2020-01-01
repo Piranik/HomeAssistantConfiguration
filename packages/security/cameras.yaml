@@ -28,6 +28,7 @@ automation:
       entity_id: binary_sensor.front_door_ding
       to: 'on'
     action:
+      - delay: 2
       - service: notify.limych
         data:
           message: "Звонят в дверь!"

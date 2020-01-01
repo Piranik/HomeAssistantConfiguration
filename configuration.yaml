@@ -54,6 +54,7 @@ customizer:
 mobile_app:
 hacs:
   token: !secret hacs_github_token
+  appdaemon: true
 
 
 # ########################################

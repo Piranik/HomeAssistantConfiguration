@@ -10,7 +10,7 @@ device_tracker:
     hosts: !secret nmap_tracker_hosts
     scan_options: "-sn -T5 -n"
     interval_seconds: 30
-    consider_home: 360
+    consider_home: 180
     home_interval: 3
     new_device_defaults:
       track_new_devices: true
@@ -26,7 +26,7 @@ device_tracker:
 
 
 automation:
-  - alias: '[System] Hass New Device Tracked'
+  - alias: '[System] New Device Tracked'
     initial_state: on
     trigger:
       platform: event

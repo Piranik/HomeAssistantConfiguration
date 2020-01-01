@@ -3,6 +3,7 @@ substitutions:
   device_ip: 192.168.1.64
   
   default_threshold: '75.0'
+  default_timeout: '5'
   
   <<: !include secrets.yaml
 
@@ -46,6 +47,29 @@ logger:
 api:
   password: !secret ota_password
   services:
+    - service: run_fan_with_timeout
+      variables:
+        duration: int
+      then:
+        - if:
+            condition:
+              script.is_running: run_with_timeout
+            then:
+              - logger.log: "Fan run timer terminated"
+              - script.stop: run_with_timeout
+        - if:
+            condition:
+              lambda: 'return duration > 0;'
+            then:
+              - globals.set:
+                  id: run_timeout
+                  value: !lambda 'return duration;'
+            else:
+              - globals.set:
+                  id: run_timeout
+                  value: $default_timeout
+        - script.execute: run_with_timeout
+
     - service: set_fan_humidity_threshold
       variables:
         threshold: int
@@ -57,19 +81,15 @@ api:
             then:
               - logger.log: "Humidity threshold change timer terminated"
               - script.stop: run_threshold_timeout
+            else:
+              - lambda: "id(old_threshold) = id(fan_humidity_threshold).state;"
         - if:
             condition:
-              lambda: 'return duration;'
+              lambda: 'return duration > 0;'
             then:
               - globals.set:
-                  id: duration
+                  id: threshold_timeout
                   value: !lambda 'return duration;'
-              - if:
-                  condition:
-                    not:
-                      script.is_running: run_threshold_timeout
-                  else:
-                    - lambda: "id(old_threshold) = id(fan_humidity_threshold).state;"
               - script.execute: run_threshold_timeout
         - if:
             condition:
@@ -98,7 +118,10 @@ web_server:
     password: !secret web_server_password
 
 globals:
-  - id: duration
+  - id: threshold_timeout
+    type: int
+  
+  - id: run_timeout
     type: int
   
   - id: old_threshold
@@ -123,6 +146,15 @@ binary_sensor:
     id: bathroom_fan_relay_button
     on_press:
       then:
+        - if:
+            condition:
+              script.is_running: run_with_timeout
+            then:
+              - logger.log: "Fan run timer terminated"
+              - script.stop: run_with_timeout
+        - globals.set:
+            id: run_timeout
+            value: $default_timeout
         - script.execute: run_with_timeout
 
 sensor:
@@ -162,9 +194,9 @@ script:
   - id: run_with_timeout
     then:
       - fan.turn_on: bathroom_fan
-      - logger.log: "Fan run timer (5 min) reset"
-      - delay: 5min
-      - logger.log: "Fan run (5 min) timeout reached. Turning off fan"
+      - logger.log: "Fan run timer reset"
+      - delay: !lambda 'return id(run_timeout) * 60000;'
+      - logger.log: "Fan run timeout reached. Turning off fan"
       - if:
           condition:
             lambda: 'return id(humi).state <= id(fan_humidity_threshold).state - 5;'
@@ -174,7 +206,7 @@ script:
   - id: run_threshold_timeout
     then:
       - logger.log: "Humidity threshold change timer reset"
-      - delay: !lambda 'return id(duration) * 60000;'
+      - delay: !lambda 'return id(threshold_timeout) * 60000;'
       - logger.log: "Humidity threshold change timer reached. Restore previous threshold"
       - lambda: 'id(fan_humidity_threshold).publish_state(id(old_threshold));'
       - if:

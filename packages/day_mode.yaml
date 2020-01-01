@@ -18,6 +18,11 @@ input_select:
      - "Ночь"
 
 
+binary_sensor:
+  - platform: workday
+    country: RU
+
+
 sensor:
   - platform: time_date
     display_options:
@@ -35,7 +40,7 @@ sensor:
           {%- set wdays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]  %}
           {{ wdays[now().weekday()] + ', ' + now().strftime('%d') + ' ' + months[now().month-1] }}          
 
-    
+
 group:
   sleeping_owners_some:
     name: "Хозяева спят (кто-то из)"
@@ -70,10 +75,10 @@ automation:
         # Only during daylight hours
         - condition: sun
           after: sunrise
-        # Or has to be between 08 and 12
+        # Or has to be between 08 and 11
         - condition: time
           after: '08:00:00'
-          before: '12:00:00'
+          before: '11:00:00'
     action:
       - service: input_select.select_option
         data:
@@ -108,11 +113,9 @@ automation:
       - platform: time
         at: '18:00:00'
     condition:
-      condition: and
-      conditions:
-        - condition: state
-          entity_id: input_select.day_mode
-          state: "День"
+      - condition: state
+        entity_id: input_select.day_mode
+        state: "День"
     action:
       - service: input_select.select_option
         data:
@@ -129,11 +132,9 @@ automation:
         entity_id: group.sleeping_owners_all
         to: 'on'
     condition:
-      condition: and
-      conditions:
-        - condition: state
-          entity_id: input_select.day_mode
-          state: "Вечер"
+      - condition: state
+        entity_id: input_select.day_mode
+        state: "Вечер"
     action:
       - service: input_select.select_option
         data:

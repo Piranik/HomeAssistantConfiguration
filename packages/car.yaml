@@ -14,7 +14,7 @@ homeassistant:
 
 input_boolean:
   car_clean:
-    name: "Машина помыта"
+    name: "Машина чистая"
 
 
 binary_sensor:
@@ -28,11 +28,11 @@ sensor:
       car_wash_state:
         value_template: >-
           {% if is_state('input_boolean.car_clean', 'on') %}
-            clean
+            Clean
           {% elif is_state('binary_sensor.car_wash', 'off') %}
-            bad weather
+            Bad Weather
           {% else %}
-            time to wash
+            Time to Wash
           {% endif %}
 
 
@@ -42,7 +42,7 @@ automation:
     trigger:
       - entity_id: sensor.car_wash_state
         platform: state
-        to: 'time to wash'
+        to: 'Time to Wash'
     action:
       - service: notify.limych
         data_template:
