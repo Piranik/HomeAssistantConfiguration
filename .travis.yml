@@ -13,6 +13,7 @@ matrix:
 before_install:
   - mv tests/fake_secrets.yaml secrets.yaml
   - perl -i -pe 'if (/whitelist_external_dirs:/) { $_ = <>; $_ = <> while /^\s*-/; }' configuration.yaml
+  - sed -i 's|- /trusted_proxies:.*||g' configuration.yaml
   # - perl -i -pe 'while (/- platform: rpi_gpio/) { $_ = <>; $_ = <> while !/^\s*-/ && !eof(); }' packages/areas/hallway.yaml
   - rm packages/areas/hallway.yaml
 install:
