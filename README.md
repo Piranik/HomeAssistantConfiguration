@@ -47,9 +47,9 @@ I am running Hass.io on [Raspberry Pi 3 Model B+](https://www.raspberrypi.org/pr
     1. [OPNsense-driven](https://opnsense.org/) Network Firewall;
     1. [Beward DS06M](https://www.beward.ru/katalog/ip-videodomofony/vyzyvnye-paneli/vyzyvnaya-panel-ds06m/) Doorbell;
     1. Home made security sensor (PIR & front door opening) direct wired to Home Assistant Raspberry PI;
-    1. Home made [ESPHome-driven](https://esphome.io/) climate (outdoor <s>Humidity, Temperature</s> & Illuminance and indoor Pressure, <s>Humidity</s> & Temperature) & security (PIR) sensor;
+    1. Home made [ESPHome-driven](https://esphome.io/) climate (outdoor <s>Humidity, Temperature</s> & Illuminance and indoor Pressure, <s>Humidity,</s> Temperature, CO2 & tVOC) & security (PIR) sensor;
 * **Climate:**
-    1. Home made [ESPHome-driven](https://esphome.io/) climate (outdoor <s>Humidity, Temperature</s> & Illuminance and indoor Pressure, <s>Humidity</s> & Temperature) & security (PIR) sensor;
+    1. Home made [ESPHome-driven](https://esphome.io/) climate (outdoor <s>Humidity, Temperature</s> & Illuminance and indoor Pressure, <s>Humidity,</s> Temperature, CO2 & tVOC) & security (PIR) sensor;
     1. Sonoff TH10 [ESPHome-driven](https://esphome.io/) bathroom climate sensor (Humidity & Temperature) & fan controller;
 * **Misc:**
     1. Android tablet based WallPanel-driven Home Assistant dashboard;
