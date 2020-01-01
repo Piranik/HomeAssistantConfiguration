@@ -13,7 +13,7 @@ matrix:
 before_install:
   - mv tests/fake_secrets.yaml secrets.yaml
   - perl -i -pe 'if (/whitelist_external_dirs:/) { $_ = <>; $_ = <> while /^\s*-/; }' configuration.yaml
-  - perl -i -pe 'if (/- platform: rpi_gpio/) { $_ = <>; $_ = <> while !/^\s*-/; }' packages/areas/hallway.yaml
+  - perl -i -pe 'while (/- platform: rpi_gpio/) { $_ = <>; $_ = <> while !/^\s*-/ && !eof(); }' packages/areas/hallway.yaml
 install:
   - if [ $BUILD == "beta" ]; then
       pip3 install --pre homeassistant;
