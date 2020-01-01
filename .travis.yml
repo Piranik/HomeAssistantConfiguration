@@ -12,11 +12,7 @@ matrix:
 
 before_install:
   - mv tests/fake_secrets.yaml secrets.yaml
-  - perl -i -pe '
-      if (/whitelist_external_dirs:/) { $_ .= <> while /^\s*- /;
-          $_ = "";
-      }' configuration.yaml
-  - sed -i 's|- /config/.storage/beward||g' configuration.yaml
+  - perl -i -pe 'if (/whitelist_external_dirs:/) { $_ = <>; $_ = <> while /^\s*-/; }' configuration.yaml
 install:
   - if [ $BUILD == "beta" ]; then
       pip3 install --pre homeassistant;
