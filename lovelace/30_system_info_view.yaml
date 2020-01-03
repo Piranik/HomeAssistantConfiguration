@@ -36,6 +36,7 @@ cards:
                   type: glance
                   title: "Соединения"
                   show_state: false
+                  columns: 3
                 filter:
                   include:
                     - entity_id: sensor.connection_internet

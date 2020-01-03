@@ -1,6 +1,6 @@
 resources:
-  - url: /local/custom-lovelace/card-tools.js
-    type: js
+  - url: /community_plugin/lovelace-card-tools/card-tools.js
+    type: module
   - url: https://unpkg.com/moment@2.22.2/moment.js
     type: js
   - url: https://fonts.googleapis.com/css?family=Roboto+Condensed

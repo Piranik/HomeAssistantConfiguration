@@ -11,6 +11,8 @@ homeassistant:
       icon: mdi:security
     sensor.system_media_*:
       icon: mdi:speaker
+    sensor.connection_lan_switch*:
+      icon: mdi:lan
 
   customize:
     sensor.connection_internet:
@@ -25,8 +27,6 @@ homeassistant:
       icon: mdi:access-point
     sensor.connection_lan_router:
       icon: mdi:router-wireless
-    sensor.connection_lan_switch:
-      icon: mdi:lan
     sensor.system_server_media:
       icon: mdi:plex
     sensor.system_server_repo:
@@ -54,6 +54,23 @@ sensor:
         friendly_name: "Интернет"
         value_template: >-
           {{ 'Online' if is_state('binary_sensor.internet', 'on') else 'Offline' }}
+      connection_wifi_ap:
+        friendly_name: "WiFi точка доступа"
+        value_template: >-
+          {{ 'Online' if is_state('device_tracker.lan_wifi_ap', 'home') else 'Offline' }}
+      connection_lan_router:
+        friendly_name: "OpenWRT роутер"
+        value_template: >-
+          {{ 'Online' if is_state('device_tracker.lan_router', 'home') else 'Offline' }}
+      connection_lan_switch5:
+        friendly_name: "LAN Switch 5"
+        value_template: >-
+          {{ 'Online' if is_state('device_tracker.lan_switch5', 'home') else 'Offline' }}
+      connection_lan_switch8:
+        friendly_name: "LAN Switch 8"
+        value_template: >-
+          {{ 'Online' if is_state('device_tracker.lan_switch8', 'home') else 'Offline' }}
+
       # system_uplink:
       #   friendly_name: "Uplink"
       #   value_template: >-
@@ -66,18 +83,7 @@ sensor:
         friendly_name: "NAS"
         value_template: >-
           {{ 'Online' if is_state('device_tracker.server_nas', 'home') else 'Offline' }}
-      connection_wifi_ap:
-        friendly_name: "WiFi точка доступа"
-        value_template: >-
-          {{ 'Online' if is_state('device_tracker.lan_wifi_ap', 'home') else 'Offline' }}
-      connection_lan_router:
-        friendly_name: "OpenWRT роутер"
-        value_template: >-
-          {{ 'Online' if is_state('device_tracker.lan_router', 'home') else 'Offline' }}
-      connection_lan_switch:
-        friendly_name: "LAN Switch"
-        value_template: >-
-          {{ 'Online' if is_state('device_tracker.lan_switch', 'home') else 'Offline' }}
+
       system_server_media:
         friendly_name: "Media Server"
         value_template: >-
@@ -116,7 +122,8 @@ automation:
           - sensor.system_gateway
           - sensor.system_nas
           - sensor.connection_wifi_ap
-          - sensor.connection_lan_router
+          - sensor.connection_lan_router5
+          - sensor.connection_lan_router8
           - sensor.system_server_media
           - sensor.system_server_repo
           - sensor.system_server_syncthing
