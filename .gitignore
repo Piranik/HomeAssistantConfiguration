@@ -6,7 +6,6 @@ __pycache__/
 .*
 !/.github/
 !.gitignore
-!.gitkeep
 !.travis.yml
 
 *.conf
@@ -43,3 +42,7 @@ secrets.yaml
 /appdaemon/appdaemon.yaml
 /appdaemon/compiled
 /appdaemon/apps/security/
+
+
+
+!.gitkeep
