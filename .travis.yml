@@ -1,6 +1,8 @@
 language: python
+jobs:
 python:
   - 3.7
+  - 3.8
 env:
   - BUILD=stable
   - BUILD=beta
@@ -8,6 +10,12 @@ env:
 matrix:
   allow_failures:
     - python: 3.7
+      env: BUILD=dev
+    - python: 3.8
+      env: BUILD=stable
+    - python: 3.8
+      env: BUILD=beta
+    - python: 3.8
       env: BUILD=dev
 
 before_install:
