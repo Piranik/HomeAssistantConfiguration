@@ -12,3 +12,8 @@
   longitude: !secret family_shest_lon
   icon: mdi:account
   radius: 300
+- name: Orekhovy
+  latitude: !secret family_oreh_lat
+  longitude: !secret family_oreh_lon
+  icon: mdi:account
+  radius: 300

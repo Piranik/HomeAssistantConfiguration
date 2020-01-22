@@ -38,6 +38,7 @@ secrets.yaml
 /lovelace/links_card.yaml
 /packages/test_package.yaml
 /packages/persons/
+/zones/
 
 /appdaemon/appdaemon.yaml
 /appdaemon/compiled

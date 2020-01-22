@@ -21,10 +21,10 @@ homeassistant:
     - type: trusted_networks
       trusted_networks:
         - 127.0.0.1
-        - ::1
-        - 192.168.1.0/24
-        - fd00::/8
-        - !secret work_office_ip
+        - "::1"
+        - "fd00::/8"
+        # - !secret trusted_network_1
+        # - !secret trusted_network_2
   customize_glob:
     "*.*":
       custom_ui_state_card: state-card-custom-ui
@@ -47,8 +47,8 @@ http:
   base_url: !secret hass_base_url
   ssl_certificate: !secret ssl_certificate
   ssl_key: !secret ssl_key
-  use_x_forwarded_for: true
   trusted_proxies: !secret gateway_host_ip
+  use_x_forwarded_for: true
 customizer:
   custom_ui: hosted
 mobile_app:
@@ -85,24 +85,6 @@ logger: !include logging/logger.yaml
 
 
 # ########################################
-# ###              ENTITIES            ###
-# ########################################
-
-zone: !include_dir_merge_list zones/
-
-# Torrents
-# transmission:
-#   host: !secret transmission_host
-#   username: !secret transmission_username
-#   password: !secret transmission_password
-#   turtle_mode: true
-#   monitored_conditions:
-#     - current_status
-#     - download_speed
-#     - upload_speed
-
-
-# ########################################
 # ###             SERVICES             ###
 # ########################################
 
@@ -110,6 +92,7 @@ sun:
 #shopping_list:
 
 # Devices tracking
+zone: !include_dir_merge_list zones/
 owntracks:
   max_gps_accuracy: 200
 mqtt:
@@ -119,4 +102,4 @@ mqtt:
   client_id: !secret home_title
   discovery: true
 
-scene: !include_dir_list scenes/
+# scene: !include_dir_list scenes/
