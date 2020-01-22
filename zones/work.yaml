@@ -1,5 +1,0 @@
-- name: Work Office
-  icon: mdi:briefcase
-  latitude: !secret work_office_lat
-  longitude: !secret work_office_lon
-  radius: 150
