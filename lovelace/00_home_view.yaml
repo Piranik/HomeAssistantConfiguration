@@ -39,9 +39,9 @@ cards:
         cards:
           - type: horizontal-stack
             cards:
-              - type: picture-elements    
+              - type: picture-elements
                 image: /local/lovelace/home/time_square.jpg
-                elements:      
+                elements:
                   - type: state-label
                     entity: sensor.time
                     tap_action: none
@@ -95,7 +95,7 @@ cards:
                     }
                   }
                   ha-card {
-                    animation: 
+                    animation:
                     {% if is_state("input_select.security_status", "Unsafe") %}
                       blink 2s linear infinite
                     {% else %}
@@ -205,59 +205,78 @@ cards:
                 mode: hourly
                 pressure2mmhg: True
 
-          - type: entities
-            show_header_toggle: false
-            style: |
-              ha-card {
-                background-image: url("/local/lovelace/home/bg_sound.jpg");
-                background-size: cover;
-                background-position: center;
-              }
-            entities:
-              - type: custom:mini-media-player
-                entity: media_player.kitchen
-                name: "Кухня"
-                group: true
-                source: icon
-                hide:
-                  power: true
-                  source: true
-              - type: custom:mini-media-player
-                entity: media_player.living_room
-                name: "Гостиная"
-                group: true
-                source: icon
-                hide:
-                  power: true
-                  source: true
-              - type: custom:button-card
-                name: "Фоновая громкость"
-                icon: mdi:volume-high
-                size: 80%
-                color: rgb(117, 111, 189)
-                color_type: card
-                layout: icon_name
-                tap_action:
-                  action: call-service
-                  service: automation.trigger
-                  service_data:
-                    entity_id: automation.media_set_base_volume
-                styles:
-                  card:
-                    - height: 50px
-              - type: custom:button-card
-                entity: input_boolean.play_radio
-                color: rgb(117, 189, 111)
-                color_type: card
-                layout: icon_name
-                # show_name: False
-                styles:
-                  card:
-                    - height: 50px
-                state:
-                  - value: "off"
-                    color: rgba(255, 255, 255, 0.3)
-              - input_select.radio_station
+          - type: vertical-stack
+            cards:
+            - type: entities
+              show_header_toggle: false
+              style: |
+                ha-card {
+                  background-image: url("/local/lovelace/home/bg_sound.jpg");
+                  background-size: cover;
+                  background-position: center;
+                }
+              entities:
+                - type: custom:mini-media-player
+                  entity: media_player.kitchen
+                  name: "Кухня"
+                  group: true
+                  source: icon
+                  hide:
+                    icon: true
+                    power: true
+                    source: true
+                - type: custom:mini-media-player
+                  entity: media_player.living_room
+                  name: "Гостиная"
+                  group: true
+                  source: icon
+                  hide:
+                    icon: true
+                    power: true
+                    source: true
+                - type: custom:button-card
+                  name: "Фоновая громкость"
+                  icon: mdi:volume-high
+                  size: 80%
+                  color: rgb(117, 111, 189)
+                  color_type: card
+                  layout: icon_name
+                  tap_action:
+                    action: call-service
+                    service: automation.trigger
+                    service_data:
+                      entity_id: automation.media_set_base_volume
+                  styles:
+                    card:
+                      - height: 50px
+                - type: custom:button-card
+                  entity: input_boolean.play_radio
+                  color: rgb(117, 189, 111)
+                  color_type: card
+                  layout: icon_name
+                  # show_name: False
+                  styles:
+                    card:
+                      - height: 50px
+                  state:
+                    - value: "off"
+                      color: rgba(255, 255, 255, 0.3)
+                - input_select.radio_station
+
+            - type: custom:mini-media-player
+              entity: media_player.emby_kodi_kodi_bedroom_tv_lan
+              # info: short
+              artwork: cover
+              hide:
+                icon: true
+                power_state: false
+            - type: custom:mini-media-player
+              entity: media_player.plex_bedroom_tv
+              # info: short
+              artwork: cover
+              hide:
+                icon: true
+                power_state: false
 
           - type: picture-glance
             title: "Входная дверь"

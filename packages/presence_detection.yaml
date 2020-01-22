@@ -34,7 +34,7 @@ binary_sensor:
         friendly_name: "Хозяева в Доме"
         device_class: occupancy
         value_template: >-
-          {{ is_state('person.limych', 'home') }}
+          {{ is_state('sensor.limych_ahphoneb_bt', 'home') }}
 
       presence:
         friendly_name: "Люди в Доме"

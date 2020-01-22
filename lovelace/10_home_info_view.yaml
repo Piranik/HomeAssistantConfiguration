@@ -107,11 +107,11 @@ cards:
                     items:
                       - entity: person.limych
                         secondary_info: last-changed
+                      - entity: sensor.limych_ahphoneb_bt
+                        secondary_info: last-changed
                       - entity: device_tracker.limych_ahphoneb_gps
                         secondary_info: last-changed
                       - entity: device_tracker.limych_ahtabletl_gps
-                        secondary_info: last-changed
-                      - entity: device_tracker.limych_ahphones_gps
                         secondary_info: last-changed
                       # - entity: proximity.home_limych
                       #   name: "Близость к дому"
@@ -121,7 +121,7 @@ cards:
                       #   prefix: "Направление движения: "
 
                       - type: divider
-                      
+
                       # - entity: sensor.unlocked_by
                       #   name: "Front door last unlocked by"
                       #   secondary_info: last-changed

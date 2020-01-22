@@ -13,6 +13,8 @@ homeassistant:
       icon: mdi:speaker
     sensor.connection_lan_switch*:
       icon: mdi:lan
+    sensor.system_media_*_tv:
+      icon: mdi:television
 
   customize:
     sensor.connection_internet:
@@ -110,6 +112,10 @@ sensor:
         friendly_name: "Колонки В Гостиной"
         value_template: >-
           {{ 'Online' if is_state('device_tracker.media_living_room', 'home') else 'Offline' }}
+      system_media_bedroom_tv:
+        friendly_name: "Телевизор в Спальне"
+        value_template: >-
+          {{ 'Online' if is_state('device_tracker.media_bedroom_tv', 'home') else 'Offline' }}
 
 
 automation:
@@ -130,6 +136,12 @@ automation:
           - sensor.system_security_intercom
           - sensor.system_security_wallpanel
         to: 'Offline'
+        for:
+          minutes: 5
+      - platform: state
+        entity_id:
+          - sensor.monitor_bedroom
+        to: 'offline'
         for:
           minutes: 5
     action:

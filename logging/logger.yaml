@@ -16,9 +16,9 @@ logs:
   # custom_components.average: debug
   # custom_components.beward: debug
   # custom_components.car_wash: debug
+  custom_components.iaquk: debug
   # custom_components.gismeteo: debug
   # custom_components.linkplay: debug
-  custom_components.pfsense: debug
 
   # homeassistant.components.api: error
   # homeassistant.components.automation: error

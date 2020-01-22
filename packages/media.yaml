@@ -44,9 +44,9 @@ media_player:
     auto_hide: true
 
 
-plex:
-  host: !secret plex_host
-  token: !secret plex_apikey
+# plex:
+#   host: !secret plex_host
+#   token: !secret plex_apikey
 
 
 input_boolean:
@@ -78,6 +78,8 @@ automation:
     action:
       - service: media_player.media_pause
         entity_id: all
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.play_radio
 
   - alias: "[Media] Stop Radio when Movie is Playing"
     initial_state: on
@@ -139,10 +141,10 @@ automation:
         for:
           seconds: 20
     action:
-      - service: input_boolean.turn_off
-        entity_id: input_boolean.play_radio
       - service: media_player.media_pause
         entity_id: group.all_speakers
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.play_radio
 
   - alias: "[Media] Set base volume"
     initial_state: on

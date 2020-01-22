@@ -23,7 +23,7 @@ automation:
       - platform: state
         entity_id: >-
           device_tracker.guest_ksenia_phone, device_tracker.guest_ivanchev_phone1, device_tracker.guest_ivanchev_phone2,
-          device_tracker.guest_masha_little
+          device_tracker.guest_masha_little, device_tracker.guest_kent_notebook
         to: home
     action:
       - service: homeassistant.turn_on
